@@ -10,7 +10,16 @@ COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
 RUN npx prisma generate
+# `next build` pre-renders dynamic routes (news/podcasts slugs) via
+# generateStaticParams, which queries Prisma directly at build time.
+# Render's Docker build step doesn't inject the service's runtime env
+# vars, so give the build its own throwaway migrated (but empty) SQLite
+# db just so those build-time queries succeed instead of throwing. It's
+# discarded — the runner stage creates and seeds the real one on boot.
+ENV DATABASE_URL="file:./prisma/build.db"
+RUN npx prisma migrate deploy
 RUN npm run build
+RUN rm -f prisma/build.db prisma/build.db-journal
 
 FROM node:20-bookworm-slim AS runner
 RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg openssl ca-certificates \

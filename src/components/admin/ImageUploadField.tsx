@@ -35,7 +35,7 @@ export default function ImageUploadField({
           <input
             type="file"
             name={name}
-            accept="image/png,image/jpeg,image/webp,image/gif"
+            accept="image/*"
             required={required && !defaultImage}
             className="hidden"
             onChange={(e) => {

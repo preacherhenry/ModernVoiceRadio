@@ -40,6 +40,9 @@ yarn-error.log*
 # broadcast recordings
 /recordings
 
+# admin-uploaded images (served live from disk, see src/app/uploads/)
+/uploads
+
 # vercel
 .vercel
 

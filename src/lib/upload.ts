@@ -6,6 +6,13 @@ import sharp from "sharp";
 
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 
+// Deliberately outside public/: Next's production server snapshots the
+// public directory's contents once at process startup and never serves
+// files added afterward, so anything uploaded at runtime would silently
+// 404. Files here are instead served live on every request by our own
+// route in server.ts (mirrors how recordings/ is already handled).
+export const UPLOADS_ROOT = path.join(process.cwd(), "uploads");
+
 // Formats the browser can already render natively - saved untouched so we
 // never risk breaking e.g. animated GIFs by re-encoding them.
 const PASSTHROUGH_FORMATS: Record<string, string> = {
@@ -51,7 +58,7 @@ export async function saveUploadedImage(file: File, folder: string): Promise<str
   }
 
   const filename = `${randomUUID()}${ext}`;
-  const dir = path.join(process.cwd(), "public", "uploads", folder);
+  const dir = path.join(UPLOADS_ROOT, folder);
   await mkdir(dir, { recursive: true });
   await writeFile(path.join(dir, filename), outBytes);
 

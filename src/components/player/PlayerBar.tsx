@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Pause, Play, Loader2, Volume2, VolumeX, Users } from "lucide-react";
+import { Pause, Play, Loader2, Volume2, VolumeX } from "lucide-react";
 import { usePlayer } from "./PlayerProvider";
 import { station } from "@/data/station";
 import { cn } from "@/lib/utils";
@@ -15,7 +15,6 @@ export default function PlayerBar() {
     muted,
     setVolume,
     toggleMute,
-    listeners,
     streamOnline,
     nowPlaying,
   } = usePlayer();
@@ -85,25 +84,7 @@ export default function PlayerBar() {
           </div>
         </div>
 
-        <div className="hidden items-center gap-2 border-l border-line pl-5 text-grey-300 md:flex">
-          <Users className="size-4" />
-          {listeners === null ? (
-            <span className="font-condensed text-xs uppercase tracking-[0.1em] text-grey-500">
-              Listeners unavailable
-            </span>
-          ) : (
-            <>
-              <span className="font-condensed text-sm font-semibold tabular-nums">
-                {listeners.toLocaleString()}
-              </span>
-              <span className="font-condensed text-xs uppercase tracking-[0.1em] text-grey-500">
-                listening
-              </span>
-            </>
-          )}
-        </div>
-
-        <div className="hidden items-center gap-2 pl-5 lg:flex">
+        <div className="hidden items-center gap-2 border-l border-line pl-5 lg:flex">
           <button
             onClick={toggleMute}
             aria-label={muted ? "Unmute" : "Mute"}

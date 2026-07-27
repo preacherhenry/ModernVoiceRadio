@@ -1,21 +1,37 @@
 import Link from "next/link";
-import { CalendarDays, MessageSquare, Mic2, Newspaper, Podcast, UserRound } from "lucide-react";
+import { CalendarDays, Headphones, MessageSquare, Mic2, Newspaper, Podcast, UserRound } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/format";
+import { getStreamStatus } from "@/lib/stream";
 
 export default async function AdminDashboardPage() {
-  const [showCount, presenterCount, articleCount, podcastCount, eventCount, newMessages, recentMessages] =
-    await Promise.all([
-      prisma.show.count(),
-      prisma.presenter.count(),
-      prisma.article.count(),
-      prisma.podcast.count(),
-      prisma.event.count(),
-      prisma.listenerMessage.count({ where: { status: "NEW" } }),
-      prisma.listenerMessage.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
-    ]);
+  const [
+    showCount,
+    presenterCount,
+    articleCount,
+    podcastCount,
+    eventCount,
+    newMessages,
+    recentMessages,
+    streamStatus,
+  ] = await Promise.all([
+    prisma.show.count(),
+    prisma.presenter.count(),
+    prisma.article.count(),
+    prisma.podcast.count(),
+    prisma.event.count(),
+    prisma.listenerMessage.count({ where: { status: "NEW" } }),
+    prisma.listenerMessage.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
+    getStreamStatus(),
+  ]);
 
   const stats = [
+    {
+      label: "Listening Now",
+      value: streamStatus.listeners ?? "—",
+      href: "/admin/studio/analytics",
+      icon: Headphones,
+    },
     { label: "Shows", value: showCount, href: "/admin/shows", icon: Mic2 },
     { label: "Presenters", value: presenterCount, href: "/admin/presenters", icon: UserRound },
     { label: "News Articles", value: articleCount, href: "/admin/news", icon: Newspaper },

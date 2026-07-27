@@ -89,8 +89,8 @@ model Show {
 }
 
 model Article {
-  id        String   @id @default(cuid())
-  slug      String   @unique
+  id        String         @id @default(cuid())
+  slug      String         @unique
   title     String
   excerpt   String
   content   String
@@ -98,9 +98,21 @@ model Article {
   image     String
   date      DateTime
   author    String
-  featured  Boolean  @default(false)
+  featured  Boolean        @default(false)
+  images    ArticleImage[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model ArticleImage {
+  id        String   @id @default(cuid())
+  articleId String
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  url       String
+  order     Int      @default(0)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  @@index([articleId])
 }
 
 model Podcast {

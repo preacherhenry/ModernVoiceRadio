@@ -5,7 +5,10 @@ export function getArticles() {
 }
 
 export function getArticleBySlug(slug: string) {
-  return prisma.article.findUnique({ where: { slug } });
+  return prisma.article.findUnique({
+    where: { slug },
+    include: { images: { orderBy: { order: "asc" } } },
+  });
 }
 
 export const newsCategories = [

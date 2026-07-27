@@ -4,10 +4,11 @@ import { useActionState } from "react";
 import { Loader2, Save } from "lucide-react";
 import FormField from "@/components/admin/FormField";
 import ImageUploadField from "@/components/admin/ImageUploadField";
+import GalleryUploadField from "@/components/admin/GalleryUploadField";
 import { inputClass, selectClass } from "@/components/admin/formStyles";
 import type { FormState } from "./actions";
 import { newsCategories } from "@/data/news";
-import type { Article } from "@prisma/client";
+import type { Article, ArticleImage } from "@prisma/client";
 
 const initialState: FormState = {};
 
@@ -16,7 +17,7 @@ export default function ArticleForm({
   article,
 }: {
   action: (prevState: FormState, formData: FormData) => Promise<FormState>;
-  article?: Article;
+  article?: Article & { images?: ArticleImage[] };
 }) {
   const [state, formAction, pending] = useActionState(action, initialState);
   const dateValue = article ? article.date.toISOString().slice(0, 10) : "";
@@ -28,6 +29,12 @@ export default function ArticleForm({
         label="Cover Image"
         defaultImage={article?.image}
         required={!article}
+      />
+
+      <GalleryUploadField
+        name="galleryImages"
+        label="Additional Photos"
+        existingImages={article?.images?.map((img) => ({ id: img.id, url: img.url }))}
       />
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">

@@ -8,14 +8,14 @@ import { isLocalUpload } from "@/lib/image";
 export default function FeaturedArticleCard({ article }: { article: Article }) {
   return (
     <Link href={`/news/${article.slug}`} className="group flex flex-col">
-      <div className="relative h-72 overflow-hidden sm:h-96">
+      <div className="relative h-72 overflow-hidden bg-ink-3 sm:h-96">
         <Image
           src={article.image}
           alt={article.title}
           fill
           priority
           unoptimized={isLocalUpload(article.image)}
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          className="object-contain transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-transparent" />
         <span className="absolute left-0 top-0 bg-red px-4 py-2 font-condensed text-xs font-bold uppercase tracking-[0.16em] text-white">

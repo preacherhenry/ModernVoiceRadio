@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/auth/session";
-import { resolveImage } from "@/lib/upload";
+import { resolveImage, saveUploadedImage } from "@/lib/upload";
 import { uniqueSlug } from "@/lib/slugify";
 import { newsCategories } from "@/data/news";
 
@@ -40,6 +40,15 @@ function revalidateNewsPages(slug?: string) {
   if (slug) revalidatePath(`/news/${slug}`);
 }
 
+async function saveGalleryImages(formData: FormData): Promise<string[]> {
+  const files = formData.getAll("galleryImages").filter((f): f is File => f instanceof File && f.size > 0);
+  const urls: string[] = [];
+  for (const file of files) {
+    urls.push(await saveUploadedImage(file, "news"));
+  }
+  return urls;
+}
+
 export async function createArticle(_prev: FormState, formData: FormData): Promise<FormState> {
   await requireUser();
 
@@ -54,8 +63,10 @@ export async function createArticle(_prev: FormState, formData: FormData): Promi
   }
 
   let image: string;
+  let galleryUrls: string[];
   try {
     image = (await resolveImage(imageFile, "news"))!;
+    galleryUrls = await saveGalleryImages(formData);
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Image upload failed." };
   }
@@ -76,6 +87,9 @@ export async function createArticle(_prev: FormState, formData: FormData): Promi
       author: parsed.data.author,
       featured: parsed.data.featured,
       image,
+      images: {
+        create: galleryUrls.map((url, order) => ({ url, order })),
+      },
     },
   });
 
@@ -90,7 +104,7 @@ export async function updateArticle(
 ): Promise<FormState> {
   await requireUser();
 
-  const current = await prisma.article.findUnique({ where: { id } });
+  const current = await prisma.article.findUnique({ where: { id }, include: { images: true } });
   if (!current) return { error: "Article not found." };
 
   const parsed = parseArticleForm(formData);
@@ -100,15 +114,20 @@ export async function updateArticle(
 
   const imageFile = formData.get("image");
   let image: string;
+  let newGalleryUrls: string[];
   try {
     image = (await resolveImage(
       imageFile instanceof File ? imageFile : null,
       "news",
       current.image
     ))!;
+    newGalleryUrls = await saveGalleryImages(formData);
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Image upload failed." };
   }
+
+  const removeImageIds = formData.getAll("removeImageIds").filter((v): v is string => typeof v === "string" && v.length > 0);
+  const startOrder = current.images.length;
 
   await prisma.article.update({
     where: { id },
@@ -121,6 +140,10 @@ export async function updateArticle(
       author: parsed.data.author,
       featured: parsed.data.featured,
       image,
+      images: {
+        ...(removeImageIds.length > 0 ? { deleteMany: { id: { in: removeImageIds } } } : {}),
+        create: newGalleryUrls.map((url, i) => ({ url, order: startOrder + i })),
+      },
     },
   });
 

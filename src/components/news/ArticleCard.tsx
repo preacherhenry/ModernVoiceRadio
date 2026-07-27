@@ -11,13 +11,13 @@ export default function ArticleCard({ article }: { article: Article }) {
       href={`/news/${article.slug}`}
       className="group flex gap-5 border-b border-line py-6 first:pt-0"
     >
-      <div className="relative h-24 w-32 shrink-0 overflow-hidden sm:h-28 sm:w-40">
+      <div className="relative h-24 w-32 shrink-0 overflow-hidden bg-ink-3 sm:h-28 sm:w-40">
         <Image
           src={article.image}
           alt={article.title}
           fill
           unoptimized={isLocalUpload(article.image)}
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-contain transition-transform duration-500 group-hover:scale-105"
         />
       </div>
       <div className="flex min-w-0 flex-1 flex-col">

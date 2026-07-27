@@ -44,8 +44,8 @@ export default async function ArticlePage({
 
   return (
     <article className="pt-20">
-      <div className="relative h-[50vh] min-h-96 overflow-hidden border-b border-line">
-        <Image src={article.image} alt={article.title} fill priority unoptimized={isLocalUpload(article.image)} className="object-cover" />
+      <div className="relative h-[50vh] min-h-96 overflow-hidden border-b border-line bg-ink-3">
+        <Image src={article.image} alt={article.title} fill priority unoptimized={isLocalUpload(article.image)} className="object-contain" />
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/30" />
         <Container className="relative flex h-full flex-col justify-end pb-12">
           <span className="w-fit bg-red px-3 py-1.5 font-condensed text-xs font-bold uppercase tracking-[0.14em] text-white">
@@ -76,6 +76,31 @@ export default async function ArticlePage({
             </p>
           ))}
         </div>
+
+        {article.images.length > 0 && (
+          <div className="mt-4 max-w-4xl">
+            <h2 className="font-display text-xl font-bold text-white">Photo Gallery</h2>
+            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {article.images.map((img) => (
+                <a
+                  key={img.id}
+                  href={img.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative aspect-square overflow-hidden bg-ink-3"
+                >
+                  <Image
+                    src={img.url}
+                    alt={article.title}
+                    fill
+                    unoptimized={isLocalUpload(img.url)}
+                    className="object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
 
         {related.length > 0 && (
           <div className="mt-16 border-t border-line pt-12">

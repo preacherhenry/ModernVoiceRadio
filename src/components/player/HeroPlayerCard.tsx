@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { Loader2, Pause, Play, Users, Volume2, VolumeX } from "lucide-react";
+import { Loader2, Pause, Play, Volume2, VolumeX } from "lucide-react";
 import { usePlayer } from "./PlayerProvider";
 import { station } from "@/data/station";
 import Logo from "@/components/ui/Logo";
@@ -16,7 +16,6 @@ export default function HeroPlayerCard() {
     muted,
     setVolume,
     toggleMute,
-    listeners,
     bitrateKbps,
     artworkUrl,
     streamOnline,
@@ -145,24 +144,7 @@ export default function HeroPlayerCard() {
         </div>
       </div>
 
-      <div className="mt-6 flex items-center justify-between border-t border-line pt-4">
-        <div className="flex items-center gap-2 text-grey-300">
-          <Users className="size-4" />
-          {listeners === null ? (
-            <span className="font-condensed text-xs uppercase tracking-[0.1em] text-grey-500">
-              Listeners unavailable
-            </span>
-          ) : (
-            <>
-              <span className="font-condensed text-sm font-semibold tabular-nums">
-                {listeners.toLocaleString()}
-              </span>
-              <span className="font-condensed text-xs uppercase tracking-[0.1em] text-grey-500">
-                listening now
-              </span>
-            </>
-          )}
-        </div>
+      <div className="mt-6 flex items-center justify-end border-t border-line pt-4">
         <div className="flex items-center gap-3">
           {bitrateKbps !== null && (
             <span className="font-condensed text-xs font-semibold uppercase tracking-[0.1em] text-grey-500">

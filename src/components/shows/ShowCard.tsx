@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Clock } from "lucide-react";
 import type { Show, Presenter } from "@prisma/client";
+import { isLocalUpload } from "@/lib/image";
 
 export default function ShowCard({ show }: { show: Show & { host: Presenter | null } }) {
   const host = show.host;
@@ -13,6 +14,7 @@ export default function ShowCard({ show }: { show: Show & { host: Presenter | nu
           src={show.image}
           alt={show.name}
           fill
+          unoptimized={isLocalUpload(show.image)}
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink-2 via-ink-2/10 to-transparent" />
@@ -43,7 +45,7 @@ export default function ShowCard({ show }: { show: Show & { host: Presenter | nu
             className="mt-5 flex items-center gap-3 border-t border-line pt-4"
           >
             <span className="relative size-9 shrink-0 overflow-hidden rounded-full">
-              <Image src={host.image} alt={host.name} fill className="object-cover" />
+              <Image src={host.image} alt={host.name} fill unoptimized={isLocalUpload(host.image)} className="object-cover" />
             </span>
             <span className="text-sm">
               <span className="block text-grey-500">Hosted by</span>

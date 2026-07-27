@@ -4,6 +4,7 @@ import { Pencil } from "lucide-react";
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import DeleteButton from "@/components/admin/DeleteButton";
 import { prisma } from "@/lib/prisma";
+import { isLocalUpload } from "@/lib/image";
 import { deleteShow } from "./actions";
 
 export default async function AdminShowsPage() {
@@ -21,7 +22,7 @@ export default async function AdminShowsPage() {
         {shows.map((s) => (
           <div key={s.id} className="flex items-center gap-4 bg-ink-2 p-4">
             <div className="relative size-14 shrink-0 overflow-hidden">
-              <Image src={s.image} alt={s.name} fill className="object-cover" />
+              <Image src={s.image} alt={s.name} fill unoptimized={isLocalUpload(s.image)} className="object-cover" />
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-white">{s.name}</p>

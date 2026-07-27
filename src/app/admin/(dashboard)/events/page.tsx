@@ -5,6 +5,7 @@ import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import DeleteButton from "@/components/admin/DeleteButton";
 import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/format";
+import { isLocalUpload } from "@/lib/image";
 import { deleteEvent } from "./actions";
 
 export default async function AdminEventsPage() {
@@ -24,7 +25,7 @@ export default async function AdminEventsPage() {
         {events.map((e) => (
           <div key={e.id} className="flex items-center gap-4 bg-ink-2 p-4">
             <div className="relative size-14 shrink-0 overflow-hidden">
-              <Image src={e.image} alt={e.title} fill className="object-cover" />
+              <Image src={e.image} alt={e.title} fill unoptimized={isLocalUpload(e.image)} className="object-cover" />
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-white">{e.title}</p>

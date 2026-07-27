@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { FacebookIcon, InstagramIcon, XIcon } from "@/components/ui/SocialIcons";
 import type { Presenter } from "@prisma/client";
+import { isLocalUpload } from "@/lib/image";
 
 export default function PresenterCard({ presenter }: { presenter: Presenter }) {
   return (
@@ -10,6 +11,7 @@ export default function PresenterCard({ presenter }: { presenter: Presenter }) {
           src={presenter.image}
           alt={presenter.name}
           fill
+          unoptimized={isLocalUpload(presenter.image)}
           className="object-cover grayscale-[15%] transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink-2 via-transparent to-transparent" />

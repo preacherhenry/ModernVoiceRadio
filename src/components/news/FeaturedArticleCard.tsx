@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Article } from "@prisma/client";
 import { formatDate } from "@/lib/format";
+import { isLocalUpload } from "@/lib/image";
 
 export default function FeaturedArticleCard({ article }: { article: Article }) {
   return (
@@ -13,6 +14,7 @@ export default function FeaturedArticleCard({ article }: { article: Article }) {
           alt={article.title}
           fill
           priority
+          unoptimized={isLocalUpload(article.image)}
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-transparent" />

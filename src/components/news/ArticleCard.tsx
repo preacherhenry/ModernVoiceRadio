@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Article } from "@prisma/client";
 import { formatDate } from "@/lib/format";
+import { isLocalUpload } from "@/lib/image";
 
 export default function ArticleCard({ article }: { article: Article }) {
   return (
@@ -15,6 +16,7 @@ export default function ArticleCard({ article }: { article: Article }) {
           src={article.image}
           alt={article.title}
           fill
+          unoptimized={isLocalUpload(article.image)}
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>

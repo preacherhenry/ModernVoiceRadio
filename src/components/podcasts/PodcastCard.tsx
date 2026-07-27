@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Play } from "lucide-react";
 import type { Podcast } from "@prisma/client";
 import { formatDate } from "@/lib/format";
+import { isLocalUpload } from "@/lib/image";
 
 export default function PodcastCard({ podcast }: { podcast: Podcast }) {
   return (
@@ -15,6 +16,7 @@ export default function PodcastCard({ podcast }: { podcast: Podcast }) {
           src={podcast.cover}
           alt={podcast.title}
           fill
+          unoptimized={isLocalUpload(podcast.cover)}
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-ink/25 transition-colors group-hover:bg-ink/10" />

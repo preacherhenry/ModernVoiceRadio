@@ -7,6 +7,7 @@ import Container from "@/components/ui/Container";
 import ArticleCard from "@/components/news/ArticleCard";
 import { getArticles, getArticleBySlug } from "@/data/news";
 import { formatDate } from "@/lib/format";
+import { isLocalUpload } from "@/lib/image";
 
 export const dynamic = "force-dynamic";
 
@@ -44,7 +45,7 @@ export default async function ArticlePage({
   return (
     <article className="pt-20">
       <div className="relative h-[50vh] min-h-96 overflow-hidden border-b border-line">
-        <Image src={article.image} alt={article.title} fill priority className="object-cover" />
+        <Image src={article.image} alt={article.title} fill priority unoptimized={isLocalUpload(article.image)} className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/30" />
         <Container className="relative flex h-full flex-col justify-end pb-12">
           <span className="w-fit bg-red px-3 py-1.5 font-condensed text-xs font-bold uppercase tracking-[0.14em] text-white">

@@ -9,6 +9,7 @@ import PodcastCard from "@/components/podcasts/PodcastCard";
 import PodcastPlayerPreview from "@/components/podcasts/PodcastPlayerPreview";
 import { getPodcasts, getPodcastBySlug } from "@/data/podcasts";
 import { formatDate } from "@/lib/format";
+import { isLocalUpload } from "@/lib/image";
 
 export const dynamic = "force-dynamic";
 
@@ -55,7 +56,7 @@ export default async function PodcastEpisodePage({
 
         <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[380px_1fr]">
           <div className="relative aspect-square w-full overflow-hidden">
-            <Image src={podcast.cover} alt={podcast.title} fill className="object-cover" />
+            <Image src={podcast.cover} alt={podcast.title} fill unoptimized={isLocalUpload(podcast.cover)} className="object-cover" />
           </div>
 
           <div>

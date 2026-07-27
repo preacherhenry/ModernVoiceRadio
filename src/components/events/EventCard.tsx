@@ -2,6 +2,7 @@ import Image from "next/image";
 import { MapPin } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import type { Event as StationEvent } from "@prisma/client";
+import { isLocalUpload } from "@/lib/image";
 
 function dateParts(date: Date) {
   const d = new Date(date);
@@ -21,6 +22,7 @@ export default function EventCard({ event }: { event: StationEvent }) {
           src={event.image}
           alt={event.title}
           fill
+          unoptimized={isLocalUpload(event.image)}
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute left-0 top-0 flex flex-col items-center bg-red px-4 py-2 text-white">

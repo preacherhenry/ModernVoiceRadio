@@ -5,16 +5,22 @@
   --color-ink-2: #12161d;
   --color-ink-3: #1a1f28;
   --color-ink-4: #232935;
-  --color-navy: #0d1730;
   --color-line: rgba(255, 255, 255, 0.09);
   --color-line-strong: rgba(255, 255, 255, 0.16);
 
-  --color-red: #e0273f;
-  --color-red-dark: #a3172c;
-  --color-red-bright: #ff3b52;
+  /* Sampled from the official logo (M/V letters, mic icon) */
+  --color-blue: #3f72a8;
+  --color-blue-dark: #1f3a5f;
+  --color-blue-bright: #5b93c9;
 
-  --color-gold: #f0b608;
-  --color-gold-soft: #ffd75e;
+  /* Sampled from the logo's "99.5FM" */
+  --color-red: #c81f2e;
+  --color-red-dark: #8f1420;
+  --color-red-bright: #e2394a;
+
+  /* Sampled from the logo's lightning bolt */
+  --color-gold: #e8c400;
+  --color-gold-soft: #f5da4a;
 
   --color-cream: #f5f1e7;
   --color-cream-2: #ece5d3;
@@ -30,9 +36,12 @@
   --color-ink-2: var(--color-ink-2);
   --color-ink-3: var(--color-ink-3);
   --color-ink-4: var(--color-ink-4);
-  --color-navy: var(--color-navy);
   --color-line: var(--color-line);
   --color-line-strong: var(--color-line-strong);
+
+  --color-blue: var(--color-blue);
+  --color-blue-dark: var(--color-blue-dark);
+  --color-blue-bright: var(--color-blue-bright);
 
   --color-red: var(--color-red);
   --color-red-dark: var(--color-red-dark);

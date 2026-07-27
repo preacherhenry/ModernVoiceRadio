@@ -8,7 +8,7 @@ export const station = {
   email: "studio@modernvoiceradio.fm",
   address: "12 Riverside Road, Chirundu",
   socials: {
-    facebook: "#",
+    facebook: "https://www.facebook.com/share/1B61NhBFpG/",
     instagram: "#",
     twitter: "#",
     youtube: "#",

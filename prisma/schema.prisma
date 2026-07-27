@@ -1,0 +1,222 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  STUDIO_MANAGER
+  PRESENTER
+}
+
+enum MessageType {
+  SONG_REQUEST
+  SHOUTOUT
+  QUESTION
+  FEEDBACK
+}
+
+enum MessageStatus {
+  NEW
+  APPROVED
+  READ_ON_AIR
+  ARCHIVED
+}
+
+enum BroadcastStatus {
+  CONNECTING
+  LIVE
+  ENDED
+  ERROR
+}
+
+enum RecordingStatus {
+  RECORDING
+  PAUSED
+  STOPPED
+}
+
+model User {
+  id            String             @id @default(cuid())
+  name          String
+  email         String             @unique
+  passwordHash  String
+  role          Role
+  presenterId   String?            @unique
+  presenter     Presenter?         @relation(fields: [presenterId], references: [id], onDelete: SetNull)
+  createdAt     DateTime           @default(now())
+  broadcasts    BroadcastSession[]
+  chatMessages  ChatMessage[]
+  auditLogs     AuditLog[]
+}
+
+model Presenter {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  aka       String?
+  role      String
+  bio       String
+  image     String
+  twitter   String?
+  instagram String?
+  facebook  String?
+  shows     Show[]
+  user      User?
+  broadcasts BroadcastSession[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Show {
+  id          String     @id @default(cuid())
+  slug        String     @unique
+  name        String
+  time        String
+  days        String
+  tag         String
+  description String
+  image       String
+  hostId      String?
+  host        Presenter? @relation(fields: [hostId], references: [id], onDelete: SetNull)
+  order       Int        @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Article {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  excerpt   String
+  content   String
+  category  String
+  image     String
+  date      DateTime
+  author    String
+  featured  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Podcast {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  show        String
+  description String
+  cover       String
+  duration    String
+  category    String
+  episode     Int
+  date        DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  date        DateTime
+  time        String
+  location    String
+  description String
+  image       String
+  ctaLabel    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ListenerMessage {
+  id        String        @id @default(cuid())
+  sessionId String?
+  session   BroadcastSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  type      MessageType   @default(SONG_REQUEST)
+  name      String
+  contact   String
+  song      String?
+  message   String?
+  status    MessageStatus @default(NEW)
+  createdAt DateTime      @default(now())
+}
+
+model BroadcastSession {
+  id            String            @id @default(cuid())
+  hostUserId    String
+  hostUser      User              @relation(fields: [hostUserId], references: [id])
+  presenterId   String?
+  presenter     Presenter?        @relation(fields: [presenterId], references: [id], onDelete: SetNull)
+  programName   String
+  episodeTitle  String?
+  description   String?
+  category      String?
+  tags          String?
+  coverImage    String?
+  status        BroadcastStatus   @default(CONNECTING)
+  isEmergency   Boolean           @default(false)
+  startedAt     DateTime?
+  endedAt       DateTime?
+  peakListeners Int               @default(0)
+  errorMessage  String?
+  recording     Recording?
+  chatMessages  ChatMessage[]
+  listenerMsgs  ListenerMessage[]
+  createdAt     DateTime          @default(now())
+}
+
+model Recording {
+  id              String           @id @default(cuid())
+  sessionId       String           @unique
+  session         BroadcastSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  filePath        String
+  fileSizeBytes   Int?
+  durationSeconds Int?
+  status          RecordingStatus  @default(RECORDING)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model ChatMessage {
+  id        String           @id @default(cuid())
+  sessionId String
+  session   BroadcastSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User             @relation(fields: [userId], references: [id])
+  body      String
+  createdAt DateTime         @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  detail    String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+}
+
+model ListenerSession {
+  id        String   @id @default(cuid())
+  ipHash    String   @unique
+  country   String?
+  city      String?
+  device    String?
+  os        String?
+  browser   String?
+  firstSeen DateTime @default(now())
+  lastSeen  DateTime @updatedAt
+}
+
+model ListenerCountSample {
+  id         String   @id @default(cuid())
+  count      Int
+  capturedAt DateTime @default(now())
+
+  @@index([capturedAt])
+}

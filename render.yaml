@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: modern-voice-radio
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        value: file:./prisma/dev.db
+      - key: AUTH_SECRET
+        generateValue: true
+      - key: INTERNAL_API_SECRET
+        generateValue: true
+      - key: SEED_ADMIN_NAME
+        value: Station Admin
+      - key: SEED_ADMIN_EMAIL
+        sync: false
+      - key: SEED_ADMIN_PASSWORD
+        sync: false
+      - key: ICECAST_SOURCE_HOST
+        sync: false
+      - key: ICECAST_SOURCE_PORT
+        sync: false
+      - key: ICECAST_SOURCE_MOUNT
+        sync: false
+      - key: ICECAST_SOURCE_USERNAME
+        sync: false
+      - key: ICECAST_SOURCE_PASSWORD
+        sync: false
+      - key: EMERGENCY_AUDIO_PATH
+        sync: false

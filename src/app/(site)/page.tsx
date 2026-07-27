@@ -7,6 +7,8 @@ import PodcastsSection from "@/components/home/PodcastsSection";
 import EventsSection from "@/components/home/EventsSection";
 import RequestSection from "@/components/home/RequestSection";
 
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <>

@@ -8,6 +8,8 @@ import ArticleCard from "@/components/news/ArticleCard";
 import { getArticles, getArticleBySlug } from "@/data/news";
 import { formatDate } from "@/lib/format";
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   const articles = await getArticles();
   return articles.map((a) => ({ slug: a.slug }));

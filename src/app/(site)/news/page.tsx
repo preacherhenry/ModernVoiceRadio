@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: "Local news, entertainment, sport and interviews from Modern Voice Radio.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function NewsPage() {
   const articles = await getArticles();
   const featured = articles.find((a) => a.featured) ?? articles[0];

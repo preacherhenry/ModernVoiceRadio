@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description: "The full weekly schedule for Modern Voice Radio 99.5 FM.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function ShowsPage() {
   const shows = await getShows();
 

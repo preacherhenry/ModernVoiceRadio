@@ -10,6 +10,8 @@ import PodcastPlayerPreview from "@/components/podcasts/PodcastPlayerPreview";
 import { getPodcasts, getPodcastBySlug } from "@/data/podcasts";
 import { formatDate } from "@/lib/format";
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   const podcasts = await getPodcasts();
   return podcasts.map((p) => ({ slug: p.slug }));

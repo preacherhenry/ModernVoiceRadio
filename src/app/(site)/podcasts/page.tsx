@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description: "Interviews, local storytelling and the segments you missed.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function PodcastsPage() {
   const podcasts = await getPodcasts();
 

@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description: "Upcoming live broadcasts and community events from Modern Voice Radio.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function EventsPage() {
   const events = await getEvents();
 

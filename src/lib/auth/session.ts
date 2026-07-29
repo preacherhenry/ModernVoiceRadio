@@ -1,6 +1,7 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 import {
   SESSION_COOKIE,
   SESSION_DURATION_SECONDS,
@@ -38,6 +39,19 @@ export async function getSession(): Promise<SessionPayload | null> {
 export async function requireUser(): Promise<SessionPayload> {
   const session = await getSession();
   if (!session) redirect("/admin/login");
+
+  // The session cookie is a signed JWT, so it stays valid even if the
+  // underlying User row is gone - which happens on this deployment because
+  // the SQLite database resets on every restart/redeploy. A stale cookie
+  // still passes signature verification but its user id no longer exists,
+  // which surfaces downstream as a confusing foreign key error (e.g. when
+  // starting a broadcast) instead of a clean re-login prompt. Catch it here.
+  const exists = await prisma.user.findUnique({ where: { id: session.sub }, select: { id: true } });
+  if (!exists) {
+    await destroySession();
+    redirect("/admin/login?reason=session-expired");
+  }
+
   return session;
 }
 

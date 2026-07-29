@@ -22,8 +22,11 @@ export async function submitListenerMessage(
     type: formData.get("type") || "SONG_REQUEST",
     name: formData.get("name"),
     contact: formData.get("contact"),
-    song: formData.get("song"),
-    message: formData.get("message"),
+    // The song field only exists in the DOM for SONG_REQUEST; formData.get
+    // returns null (not undefined) for a field that isn't present at all,
+    // which z.string().optional() doesn't accept.
+    song: formData.get("song") || undefined,
+    message: formData.get("message") || undefined,
   });
 
   if (!parsed.success) {

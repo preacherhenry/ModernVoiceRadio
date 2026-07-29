@@ -25,10 +25,10 @@ export default function Logo({
         <Image
           src="/brand/logo-mark.png"
           alt="Modern Voice Radio 99.5 FM"
-          width={569}
-          height={219}
+          width={645}
+          height={304}
           priority
-          className="h-9 w-auto sm:h-11"
+          className="h-11 w-auto sm:h-14"
         />
       )}
     </Link>

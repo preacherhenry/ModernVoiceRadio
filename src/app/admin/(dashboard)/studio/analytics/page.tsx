@@ -1,26 +1,23 @@
-import { Globe, Laptop, MapPin, MonitorSmartphone, Users } from "lucide-react";
+import { Download, Globe, Laptop, MapPin, MonitorSmartphone, Users } from "lucide-react";
 import { prisma } from "@/lib/prisma";
-import { getStreamStatus } from "@/lib/stream";
+import {
+  ACTIVE_WINDOW_MS,
+  msAgo,
+  startOfUTCDay,
+  lastNDaysStart,
+  dailyListenerStats,
+  activeGroups,
+} from "@/lib/listener-analytics";
 
-const ACTIVE_WINDOW_MS = 90 * 1000;
-const DAY_MS = 24 * 60 * 60 * 1000;
-
-function msAgo(ms: number) {
-  return new Date(Date.now() - ms);
-}
-
-async function topGroups(field: "country" | "city" | "device" | "os" | "browser", limit = 6) {
-  const rows = await prisma.listenerSession.groupBy({
-    by: [field],
-    _count: { _all: true },
-    where: { [field]: { not: null } },
-    orderBy: { _count: { [field]: "desc" } },
-    take: limit,
-  });
-  return rows.map((r) => ({ label: (r[field] as string | null) ?? "Unknown", count: r._count._all }));
-}
-
-function Breakdown({ title, icon: Icon, items }: { title: string; icon: typeof Globe; items: { label: string; count: number }[] }) {
+function Breakdown({
+  title,
+  icon: Icon,
+  items,
+}: {
+  title: string;
+  icon: typeof Globe;
+  items: { label: string; count: number }[];
+}) {
   const max = Math.max(1, ...items.map((i) => i.count));
   return (
     <div className="border border-line bg-ink-2 p-5">
@@ -29,7 +26,7 @@ function Breakdown({ title, icon: Icon, items }: { title: string; icon: typeof G
         <p className="font-condensed text-xs font-semibold uppercase tracking-[0.14em]">{title}</p>
       </div>
       {items.length === 0 ? (
-        <p className="text-sm text-grey-500">Not enough data yet.</p>
+        <p className="text-sm text-grey-500">No one on the website right now.</p>
       ) : (
         <div className="flex flex-col gap-2.5">
           {items.map((item) => (
@@ -49,35 +46,48 @@ function Breakdown({ title, icon: Icon, items }: { title: string; icon: typeof G
   );
 }
 
+const weekdayFormatter = new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "UTC" });
+
 export default async function StudioAnalyticsPage() {
   const cutoff = msAgo(ACTIVE_WINDOW_MS);
+  const startOfToday = startOfUTCDay(new Date());
 
-  const [streamStatus, activeVisitors, totalVisitors, avgSample, countries, cities, devices, os, browsers] =
-    await Promise.all([
-      getStreamStatus(),
-      prisma.listenerSession.count({ where: { lastSeen: { gte: cutoff } } }),
-      prisma.listenerSession.count(),
-      prisma.listenerCountSample.aggregate({
-        _avg: { count: true },
-        where: { capturedAt: { gte: msAgo(DAY_MS) } },
-      }),
-      topGroups("country"),
-      topGroups("city"),
-      topGroups("device"),
-      topGroups("os"),
-      topGroups("browser"),
-    ]);
+  const [activeVisitors, todaySamples, weekly, cities, countries, devices, os, browsers] = await Promise.all([
+    prisma.listenerSession.count({ where: { lastSeen: { gte: cutoff } } }),
+    prisma.listenerCountSample.findMany({
+      where: { capturedAt: { gte: startOfToday } },
+      select: { count: true },
+    }),
+    dailyListenerStats(lastNDaysStart(7), 7),
+    activeGroups("city"),
+    activeGroups("country"),
+    activeGroups("device"),
+    activeGroups("os"),
+    activeGroups("browser"),
+  ]);
+
+  const peakToday = todaySamples.length ? Math.max(...todaySamples.map((s) => s.count)) : 0;
+  const avgToday = todaySamples.length
+    ? Math.round(todaySamples.reduce((a, b) => a + b.count, 0) / todaySamples.length)
+    : 0;
 
   const stats = [
-    { label: "Current Listeners (Stream)", value: streamStatus.listeners ?? "—" },
-    { label: "Peak Listeners (Stream)", value: streamStatus.peakListeners ?? "—" },
-    { label: "Average Listeners (24h, Website)", value: avgSample._avg.count ? Math.round(avgSample._avg.count) : "—" },
-    { label: "Active Website Sessions", value: activeVisitors },
+    { label: "Listening Now (Website)", value: activeVisitors },
+    { label: "Peak Today (Website)", value: peakToday },
+    { label: "Average Today (Website)", value: avgToday },
   ];
+
+  const chartMax = Math.max(1, ...weekly.map((d) => d.peak));
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <p className="text-xs text-grey-500">
+        Everything on this page reflects listeners tracked through this website only (Icecast&apos;s whole-stream
+        count, which also includes outside apps and other players, is shown elsewhere on the Studio
+        dashboard).
+      </p>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {stats.map((s) => (
           <div key={s.label} className="border border-line bg-ink-2 p-5">
             <p className="font-display text-3xl font-extrabold text-gold">{s.value}</p>
@@ -88,15 +98,65 @@ export default async function StudioAnalyticsPage() {
         ))}
       </div>
 
-      <p className="text-xs text-grey-500">
-        Stream listener counts come directly from Icecast (authoritative for all listeners, including
-        outside apps). The breakdown below reflects the {totalVisitors} distinct visitor sessions tracked
-        via the website player.
-      </p>
+      <div className="border border-line bg-ink-2 p-5">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-grey-400">
+            <MapPin className="size-4" />
+            <p className="font-condensed text-xs font-semibold uppercase tracking-[0.14em]">
+              Current Streaming Locations
+            </p>
+          </div>
+          <p className="font-display text-2xl font-extrabold text-gold">
+            {activeVisitors} <span className="text-sm font-semibold text-grey-500">total</span>
+          </p>
+        </div>
+        {cities.length === 0 ? (
+          <p className="mt-4 text-sm text-grey-500">No one on the website right now.</p>
+        ) : (
+          <div className="mt-4 flex flex-col gap-2.5">
+            {cities.map((c) => (
+              <div key={c.label} className="flex items-center justify-between text-sm">
+                <span className="text-grey-200">{c.label}</span>
+                <span className="tabular-nums text-grey-400">{c.count}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="border border-line bg-ink-2 p-5">
+        <div className="flex items-center justify-between">
+          <p className="font-condensed text-xs font-semibold uppercase tracking-[0.14em] text-grey-400">
+            Peak Website Listeners — Last 7 Days
+          </p>
+          <a
+            href="/api/studio/analytics/report"
+            className="flex items-center gap-2 font-condensed text-xs font-semibold uppercase tracking-[0.1em] text-gold hover:text-gold-soft"
+          >
+            <Download className="size-3.5" />
+            Download Monthly Report
+          </a>
+        </div>
+        <div className="mt-6 flex h-40 items-end gap-3 sm:gap-5">
+          {weekly.map((d) => (
+            <div key={d.date} className="flex flex-1 flex-col items-center gap-2">
+              <span className="font-condensed text-xs font-semibold tabular-nums text-grey-300">{d.peak}</span>
+              <div className="flex h-28 w-full items-end bg-ink-4">
+                <div
+                  className="w-full bg-gold"
+                  style={{ height: `${Math.max(2, (d.peak / chartMax) * 100)}%` }}
+                />
+              </div>
+              <span className="font-condensed text-[10px] font-semibold uppercase tracking-[0.1em] text-grey-500">
+                {weekdayFormatter.format(new Date(`${d.date}T00:00:00Z`))}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <Breakdown title="Countries" icon={Globe} items={countries} />
-        <Breakdown title="Cities" icon={MapPin} items={cities} />
         <Breakdown title="Devices" icon={MonitorSmartphone} items={devices} />
         <Breakdown title="Operating Systems" icon={Laptop} items={os} />
         <Breakdown title="Browsers" icon={Users} items={browsers} />

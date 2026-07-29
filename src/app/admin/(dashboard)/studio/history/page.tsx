@@ -1,6 +1,7 @@
 import { Download, TriangleAlert } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/format";
+import { dailyListenerStats, lastNDaysStart } from "@/lib/listener-analytics";
 
 function formatDuration(seconds: number | null) {
   if (!seconds) return "—";
@@ -10,19 +11,55 @@ function formatDuration(seconds: number | null) {
 }
 
 export default async function StudioHistoryPage() {
-  const sessions = await prisma.broadcastSession.findMany({
-    where: { status: { in: ["ENDED", "ERROR"] } },
-    orderBy: { createdAt: "desc" },
-    take: 50,
-    include: { hostUser: { select: { name: true } }, presenter: { select: { name: true } }, recording: true },
-  });
+  const [sessions, dailyStats] = await Promise.all([
+    prisma.broadcastSession.findMany({
+      where: { status: { in: ["ENDED", "ERROR"] } },
+      orderBy: { createdAt: "desc" },
+      take: 50,
+      include: { hostUser: { select: { name: true } }, presenter: { select: { name: true } }, recording: true },
+    }),
+    dailyListenerStats(lastNDaysStart(30), 30),
+  ]);
+
+  const recordedDays = [...dailyStats].reverse();
 
   return (
-    <div className="flex flex-col divide-y divide-line border border-line">
-      {sessions.length === 0 && (
-        <p className="p-6 text-sm text-grey-500">No previous broadcasts yet.</p>
-      )}
-      {sessions.map((session) => (
+    <div className="flex flex-col gap-8">
+      <div>
+        <p className="font-condensed text-sm font-semibold uppercase tracking-[0.14em] text-grey-400">
+          Website Listener History — Last 30 Days
+        </p>
+        <p className="mt-1 text-xs text-grey-500">
+          As recorded from the website player (a snapshot is captured every 5 minutes). Days with no
+          recorded samples show as 0, not missing data.
+        </p>
+        <div className="mt-4 max-h-80 overflow-y-auto border border-line">
+          <table className="w-full text-left text-sm">
+            <thead className="sticky top-0 bg-ink-3">
+              <tr className="font-condensed text-xs font-semibold uppercase tracking-[0.1em] text-grey-400">
+                <th className="px-4 py-2.5">Date</th>
+                <th className="px-4 py-2.5">Peak Listeners</th>
+                <th className="px-4 py-2.5">Average Listeners</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-line">
+              {recordedDays.map((d) => (
+                <tr key={d.date} className="text-grey-200">
+                  <td className="px-4 py-2.5 tabular-nums">{d.date}</td>
+                  <td className="px-4 py-2.5 tabular-nums">{d.peak}</td>
+                  <td className="px-4 py-2.5 tabular-nums">{d.average}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="flex flex-col divide-y divide-line border border-line">
+        {sessions.length === 0 && (
+          <p className="p-6 text-sm text-grey-500">No previous broadcasts yet.</p>
+        )}
+        {sessions.map((session) => (
         <div key={session.id} className="flex flex-col gap-3 bg-ink-2 p-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
@@ -60,6 +97,7 @@ export default async function StudioHistoryPage() {
           )}
         </div>
       ))}
+      </div>
     </div>
   );
 }

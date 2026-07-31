@@ -46,9 +46,12 @@ export async function requireUser(): Promise<SessionPayload> {
   // still passes signature verification but its user id no longer exists,
   // which surfaces downstream as a confusing foreign key error (e.g. when
   // starting a broadcast) instead of a clean re-login prompt. Catch it here.
+  // Note: requireUser() runs during Server Component renders (layouts/pages),
+  // where cookies() can only be read, not mutated - so we can't clear the
+  // cookie here. The redirect alone is enough; logging in again overwrites
+  // it via createSession(), which does run in a Server Action.
   const exists = await prisma.user.findUnique({ where: { id: session.sub }, select: { id: true } });
   if (!exists) {
-    await destroySession();
     redirect("/admin/login?reason=session-expired");
   }
 

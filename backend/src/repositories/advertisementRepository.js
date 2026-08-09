@@ -42,8 +42,12 @@ export const advertisementRepository = {
     const params = [];
     const conditions = [
       'is_active = true',
-      '(start_date IS NULL OR start_date <= CURRENT_DATE)',
-      '(end_date IS NULL OR end_date >= CURRENT_DATE)',
+      // start_date/end_date are plain DATEs picked from the admin's own calendar, with no
+      // timezone attached — evaluate "today" in the station's local timezone (Africa/Lusaka,
+      // UTC+2) rather than the server's UTC clock, otherwise an ad set to "start today" won't
+      // show as active until UTC catches up to the admin's local date.
+      "(start_date IS NULL OR start_date <= (now() AT TIME ZONE 'Africa/Lusaka')::date)",
+      "(end_date IS NULL OR end_date >= (now() AT TIME ZONE 'Africa/Lusaka')::date)",
     ];
     if (placement) {
       params.push(placement);

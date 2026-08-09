@@ -1,0 +1,430 @@
+{
+  "common": {
+    "somethingWentWrong": "Pali vuto linachitika",
+    "seeAll": "Onani Zonse",
+    "categoryAll": "Zonse",
+    "cancel": "Lekani",
+    "live": "PA LIVE",
+    "today": "Lero",
+    "yesterday": "Dzulo",
+    "errorState": {
+      "title": "Pali vuto linachitika",
+      "description": "Onani intaneti yanu kenako yesaninso.",
+      "tryAgain": "Yesaninso"
+    },
+    "months": {
+      "january": "Januwale",
+      "february": "Febulwale",
+      "march": "Malichi",
+      "april": "Epulo",
+      "may": "Meyi",
+      "june": "Juni",
+      "july": "Julayi",
+      "august": "Ogasiti",
+      "september": "Seputembala",
+      "october": "Okutobala",
+      "november": "Novembala",
+      "december": "Disembala"
+    },
+    "days": {
+      "sunday": "Lamlungu",
+      "monday": "Lolemba",
+      "tuesday": "Lachiwiri",
+      "wednesday": "Lachitatu",
+      "thursday": "Lachinayi",
+      "friday": "Lachisanu",
+      "saturday": "Loweruka"
+    },
+    "timeAgo": {
+      "justNow": "Pa nthawi ino",
+      "minutes": "Mphindi {{count}} zapita",
+      "hours": "Maola {{count}} apita",
+      "days": "Masiku {{count}} apita",
+      "weeks": "Milungu {{count}} yapita",
+      "months": "Miyezi {{count}} yapita",
+      "years": "Zaka {{count}} zapita"
+    }
+  },
+  "tabs": {
+    "home": "Kunyumba",
+    "live": "Live",
+    "schedule": "Ndondomeko",
+    "podcasts": "Ma Podcast",
+    "profile": "Mbiri Yanu"
+  },
+  "auth": {
+    "login": {
+      "title": "Takulandirani kunobe",
+      "subtitle": "Lowani kuti mupitirize kusangalala ndi {{appName}}",
+      "emailLabel": "Imelo",
+      "passwordLabel": "Mawu Achinsinsi",
+      "forgotPassword": "Mwaiwala mawu achinsinsi?",
+      "signInButton": "Lowani",
+      "continueAsGuest": "Pitirizani ngati alendo",
+      "noAccount": "Mulibe akaunti? ",
+      "signUp": "Lembetsani"
+    },
+    "register": {
+      "title": "Pangani akaunti yanu",
+      "subtitle": "Lowani nawo omvera zikwizikwi omwe amamvera tsiku ndi tsiku",
+      "fullNameLabel": "Dzina Lonse",
+      "emailLabel": "Imelo",
+      "phoneLabel": "Nambala ya Foni (osafunikira)",
+      "passwordLabel": "Mawu Achinsinsi",
+      "createAccountButton": "Pangani Akaunti",
+      "successMessage": "Akaunti yapangidwa — mukupita ku kulowa…",
+      "haveAccount": "Muli ndi akaunti kale? ",
+      "signIn": "Lowani"
+    },
+    "forgotPassword": {
+      "title": "Mwaiwala mawu achinsinsi?",
+      "subtitle": "Lembani imelo yolumikizidwa ndi akaunti yanu ndipo tikutumizirani nambala ya zizindikiro 6.",
+      "emailLabel": "Imelo",
+      "sentMessage": "Ngati akaunti ilipo ya imelo iyi, nambala yoikanso mawu achinsinsi ikubwera.",
+      "enterCodeButton": "Lowetsani nambala",
+      "sendCodeButton": "Tumizani nambala"
+    },
+    "resetPassword": {
+      "title": "Sinthani mawu achinsinsi anu",
+      "subtitle": "Lowetsani nambala yotumizidwa ku {{email}} ndipo musankhe mawu achinsinsi atsopano.",
+      "codeLabel": "Nambala ya zizindikiro 6",
+      "newPasswordLabel": "Mawu Achinsinsi Atsopano",
+      "successMessage": "Mawu achinsinsi asinthidwa — mukupita ku kulowa…",
+      "submitButton": "Sinthani Mawu Achinsinsi"
+    },
+    "errors": {
+      "invalidEmail": "Lowetsani imelo yeniyeni",
+      "emailRequired": "Imelo ikufunika",
+      "passwordMin": "Zilembo osachepera 8",
+      "passwordRequired": "Mawu achinsinsi akufunika",
+      "passwordNumber": "Ikani nambala imodzi",
+      "fullNameMin": "Zifupikitse kwambiri",
+      "fullNameRequired": "Dzina lonse likufunika",
+      "otpLength": "Lowetsani nambala ya zizindikiro 6",
+      "otpRequired": "Nambala ikufunika",
+      "newPasswordRequired": "Mawu achinsinsi atsopano akufunika"
+    }
+  },
+  "home": {
+    "quickLinks": {
+      "schedule": "Ndondomeko",
+      "podcasts": "Ma Podcast",
+      "presenters": "Oyimba",
+      "liveChat": "Kucheza pa Live",
+      "requests": "Zopempha",
+      "gallery": "Zithunzi",
+      "contact": "Lumikizanani"
+    },
+    "defaultShowTitle": "Modern Voice Radio",
+    "onAirNow": "Tili pa mpweya",
+    "listenersCount": "Anthu {{count}} akumvera",
+    "upcomingToday": "Zikubwera Lero",
+    "featuredPodcasts": "Ma Podcast Osankhidwa",
+    "latestNews": "Nkhani Zaposachedwa"
+  },
+  "live": {
+    "title": "Wailesi ya Live",
+    "listenersNowCount": "Anthu {{count}} akumvera panopa",
+    "liveBroadcast": "Kutumiza pa Live",
+    "sleepTimerLabel": "Wotchi Yotulutsa Nyimbo",
+    "minutesLeft": "Mphindi {{count}} zatsala",
+    "streamQuality": "Ubwino wa Kaimbidwe",
+    "equalizer": "Equalizer",
+    "off": "Zimitsidwa",
+    "minutesShort": "Mphindi {{count}}",
+    "backgroundNote": "Kaimbidwe kamapitiriza kunyuma ndi pa screen yotsekedwa — mutha kukayendetsa ndi Bluetooth kapena mabatani a headset."
+  },
+  "settings": {
+    "equalizerPresets": {
+      "flat": "Flat",
+      "bassBoost": "Bass Yowonjezeka",
+      "vocal": "Mawu",
+      "trebleBoost": "Treble Yowonjezeka"
+    },
+    "themeOptions": {
+      "dark": "Mdima",
+      "light": "Kuwala",
+      "system": "Momwe Foni Ilili"
+    },
+    "appearance": "Maonekedwe",
+    "language": "Chilankhulo",
+    "appLanguage": "Chilankhulo cha App",
+    "audio": "Mawu",
+    "audioQuality": "Ubwino wa Mawu",
+    "notifications": "Zidziwitso",
+    "notificationToggles": {
+      "breakingNews": { "label": "Nkhani Zadzidzidzi", "description": "Zidziwitso za nkhani zofulumira" },
+      "liveShows": { "label": "Mapulogalamu a Live", "description": "Pamene pulogalamu yayamba pa live" },
+      "newPodcasts": { "label": "Ma Podcast Atsopano", "description": "Kutulutsidwa kwa mabuku atsopano" },
+      "announcements": { "label": "Zalengezedwa", "description": "Zatsopano za wailesi ndi zochitika" }
+    },
+    "about": "Za Ife",
+    "aboutStation": "Za {{appName}}",
+    "versionLabel": "Version {{version}}"
+  },
+  "audioQuality": {
+    "hint": "Ubwino wapamwamba umamveka bwino koma umagwiritsa ntchito data yambiri. Izi zimagwira ntchito pa kaimbidwe ka wailesi ya live.",
+    "descriptions": {
+      "dataSaver": "Kusunga data — bwino pa intaneti yofooka kapena yochedwa",
+      "standard": "Wamba — ubwino ndi kugwiritsa ntchito data zoyenerana",
+      "highFidelity": "Ubwino wapamwamba — mawu abwino kwambiri, amagwiritsa ntchito data yambiri"
+    }
+  },
+  "equalizer": {
+    "hint": "Kusankha kumeneku kumagwira ntchito pa wailesi ya live ndi kaimbidwe ka ma podcast."
+  },
+  "schedule": {
+    "loadError": "Sitinathe kutenga ndondomeko. Onani intaneti yanu.",
+    "nothingScheduled": "Palibe chokonzedwa",
+    "nothingScheduledDescription": "Palibe mapulogalamu okonzedwa {{day}} pano.",
+    "untitledProgram": "Pulogalamu Yopanda Dzina"
+  },
+  "podcasts": {
+    "searchPlaceholder": "Sakani ma podcast...",
+    "loadError": "Sitinathe kutenga ma podcast. Onani intaneti yanu.",
+    "noneFound": "Palibe podcast yapezeka",
+    "noResultsFor": "Palibe zotsatira za \"{{query}}\".",
+    "checkBackSoon": "Bwererani posachedwa kuti mupeze mabuku atsopano.",
+    "continueListening": "Pitirizani Kumvera",
+    "allPodcasts": "Ma Podcast Onse",
+    "detail": {
+      "loadError": "Sitinathe kutenga podcast iyi.",
+      "episodes": "Mabuku",
+      "episodesLoadError": "Sitinathe kutenga mabuku.",
+      "noEpisodesTitle": "Palibe buku pano"
+    }
+  },
+  "programs": {
+    "loadError": "Sitinathe kutenga pulogalamu iyi.",
+    "thisWeek": "Sabata Lino",
+    "noAirtimes": "Palibe nthawi zokonzedwa pano."
+  },
+  "news": {
+    "title": "Nkhani",
+    "tabs": {
+      "latest": "Zaposachedwa",
+      "trending": "Zotchuka",
+      "breaking": "Zadzidzidzi"
+    },
+    "loadError": "Sitinathe kutenga nkhani. Onani intaneti yanu.",
+    "noneFound": "Palibe nkhani yapezeka",
+    "checkBackSoon": "Bwererani posachedwa kuti mupeze zatsopano.",
+    "breakingBadge": "NKHANI YADZIDZIDZI",
+    "detail": {
+      "loadError": "Sitinathe kutenga nkhani iyi.",
+      "photosAndVideos": "Zithunzi ndi Makanema",
+      "media": "Zithunzi/Kanema"
+    }
+  },
+  "profile": {
+    "signInPromptTitle": "Lowani kuti mupeze mbiri yanu",
+    "signInPromptDescription": "Sungani zokondedwa, onani mbiri ya zomvera zanu, tsitsani mabuku kuti mumvere popanda intaneti, ndi zina zambiri.",
+    "logOut": "Tulukani",
+    "logOutConfirmMessage": "Kodi mukutsimikiza kuti mukufuna kutuluka?",
+    "menu": {
+      "favorites": "Zokondedwa",
+      "listeningHistory": "Mbiri ya Zomvera",
+      "downloads": "Zotsitsidwa",
+      "notifications": "Zidziwitso",
+      "settings": "Zokonzekera",
+      "songRequest": "Kupempha Nyimbo",
+      "privacyPolicy": "Mfundo za Chinsinsi",
+      "termsOfService": "Malamulo a Ntchito",
+      "about": "Za Ife"
+    }
+  },
+  "editProfile": {
+    "title": "Sinthani Mbiri Yanu",
+    "changePhoto": "Sinthani chithunzi",
+    "fullNameLabel": "Dzina Lonse",
+    "phoneLabel": "Nambala ya Foni",
+    "preferredLanguageLabel": "Chilankhulo chokonda (mwachitsanzo, en, ny, toi, sn)",
+    "saveChanges": "Sungani Zosintha",
+    "permissionNeededTitle": "Chilolezo Chikufunika",
+    "permissionNeededMessage": "Chonde loleza kufikira zithunzi zanu kuti musinthe chithunzi chanu.",
+    "errors": {
+      "preferredLanguageRequired": "Chilankhulo chokonda chikufunika"
+    }
+  },
+  "favorites": {
+    "filters": {
+      "podcasts": "Ma Podcast",
+      "episodes": "Mabuku",
+      "news": "Nkhani",
+      "programs": "Mapulogalamu",
+      "presenters": "Oyimba"
+    },
+    "entityLabels": {
+      "podcast": "Podcast",
+      "episode": "Buku",
+      "news": "Nkhani",
+      "program": "Pulogalamu",
+      "presenter": "Woyimba"
+    },
+    "emptyTitle": "Palibe zokondedwa pano",
+    "emptyDescription": "Khudzani chithunzi cha mtima pa ma podcast, mabuku, nkhani, mapulogalamu kapena oyimba kuti muzisunge kuno.",
+    "view": "Onani"
+  },
+  "listeningHistory": {
+    "title": "Mbiri ya Zomvera",
+    "emptyTitle": "Palibe mbiri ya zomvera pano",
+    "emptyDescription": "Mverani wailesi ya live kapena buku la podcast ndipo zidzaonekera kuno.",
+    "liveRadio": "Wailesi ya Live",
+    "podcastEpisode": "Buku la Podcast",
+    "durationListened": "{{duration}} mwamvera"
+  },
+  "downloads": {
+    "downloadedEpisode": "Buku Lotsitsidwa",
+    "removeTitle": "Chotsani Chotsitsidwa",
+    "removeMessage": "Chotsani \"{{title}}\" pa foni yanu?",
+    "thisEpisode": "buku ili",
+    "remove": "Chotsani",
+    "emptyTitle": "Palibe zotsitsidwa pano",
+    "emptyDescription": "Tsitsani mabuku a podcast kuti mumvere popanda intaneti, kulikonse.",
+    "untitledEpisode": "Buku Lopanda Dzina",
+    "downloaded": "Latsitsidwa",
+    "status": {
+      "queued": "Likudikira",
+      "downloading": "Likutsitsidwa",
+      "completed": "Latha",
+      "failed": "Silinathe"
+    }
+  },
+  "languageSettings": {
+    "hint": "Sankhani chilankhulo chogwiritsidwa ntchito mu app yonse."
+  },
+  "about": {
+    "tagline": "Mawu anu. Wailesi yanu. Kulikonse.",
+    "whoWeAreTitle": "Ndife Ndani",
+    "whoWeAreBody": "{{appName}} ndi wailesi yamakono yomwe imakubweretserani mapulogalamu a live, ma podcast osankhidwa, nkhani zadzidzidzi, ndi kulumikizana ndi oyimba ndi mapulogalamu omwe mumakonda — zonse mu app imodzi. Kaya mukumvera pa live, kupitiriza buku la podcast popanda intaneti, kapena kupempha nyimbo yomwe mumakonda, tili pano kukusungani mogwirizana ndi mawu a dera lanu, kulikonse kumene muli.",
+    "missionTitle": "Cholinga Chathu",
+    "missionBody": "Kudziwitsa, kusangalatsa, ndi kulumikiza omvera athu kudzera mu wailesi ya live yosangalatsa, ma podcast athu eni, ndi nkhani za nthawi yeniyeni — mothandizidwa ndi ubwino ndi kudalirika komwe omvera amakono amayembekezera, pa chipangizo chilichonse chomwe asankha.",
+    "connectWithUs": "Lumikizanani nafe",
+    "copyright": "© {{year}} {{appName}}. Ufulu wonse wasungidwa."
+  },
+  "legal": {
+    "lastUpdated": "Yasinthidwa komaliza: {{date}}",
+    "privacy": {
+      "section1": "1. Zambiri Zomwe Timasonkhanitsa",
+      "section2": "2. Momwe Timagwiritsira Ntchito Zambiri Zanu",
+      "section3": "3. Kusunga Zithunzi ndi Ntchito za Third-Party",
+      "section4": "4. Kugawana Zambiri",
+      "section5": "5. Kusunga ndi Chitetezo cha Zambiri",
+      "section6": "6. Ufulu ndi Zosankha Zanu",
+      "section7": "7. Chinsinsi cha Ana",
+      "section8": "8. Kusintha kwa Mfundo Izi",
+      "section9": "9. Lumikizanani Nafe"
+    },
+    "terms": {
+      "section1": "1. Kuyenerera ndi Akaunti",
+      "section2": "2. Kugwiritsa Ntchito Koyenera",
+      "section3": "3. Zinthu ndi Ufulu Wolemba",
+      "section4": "4. Zomwe Ogwiritsa Ntchito Amapanga",
+      "section5": "5. Kucheza pa Live ndi Malamulo a Gulu",
+      "section6": "6. Kupezeka ndi Kusintha kwa Ntchito",
+      "section7": "7. Ntchito za Third-Party",
+      "section8": "8. Zodziwitsa ndi Malire a Udindo",
+      "section9": "9. Kutha kwa Ntchito",
+      "section10": "10. Kusintha kwa Malamulo Awa",
+      "section11": "11. Lumikizanani Nafe"
+    }
+  },
+  "presenters": {
+    "loadError": "Sitinathe kutenga oyimba. Onani intaneti yanu.",
+    "noneFound": "Palibe woyimba yemwe wapezeka",
+    "emptyDescription": "Oyimba adzaonekera kuno akangowonjezedwa.",
+    "searchPlaceholder": "Sakani oyimba...",
+    "detail": {
+      "loadError": "Sitinathe kutenga mbiri ya woyimba uyu.",
+      "programsHosted": "Mapulogalamu Oyendetsedwa"
+    }
+  },
+  "gallery": {
+    "photos": "Zithunzi",
+    "videos": "Makanema",
+    "emptyTitle": "Palibe chithunzi pano",
+    "emptyDescription": "Bwererani posachedwa kuti mupeze zithunzi ndi makanema a wailesi.",
+    "videoUnavailable": "Kuwonera kanema mu app sikunapezeke pano.",
+    "openVideo": "Tsegulani Kanema"
+  },
+  "contact": {
+    "title": "Lumikizanani Nafe",
+    "call": "Imbani",
+    "whatsapp": "WhatsApp",
+    "email": "Imelo",
+    "address": "Adilesi",
+    "followUs": "Tsatirani Ife"
+  },
+  "chat": {
+    "subtitle": "Chezani ndi omvera anzanu",
+    "emptyTitle": "Palibe uthenga pano",
+    "emptyDescription": "Khalani woyamba kupereka moni.",
+    "messagePlaceholder": "Lembani uthenga…",
+    "signInPrompt": "Lowani kuti mulowe nawo kucheza",
+    "lockedMessage": "Kucheza pa live kwatsekedwa ndi wailesi pano"
+  },
+  "songRequest": {
+    "title": "Pemphani Nyimbo",
+    "subtitle": "Tiuzeni chomwe mukufuna kumva pa mpweya",
+    "nameLabel": "Dzina Lanu",
+    "songTitleLabel": "Dzina la Nyimbo",
+    "artistLabel": "Woyimba",
+    "messageLabel": "Uthenga (osafunikira)",
+    "sendButton": "Tumizani Pempho",
+    "sentTitle": "Pempho latumizidwa!",
+    "sentDescription": "Zikomo — oyimba athu adzaganizira pempho lanu la nyimbo pa pulogalamu yamtsogolo.",
+    "submitAnother": "Tumizani pempho lina",
+    "errors": {
+      "nameRequired": "Dzina lanu likufunika",
+      "titleRequired": "Dzina la nyimbo likufunika",
+      "artistRequired": "Dzina la woyimba likufunika"
+    }
+  },
+  "notifications": {
+    "signInTitle": "Lowani kuti mupeze zidziwitso",
+    "signInDescription": "Pangani akaunti kapena lowani kuti mupeze zatsopano za nkhani zadzidzidzi, mapulogalamu a live ndi ma podcast atsopano.",
+    "emptyTitle": "Palibe chidziwitso pano",
+    "emptyDescription": "Tikudziwitsani pamene pali china chatsopano."
+  },
+  "search": {
+    "placeholder": "Sakani mapulogalamu, oyimba, nkhani…",
+    "emptyTitle": "Sakani {{appName}}",
+    "emptyDescription": "Pezani mapulogalamu, oyimba, nkhani, ma podcast ndi mabuku.",
+    "noResultsTitle": "Palibe zotsatira zapezeka",
+    "noResultsDescription": "Sitinapeze kanthu ka \"{{query}}\".",
+    "programs": "Mapulogalamu"
+  },
+  "splash": {
+    "tagline": "{{frequency}} · Wailesi ya Live, Ma Podcast ndi Nkhani"
+  },
+  "onboarding": {
+    "skip": "Dumphani",
+    "getStarted": "Yambani",
+    "next": "Chotsatira",
+    "slide1": {
+      "title": "Wailesi ya live, nthawi zonse",
+      "description": "Mverani Modern Voice Radio mwa ubwino wapamwamba, pa live maola 24/7, kulikonse kumene muli."
+    },
+    "slide2": {
+      "title": "Ma podcast pa nthawi yanu",
+      "description": "Pitirizani mapulogalamu omwe mumakonda, tsitsani mabuku, ndipo pitirizani pamene munasiya."
+    },
+    "slide3": {
+      "title": "Osataya nthawi iliyonse",
+      "description": "Landirani zidziwitso zamsanga za nkhani zadzidzidzi, mapulogalamu omwe mumakonda, ndi ma podcast atsopano."
+    }
+  },
+  "advertisement": {
+    "badge": "ZOTSATSA",
+    "shortBadge": "AD",
+    "visitWebsite": "Pitani pa Webusaiti",
+    "continueToApp": "Pitirizani ku App"
+  },
+  "nowPlaying": {
+    "playingLive": "TIKUTUMIZA PA LIVE",
+    "nowPlaying": "TIKUIMBA PANOPA",
+    "shareMessage": "Ndikumvera \"{{title}}\" wa {{artist}} pa {{appName}}.",
+    "lyricsUnavailableEpisode": "Mawu a nyimbo sanapezeke pa buku ili pano. Bwererani posachedwa — mawu ogwirizana akubwera ku {{appName}}.",
+    "lyricsUnavailableBroadcast": "Mawu a nyimbo sanapezeke pa mpweya uwu pano. Bwererani posachedwa — mawu ogwirizana akubwera ku {{appName}}."
+  }
+}

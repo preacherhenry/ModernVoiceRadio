@@ -1,0 +1,162 @@
+import TrackPlayer, {
+  Capability, Event, RepeatMode, AppKilledPlaybackBehavior, State,
+} from 'react-native-track-player';
+import { getStoreRef } from '@redux/storeAccessor';
+import {
+  loadTrack, setPlaybackState, setSleepTimer, setPlayerError, stopPlayback, type PlaybackState,
+} from '@redux/slices/playerSlice';
+import type { AudioStream, NowPlayingInfo, PodcastEpisode } from '@apptypes/models';
+import { ENV } from '@constants/config';
+
+let isSetup = false;
+let sleepTimerHandle: ReturnType<typeof setTimeout> | null = null;
+
+const RNTP_STATE_MAP: Partial<Record<State, PlaybackState>> = {
+  [State.Buffering]: 'buffering',
+  [State.Connecting]: 'loading',
+  [State.Playing]: 'playing',
+  [State.Paused]: 'paused',
+  [State.Stopped]: 'idle',
+  [State.Ended]: 'idle',
+  [State.Error]: 'error',
+  [State.Ready]: 'paused',
+};
+
+/** One-time player setup — call once from App.tsx before any playback occurs. */
+export async function setupAudioPlayer(): Promise<void> {
+  if (isSetup) return;
+
+  await TrackPlayer.setupPlayer({ autoHandleInterruptions: true });
+  await TrackPlayer.updateOptions({
+    android: { appKilledPlaybackBehavior: AppKilledPlaybackBehavior.ContinuePlayback },
+    capabilities: [
+      Capability.Play, Capability.Pause, Capability.Stop, Capability.SeekTo,
+      Capability.JumpForward, Capability.JumpBackward,
+    ],
+    compactCapabilities: [Capability.Play, Capability.Pause, Capability.Stop],
+    progressUpdateEventInterval: 2,
+  });
+  await TrackPlayer.setRepeatMode(RepeatMode.Off);
+
+  TrackPlayer.addEventListener(Event.PlaybackState, ({ state }) => {
+    const mapped = RNTP_STATE_MAP[state];
+    if (mapped) getStoreRef().dispatch(setPlaybackState(mapped));
+  });
+
+  TrackPlayer.addEventListener(Event.PlaybackError, (error) => {
+    getStoreRef().dispatch(setPlayerError(error?.message || 'Playback error — reconnecting…'));
+    void reconnectLiveIfNeeded();
+  });
+
+  isSetup = true;
+}
+
+let lastLiveStream: AudioStream | null = null;
+let reconnectAttempts = 0;
+
+async function reconnectLiveIfNeeded() {
+  if (!lastLiveStream) return;
+  if (reconnectAttempts >= 5) return;
+  reconnectAttempts += 1;
+  await new Promise((resolve) => { setTimeout(resolve, Math.min(2000 * reconnectAttempts, 10000)); });
+  try {
+    await playLiveStream(lastLiveStream);
+    reconnectAttempts = 0;
+  } catch {
+    void reconnectLiveIfNeeded();
+  }
+}
+
+/** Starts/switches live radio playback for a given stream config (bitrate/protocol selection). */
+export async function playLiveStream(stream: AudioStream, nowPlaying?: NowPlayingInfo | null): Promise<void> {
+  await setupAudioPlayer();
+  lastLiveStream = stream;
+
+  await TrackPlayer.reset();
+  await TrackPlayer.add({
+    id: `live-${stream.id}`,
+    url: stream.url,
+    title: nowPlaying?.songTitle || 'Modern Voice Radio — Live',
+    artist: nowPlaying?.artist || 'On Air Now',
+    isLiveStream: true,
+  });
+  await TrackPlayer.play();
+
+  getStoreRef().dispatch(loadTrack({
+    source: 'live',
+    id: stream.id,
+    title: nowPlaying?.songTitle || 'Modern Voice Radio',
+    artist: nowPlaying?.artist || 'Live Broadcast',
+    artworkUrl: null,
+    url: stream.url,
+  }));
+}
+
+/** Starts on-demand podcast episode playback, optionally resuming from a saved position. */
+export async function playEpisode(episode: PodcastEpisode, resumeFromSeconds = 0): Promise<void> {
+  await setupAudioPlayer();
+  lastLiveStream = null;
+
+  await TrackPlayer.reset();
+  await TrackPlayer.add({
+    id: `episode-${episode.id}`,
+    url: episode.audio_url,
+    title: episode.title,
+    artist: episode.podcast_title || 'Modern Voice Radio',
+    artwork: episode.cover_image_url || undefined,
+    duration: episode.duration_seconds,
+  });
+  if (resumeFromSeconds > 0) await TrackPlayer.seekTo(resumeFromSeconds);
+  await TrackPlayer.play();
+
+  getStoreRef().dispatch(loadTrack({
+    source: 'episode',
+    id: episode.id,
+    title: episode.title,
+    artist: episode.podcast_title || 'Podcast',
+    artworkUrl: episode.cover_image_url,
+    url: episode.audio_url,
+    durationSeconds: episode.duration_seconds,
+  }));
+}
+
+export const pausePlayback = () => TrackPlayer.pause();
+export const resumePlayback = () => TrackPlayer.play();
+export const stopAudioPlayback = async () => {
+  lastLiveStream = null;
+  await TrackPlayer.stop();
+  await TrackPlayer.reset();
+  getStoreRef().dispatch(stopPlayback());
+};
+export const seekAudioTo = (seconds: number) => TrackPlayer.seekTo(seconds);
+export const jumpForward = (seconds = 30) => TrackPlayer.seekBy(seconds);
+export const jumpBackward = (seconds = 15) => TrackPlayer.seekBy(-seconds);
+export const setPlayerVolume = (volume: number) => TrackPlayer.setVolume(volume);
+
+/** Starts (or replaces) a sleep timer that pauses playback after `minutes`. */
+export function startSleepTimer(minutes: number): void {
+  if (sleepTimerHandle) clearTimeout(sleepTimerHandle);
+  const endsAt = Date.now() + minutes * 60 * 1000;
+  getStoreRef().dispatch(setSleepTimer(endsAt));
+  sleepTimerHandle = setTimeout(() => {
+    void pausePlayback();
+    getStoreRef().dispatch(setSleepTimer(null));
+    sleepTimerHandle = null;
+  }, minutes * 60 * 1000);
+}
+
+export function cancelSleepTimer(): void {
+  if (sleepTimerHandle) clearTimeout(sleepTimerHandle);
+  sleepTimerHandle = null;
+  getStoreRef().dispatch(setSleepTimer(null));
+}
+
+export const DEFAULT_STREAM_FALLBACK: AudioStream = {
+  id: 'default',
+  name: 'Modern Voice Radio',
+  protocol: 'icecast',
+  url: ENV.DEFAULT_STREAM_URL,
+  bitrate_kbps: 128,
+  format: 'mp3',
+  is_default: true,
+};

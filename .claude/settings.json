@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m pip install --quiet numpy)",
+      "Bash(curl -s http://localhost:4000/api/v1/streams/active)",
+      "Bash(curl -s http://localhost:4000/api/v1/streams/now-playing)"
+    ]
+  }
+}

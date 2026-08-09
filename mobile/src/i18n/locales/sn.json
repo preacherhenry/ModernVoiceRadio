@@ -1,0 +1,430 @@
+{
+  "common": {
+    "somethingWentWrong": "Pane chakanganisika",
+    "seeAll": "Ona Zvese",
+    "categoryAll": "Zvese",
+    "cancel": "Kanzura",
+    "live": "PAMHEPO",
+    "today": "Nhasi",
+    "yesterday": "Nezuro",
+    "errorState": {
+      "title": "Pane chakanganisika",
+      "description": "Tarisai kubatana kwenyu uye edzai zvakare.",
+      "tryAgain": "Edzazve"
+    },
+    "months": {
+      "january": "Ndira",
+      "february": "Kukadzi",
+      "march": "Kurume",
+      "april": "Kubvumbi",
+      "may": "Chivabvu",
+      "june": "Chikumi",
+      "july": "Chikunguru",
+      "august": "Nyamavhuvhu",
+      "september": "Gunyana",
+      "october": "Gumiguru",
+      "november": "Mbudzi",
+      "december": "Zvita"
+    },
+    "days": {
+      "sunday": "Svondo",
+      "monday": "Muvhuro",
+      "tuesday": "Chipiri",
+      "wednesday": "Chitatu",
+      "thursday": "China",
+      "friday": "Chishanu",
+      "saturday": "Mugovera"
+    },
+    "timeAgo": {
+      "justNow": "Zvino izvozvi",
+      "minutes": "{{count}}m apfuura",
+      "hours": "{{count}}h apfuura",
+      "days": "{{count}}d apfuura",
+      "weeks": "{{count}}w apfuura",
+      "months": "{{count}}mo apfuura",
+      "years": "{{count}}y apfuura"
+    }
+  },
+  "tabs": {
+    "home": "Kumba",
+    "live": "Live",
+    "schedule": "Chirongwa",
+    "podcasts": "Ma Podcast",
+    "profile": "Purofairi"
+  },
+  "auth": {
+    "login": {
+      "title": "Tinokugamuchirai zvakare",
+      "subtitle": "Pinda kuti uenderere mberi uchinakidzwa ne{{appName}}",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "forgotPassword": "Wakanganwa password?",
+      "signInButton": "Pinda",
+      "continueAsGuest": "Enderera semweni",
+      "noAccount": "Hauna account? ",
+      "signUp": "Nyoresa"
+    },
+    "register": {
+      "title": "Gadzira account yako",
+      "subtitle": "Batana nevanhu vane zviuru vanoteerera zuva nezuva",
+      "fullNameLabel": "Zita rizere",
+      "emailLabel": "Email",
+      "phoneLabel": "Nhamba yefoni (hazvimanikidzwe)",
+      "passwordLabel": "Password",
+      "createAccountButton": "Gadzira Account",
+      "successMessage": "Account yagadzirwa — tiri kuenda kunopinda…",
+      "haveAccount": "Une account kare? ",
+      "signIn": "Pinda"
+    },
+    "forgotPassword": {
+      "title": "Wakanganwa password?",
+      "subtitle": "Isa email yakabatana neaccount yako uye tichakutumira kodhi yenhamba 6 yekuchinja password.",
+      "emailLabel": "Email",
+      "sentMessage": "Kana account iripo yeemail iyi, kodhi yekuchinja password iri kuuya.",
+      "enterCodeButton": "Isa kodhi yekuchinja",
+      "sendCodeButton": "Tumira kodhi yekuchinja"
+    },
+    "resetPassword": {
+      "title": "Chinja password yako",
+      "subtitle": "Isa kodhi yakatumirwa ku {{email}} uye usarudze password itsva.",
+      "codeLabel": "Kodhi yenhamba 6",
+      "newPasswordLabel": "Password itsva",
+      "successMessage": "Password yachinjwa — tiri kuenda kunopinda…",
+      "submitButton": "Chinja Password"
+    },
+    "errors": {
+      "invalidEmail": "Isa email chaiyo",
+      "emailRequired": "Email inodiwa",
+      "passwordMin": "Anosvika mavara 8",
+      "passwordRequired": "Password inodiwa",
+      "passwordNumber": "Isa numero imwe chete",
+      "fullNameMin": "Pfupi zvakanyanya",
+      "fullNameRequired": "Zita rizere rinodiwa",
+      "otpLength": "Isa kodhi yenhamba 6",
+      "otpRequired": "Kodhi inodiwa",
+      "newPasswordRequired": "Password itsva inodiwa"
+    }
+  },
+  "home": {
+    "quickLinks": {
+      "schedule": "Chirongwa",
+      "podcasts": "Ma Podcast",
+      "presenters": "MaPresenter",
+      "liveChat": "Chat yeLive",
+      "requests": "Zvikumbiro",
+      "gallery": "Mifananidzo",
+      "contact": "Taura Nesu"
+    },
+    "defaultShowTitle": "Modern Voice Radio",
+    "onAirNow": "Tiri pamhepo",
+    "listenersCount": "Vanhu {{count}} vari kuteerera",
+    "upcomingToday": "Zvinouya Nhasi",
+    "featuredPodcasts": "Ma Podcast Akasarudzwa",
+    "latestNews": "Nhau Dzazvino"
+  },
+  "live": {
+    "title": "Redhiyo yeLive",
+    "listenersNowCount": "Vanhu {{count}} vari kuteerera izvozvi",
+    "liveBroadcast": "Kutumira paLive",
+    "sleepTimerLabel": "Nguva Yekurara",
+    "minutesLeft": "Maminetsi {{count}} asara",
+    "streamQuality": "Kunaka kweStream",
+    "equalizer": "Equalizer",
+    "off": "Kudzima",
+    "minutesShort": "Maminetsi {{count}}",
+    "backgroundNote": "Kuridza kunoenderera mberi kumashure uye pascreen yakavharwa — unogona kukudzora neBluetooth kana mabhatani eheadset."
+  },
+  "settings": {
+    "equalizerPresets": {
+      "flat": "Flat",
+      "bassBoost": "Bass Yakawedzerwa",
+      "vocal": "Inzwi",
+      "trebleBoost": "Treble Yakawedzerwa"
+    },
+    "themeOptions": {
+      "dark": "Rima",
+      "light": "Chiedza",
+      "system": "Sistimu"
+    },
+    "appearance": "Chitarisiko",
+    "language": "Mutauro",
+    "appLanguage": "Mutauro weApp",
+    "audio": "Ruzha",
+    "audioQuality": "Kunaka kweRuzha",
+    "notifications": "Zviziviso",
+    "notificationToggles": {
+      "breakingNews": { "label": "Nhau Dzinokurumidza", "description": "Zviziviso zvenhau dzinokurumidza" },
+      "liveShows": { "label": "Zviratidziro zveLive", "description": "Kana purogiramu yatanga paLive" },
+      "newPodcasts": { "label": "Ma Podcast Matsva", "description": "Kuburitswa kwezvikamu zvitsva" },
+      "announcements": { "label": "Zvazivisiwa", "description": "Zvazvitsva zveredhiyo nezviitiko" }
+    },
+    "about": "Nezvedu",
+    "aboutStation": "Nezve {{appName}}",
+    "versionLabel": "Version {{version}}"
+  },
+  "audioQuality": {
+    "hint": "Ma-bitrate akakwirira anonzwika zviri nani asi anoshandisa data yakawanda. Izvi zvinoshanda pakuteerera redhiyo yeLive.",
+    "descriptions": {
+      "dataSaver": "Kuchengetedza data — zvakanakira kubatana kusina kusimba kana kunononoka",
+      "standard": "Yakajairika — kunaka nekushandiswa kwedata zvakaenzana",
+      "highFidelity": "Kunaka kwepamusoro — ruzha rwakanaka, inoshandisa data yakawanda"
+    }
+  },
+  "equalizer": {
+    "hint": "Sarudzo yakasarudzwa inoshanda paredhiyo yeLive uye pakuridza zvikamu zvePodcast."
+  },
+  "schedule": {
+    "loadError": "Hatina kukwanisa kutora chirongwa. Ndapota tarisa kubatana kwenyu.",
+    "nothingScheduled": "Hapana chakarongwa",
+    "nothingScheduledDescription": "Hapana mapurogiramu akarongerwa {{day}} parizvino.",
+    "untitledProgram": "Purogiramu Isina Zita"
+  },
+  "podcasts": {
+    "searchPlaceholder": "Tsvaga ma podcast...",
+    "loadError": "Hatina kukwanisa kutora ma podcast. Ndapota tarisa kubatana kwenyu.",
+    "noneFound": "Hapana podcast yawanikwa",
+    "noResultsFor": "Hapana zvawanikwa ze \"{{query}}\".",
+    "checkBackSoon": "Dzokera nokukurumidza kuti uwane zvikamu zvitsva.",
+    "continueListening": "Ramba Uchiteerera",
+    "allPodcasts": "Ma Podcast Ese",
+    "detail": {
+      "loadError": "Hatina kukwanisa kutora podcast iyi.",
+      "episodes": "Zvikamu",
+      "episodesLoadError": "Hatina kukwanisa kutora zvikamu.",
+      "noEpisodesTitle": "Hapana chikamu parizvino"
+    }
+  },
+  "programs": {
+    "loadError": "Hatina kukwanisa kutora purogiramu iyi.",
+    "thisWeek": "Vhiki Rino",
+    "noAirtimes": "Hapana nguva dzakarongwa parizvino."
+  },
+  "news": {
+    "title": "Nhau",
+    "tabs": {
+      "latest": "Dzazvino",
+      "trending": "Dzinotaurwa",
+      "breaking": "Dzinokurumidza"
+    },
+    "loadError": "Hatina kukwanisa kutora nhau. Ndapota tarisa kubatana kwenyu.",
+    "noneFound": "Hapana nyaya yawanikwa",
+    "checkBackSoon": "Dzokera nokukurumidza kuti uwane zvitsva.",
+    "breakingBadge": "NHAU DZINOKURUMIDZA",
+    "detail": {
+      "loadError": "Hatina kukwanisa kutora nyaya iyi.",
+      "photosAndVideos": "Mifananidzo neMavhidhiyo",
+      "media": "Mifananidzo/Vhidhiyo"
+    }
+  },
+  "profile": {
+    "signInPromptTitle": "Pinda kuti uwane purofairi yako",
+    "signInPromptDescription": "Chengetedza zvaunoda, ona nhoroondo yekuteerera kwako, dhawunirodha zvikamu kuti uteerere usina intaneti, uye zvimwe zvakawanda.",
+    "logOut": "Buda",
+    "logOutConfirmMessage": "Une chokwadi chekuti unoda kubuda?",
+    "menu": {
+      "favorites": "Zvandinoda",
+      "listeningHistory": "Nhoroondo Yekuteerera",
+      "downloads": "Zvakadhawunirodhwa",
+      "notifications": "Zviziviso",
+      "settings": "Zvirongwa",
+      "songRequest": "Kukumbira Rwiyo",
+      "privacyPolicy": "Mutemo weChakavanzika",
+      "termsOfService": "Mitemo yeBasa",
+      "about": "Nezvedu"
+    }
+  },
+  "editProfile": {
+    "title": "Chinja Purofairi Yako",
+    "changePhoto": "Chinja mufananidzo",
+    "fullNameLabel": "Zita rizere",
+    "phoneLabel": "Nhamba yeFoni",
+    "preferredLanguageLabel": "Mutauro waunoda (semuenzaniso, en, ny, toi, sn)",
+    "saveChanges": "Chengetedza Zvachinjwa",
+    "permissionNeededTitle": "Mvumo Inodiwa",
+    "permissionNeededMessage": "Ndapota bvumira kuwana mifananidzo yako kuti uchinje avatar yako.",
+    "errors": {
+      "preferredLanguageRequired": "Mutauro waunoda unodiwa"
+    }
+  },
+  "favorites": {
+    "filters": {
+      "podcasts": "Ma Podcast",
+      "episodes": "Zvikamu",
+      "news": "Nhau",
+      "programs": "Mapurogiramu",
+      "presenters": "MaPresenter"
+    },
+    "entityLabels": {
+      "podcast": "Podcast",
+      "episode": "Chikamu",
+      "news": "Nyaya yeNhau",
+      "program": "Purogiramu",
+      "presenter": "Presenter"
+    },
+    "emptyTitle": "Hapana zvaunoda parizvino",
+    "emptyDescription": "Baya pane mwoyo pane ma podcast, zvikamu, nhau, mapurogiramu kana vaPresenter kuti uzvichengetedze pano.",
+    "view": "Ona"
+  },
+  "listeningHistory": {
+    "title": "Nhoroondo Yekuteerera",
+    "emptyTitle": "Hapana nhoroondo yekuteerera parizvino",
+    "emptyDescription": "Teerera redhiyo yeLive kana kuridza chikamu chePodcast uye zvichaonekwa pano.",
+    "liveRadio": "Redhiyo yeLive",
+    "podcastEpisode": "Chikamu chePodcast",
+    "durationListened": "{{duration}} yakateererwa"
+  },
+  "downloads": {
+    "downloadedEpisode": "Chikamu Chakadhawunirodhwa",
+    "removeTitle": "Bvisa Chakadhawunirodhwa",
+    "removeMessage": "Bvisa \"{{title}}\" pane divhaisi yako?",
+    "thisEpisode": "chikamu ichi",
+    "remove": "Bvisa",
+    "emptyTitle": "Hapana zvakadhawunirodhwa parizvino",
+    "emptyDescription": "Dhawunirodha zvikamu zvePodcast kuti uteerere usina intaneti, kwose kwose.",
+    "untitledEpisode": "Chikamu Chisina Zita",
+    "downloaded": "Zvadhawunirodhwa",
+    "status": {
+      "queued": "Zvakamirira",
+      "downloading": "Zviri Kudhawunirodhwa",
+      "completed": "Zvapera",
+      "failed": "Zvakundikana"
+    }
+  },
+  "languageSettings": {
+    "hint": "Sarudza mutauro unoshandiswa muApp yose."
+  },
+  "about": {
+    "tagline": "Inzwi rako. Chiteshi chako. Kwose kwose.",
+    "whoWeAreTitle": "Ndisu Vanaani",
+    "whoWeAreBody": "{{appName}} ichiteshi cheredhiyo chemazuva ano chinokuunzira zviratidziro zveLive, ma podcast akasarudzwa, nhau dzinokurumidza, uye kubatana zvakananga nevaPresenter nemapurogiramu awunoda — zvose muApp imwe chete. Kunyangwe uchiteerera stream yeLive, uchiendesera mberi chikamu chePodcast usina intaneti, kana kukumbira rwiyo rwaunoda, tiri pano kukuchengetedza wakabatana nenzwi renharaunda yako, kwose kwaunoenda.",
+    "missionTitle": "Chinangwa Chedu",
+    "missionBody": "Kuzivisa, kunakidza, uye kubatanidza vateereri vedu kuburikidza neredhiyo yeLive inonakidza, ma podcast edu chaiwo, uye nhau dzenguva chaiyo — zvichipihwa nekunaka nekuvimbika kunotarisirwa nevateereri vemazuva ano, pane chero divhaisi yavanosarudza.",
+    "connectWithUs": "Batana Nesu",
+    "copyright": "© {{year}} {{appName}}. Kodzero dzose dzakachengetedzwa."
+  },
+  "legal": {
+    "lastUpdated": "Yagadziridzwa pakupedzisira: {{date}}",
+    "privacy": {
+      "section1": "1. Ruzivo Rwatinounganidza",
+      "section2": "2. Kushandiswa Kweruzivo Rwako",
+      "section3": "3. Kuchengetwa Kwemifananidzo neMasevhisi eThird-Party",
+      "section4": "4. Kugoveranwa Kweruzivo",
+      "section5": "5. Kuchengetwa neKudzivirirwa Kweruzivo",
+      "section6": "6. Kodzero neSarudzo Dzako",
+      "section7": "7. Chakavanzika Chevana",
+      "section8": "8. Kuchinjwa kweMutemo Uyu",
+      "section9": "9. Taura Nesu"
+    },
+    "terms": {
+      "section1": "1. Kukodzera neAccount",
+      "section2": "2. Kushandiswa Kunotenderwa",
+      "section3": "3. Zvinyorwa neKodzero dzeVanyori",
+      "section4": "4. Zvinyorwa Zvinogadzirwa neVashandisi",
+      "section5": "5. Chat yeLive neMirawuro yeVanhu",
+      "section6": "6. Kuwanikwa neKuchinjwa kweSevhisi",
+      "section7": "7. Masevhisi eThird-Party",
+      "section8": "8. Zviziviso neMiganhu yeMhosva",
+      "section9": "9. Kuguma",
+      "section10": "10. Kuchinjwa kweMitemo Iyi",
+      "section11": "11. Taura Nesu"
+    }
+  },
+  "presenters": {
+    "loadError": "Hatina kukwanisa kutora vaPresenter. Ndapota tarisa kubatana kwenyu.",
+    "noneFound": "Hapana Presenter awanikwa",
+    "emptyDescription": "VaPresenter vachaonekwa pano kana vawedzerwa.",
+    "searchPlaceholder": "Tsvaga vaPresenter...",
+    "detail": {
+      "loadError": "Hatina kukwanisa kutora purofairi yePresenter uyu.",
+      "programsHosted": "Mapurogiramu Akatungamirirwa"
+    }
+  },
+  "gallery": {
+    "photos": "Mifananidzo",
+    "videos": "Mavhidhiyo",
+    "emptyTitle": "Hapana zvinyorwa parizvino",
+    "emptyDescription": "Dzokera nokukurumidza kuti uwane mifananidzo nemavhidhiyo echiteshi.",
+    "videoUnavailable": "Kuridza vhidhiyo muApp hazvisati zvawanikwa.",
+    "openVideo": "Vhura Vhidhiyo"
+  },
+  "contact": {
+    "title": "Taura Nesu",
+    "call": "Fonera",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "address": "Kero",
+    "followUs": "Titevere"
+  },
+  "chat": {
+    "subtitle": "Taura nevamwe vateereri",
+    "emptyTitle": "Hapana mameseji parizvino",
+    "emptyDescription": "Iva wekutanga kukwazisa.",
+    "messagePlaceholder": "Nyora meseji…",
+    "signInPrompt": "Pinda kuti ubatane nekutaurirana",
+    "lockedMessage": "Chat yeLive parizvino yakavharwa nechiteshi"
+  },
+  "songRequest": {
+    "title": "Kumbira Rwiyo",
+    "subtitle": "Tiudze zvaunoda kunzwa paairi",
+    "nameLabel": "Zita rako",
+    "songTitleLabel": "Zita rerwiyo",
+    "artistLabel": "Muimbi",
+    "messageLabel": "Meseji (hazvimanikidzwe)",
+    "sendButton": "Tumira Chikumbiro",
+    "sentTitle": "Chikumbiro chatumirwa!",
+    "sentDescription": "Tatenda — vaPresenter vedu vachafunga nezvechikumbiro chako cherwiyo pane chiratidziro chinouya.",
+    "submitAnother": "Tumira chimwe chikumbiro",
+    "errors": {
+      "nameRequired": "Zita rako rinodiwa",
+      "titleRequired": "Zita rerwiyo rinodiwa",
+      "artistRequired": "Zita remuimbi rinodiwa"
+    }
+  },
+  "notifications": {
+    "signInTitle": "Pinda kuti uone zviziviso",
+    "signInDescription": "Gadzira account kana kupinda kuti uwane zvazvitsva pamusoro penhau dzinokurumidza, zviratidziro zveLive nema podcast matsva.",
+    "emptyTitle": "Hapana chiziviso parizvino",
+    "emptyDescription": "Tichakuzivisa kana paine chitsva."
+  },
+  "search": {
+    "placeholder": "Tsvaga mapurogiramu, vaPresenter, nhau…",
+    "emptyTitle": "Tsvaga {{appName}}",
+    "emptyDescription": "Wana mapurogiramu, vaPresenter, nhau, ma podcast nezvikamu.",
+    "noResultsTitle": "Hapana zvawanikwa",
+    "noResultsDescription": "Hatina kuwana chinhu che \"{{query}}\".",
+    "programs": "Mapurogiramu"
+  },
+  "splash": {
+    "tagline": "{{frequency}} · Redhiyo yeLive, Ma Podcast neNhau"
+  },
+  "onboarding": {
+    "skip": "Pfuura",
+    "getStarted": "Tanga",
+    "next": "Inotevera",
+    "slide1": {
+      "title": "Redhiyo yeLive, nguva dzose",
+      "description": "Teerera Modern Voice Radio nekunaka kwakanyatsojeka, paLive maawa 24/7, kwose kwaunenge uri."
+    },
+    "slide2": {
+      "title": "Ma podcast panguva yako",
+      "description": "Ramba uchiteerera zviratidziro zaunoda, dhawunirodha zvikamu, uye tangazve pawakasiya."
+    },
+    "slide3": {
+      "title": "Usarasikirwe nechinguva",
+      "description": "Wana zviziviso zvekukurumidza zvenhau dzinokurumidza, mapurogiramu aunoda, uye ma podcast matsva."
+    }
+  },
+  "advertisement": {
+    "badge": "ZVEKUSHAMBADZA",
+    "shortBadge": "AD",
+    "visitWebsite": "Shanyira Webhusaiti",
+    "continueToApp": "Enderera kuApp"
+  },
+  "nowPlaying": {
+    "playingLive": "TIRI KURIDZA PALIVE",
+    "nowPlaying": "ZVIRI KURIDZWA IZVOZVI",
+    "shareMessage": "Ndiri kuteerera \"{{title}}\" na{{artist}} pa{{appName}}.",
+    "lyricsUnavailableEpisode": "Mashoko erwiyo haasati awanikwa pachikamu ichi. Dzokera nokukurumidza — mashoko akaenzaniswa ari kuuya ku{{appName}}.",
+    "lyricsUnavailableBroadcast": "Mashoko erwiyo haasati awanikwa pane izvi zvinotumirwa. Dzokera nokukurumidza — mashoko akaenzaniswa ari kuuya ku{{appName}}."
+  }
+}

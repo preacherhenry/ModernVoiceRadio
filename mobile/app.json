@@ -1,0 +1,91 @@
+{
+  "expo": {
+    "name": "Modern Voice FM",
+    "slug": "modern-voice-radio",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/images/icon.png",
+    "scheme": "modernvoiceradio",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./src/assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFFFFF"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.modernvoiceradio.app",
+      "config": {
+        "usesNonExemptEncryption": false,
+        "googleMapsApiKey": "GOOGLE_MAPS_IOS_API_KEY"
+      },
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio",
+          "fetch",
+          "remote-notification"
+        ],
+        "NSLocationWhenInUseUsageDescription": "Modern Voice Radio uses your location to show nearby station events and improve listening analytics.",
+        "NSMicrophoneUsageDescription": "Not used, but reserved for future voice request features.",
+        "NSAppTransportSecurity": {
+          "NSExceptionDomains": {
+            "node.stream-africa.com": {
+              "NSExceptionAllowsInsecureHTTPLoads": true,
+              "NSIncludesSubdomains": false
+            }
+          }
+        }
+      }
+    },
+    "android": {
+      "package": "com.modernvoiceradio.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "permissions": [
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+        "WAKE_LOCK",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "POST_NOTIFICATIONS",
+        "RECEIVE_BOOT_COMPLETED"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "GOOGLE_MAPS_ANDROID_API_KEY"
+        }
+      },
+      "googleServicesFile": "./google-services.json"
+    },
+    "plugins": [
+      "expo-secure-store",
+      "expo-splash-screen",
+      "@react-native-firebase/app",
+      [
+        "expo-notifications",
+        {
+          "icon": "./src/assets/images/notification-icon.png"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "2ca665df-63e9-4b87-8ef8-84ed2c0dead5"
+      }
+    },
+    "owner": "preacherh"
+  }
+}

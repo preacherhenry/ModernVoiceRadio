@@ -1,0 +1,430 @@
+{
+  "common": {
+    "somethingWentWrong": "Kwakaba penzi",
+    "seeAll": "Bona Zyoonse",
+    "categoryAll": "Zyoonse",
+    "cancel": "Leka",
+    "live": "LIVE",
+    "today": "Sunu",
+    "yesterday": "Izuba lyakainda",
+    "errorState": {
+      "title": "Kwakaba penzi",
+      "description": "Amulange intaneti yanu mpoonya mweezye alimwi.",
+      "tryAgain": "Mweezye alimwi"
+    },
+    "months": {
+      "january": "Kalindula",
+      "february": "Ndumezuli",
+      "march": "Kwenkezi",
+      "april": "Cibwe",
+      "may": "Kwezu",
+      "june": "Nsandwa",
+      "july": "Kaanda",
+      "august": "Fwiyu",
+      "september": "Impasa",
+      "october": "Nkanda",
+      "november": "Munamikayi",
+      "december": "Ciyumusanya"
+    },
+    "days": {
+      "sunday": "Sondo",
+      "monday": "Muvwulo",
+      "tuesday": "Ciwelo",
+      "wednesday": "Citatu",
+      "thursday": "Ciine",
+      "friday": "Cisanu",
+      "saturday": "Mujibelo"
+    },
+    "timeAgo": {
+      "justNow": "Lino lino",
+      "minutes": "Mminiti {{count}} zainda",
+      "hours": "Mahowa {{count}} ainda",
+      "days": "Mazuba {{count}} ainda",
+      "weeks": "Mviki {{count}} zainda",
+      "months": "Myezi {{count}} yainda",
+      "years": "Myaka {{count}} yainda"
+    }
+  },
+  "tabs": {
+    "home": "Kunganda",
+    "live": "Live",
+    "schedule": "Ziindi",
+    "podcasts": "Ma Podcast",
+    "profile": "Bwiimo Bwanu"
+  },
+  "auth": {
+    "login": {
+      "title": "Mwabuka buti",
+      "subtitle": "Amunjile kuti mucijatilile kubotelwa a {{appName}}",
+      "emailLabel": "Email",
+      "passwordLabel": "Mabala Aasisikene",
+      "forgotPassword": "Mwaluba mabala aasisikene?",
+      "signInButton": "Njila",
+      "continueAsGuest": "Amuzumanane mbuli mweenzu",
+      "noAccount": "Tamujisi akkaunti? ",
+      "signUp": "Amulilembye"
+    },
+    "register": {
+      "title": "Amubambe akkaunti yanu",
+      "subtitle": "Amuswanane abaswiilizi banji ibaswiilila abuzuba abuzuba",
+      "fullNameLabel": "Zina Lyoonse",
+      "emailLabel": "Email",
+      "phoneLabel": "Nombolo ya Foni (teiyandikene)",
+      "passwordLabel": "Mabala Aasisikene",
+      "createAccountButton": "Amubambe Akkaunti",
+      "successMessage": "Akkaunti yabambwa — twaya kunjila…",
+      "haveAccount": "Mujisi kale akkaunti? ",
+      "signIn": "Njila"
+    },
+    "forgotPassword": {
+      "title": "Mwaluba mabala aasisikene?",
+      "subtitle": "Amulembe email njiyanga aakkaunti yanu alimwi tulamutumina nombolo yazyeelo zili 6.",
+      "emailLabel": "Email",
+      "sentMessage": "Na akkaunti ilipo yaeyi email, nombolo yakubbukulusya mabala aasisikene ilaza.",
+      "enterCodeButton": "Amulembe nombolo",
+      "sendCodeButton": "Amutumine nombolo"
+    },
+    "resetPassword": {
+      "title": "Amubbukulusye mabala aanu aasisikene",
+      "subtitle": "Amulembe nombolo yakatuminwa kuli {{email}} alimwi musale mabala mapya aasisikene.",
+      "codeLabel": "Nombolo yazyeelo zili 6",
+      "newPasswordLabel": "Mabala Mapya Aasisikene",
+      "successMessage": "Mabala aasisikene abbukuluzyidwe — twaya kunjila…",
+      "submitButton": "Amubbukulusye Mabala Aasisikene"
+    },
+    "errors": {
+      "invalidEmail": "Amulembe email ni ya masimpe",
+      "emailRequired": "Email iyandikene",
+      "passwordMin": "Zibalo zitanoli 8",
+      "passwordRequired": "Mabala aasisikene ayandikene",
+      "passwordNumber": "Amubikke nombolo yomwe",
+      "fullNameMin": "Zifwiifwi kunyika",
+      "fullNameRequired": "Zina lyoonse liyandikene",
+      "otpLength": "Amulembe nombolo yazyeelo zili 6",
+      "otpRequired": "Nombolo iyandikene",
+      "newPasswordRequired": "Mabala mapya aasisikene ayandikene"
+    }
+  },
+  "home": {
+    "quickLinks": {
+      "schedule": "Ziindi",
+      "podcasts": "Ma Podcast",
+      "presenters": "Bawambi",
+      "liveChat": "Kwaambaula a Live",
+      "requests": "Zilombwa",
+      "gallery": "Zifwanikiso",
+      "contact": "Amuvwuntauzye"
+    },
+    "defaultShowTitle": "Modern Voice Radio",
+    "onAirNow": "Tulimumoyo",
+    "listenersCount": "Bantu {{count}} balaswiilila",
+    "upcomingToday": "Ziboola Sunu",
+    "featuredPodcasts": "Ma Podcast Aasalidwe",
+    "latestNews": "Makani Mapya"
+  },
+  "live": {
+    "title": "Wailesi ya Live",
+    "listenersNowCount": "Bantu {{count}} balaswiilila lino",
+    "liveBroadcast": "Kutumina a Live",
+    "sleepTimerLabel": "Isikeyili Yakuyoosya",
+    "minutesLeft": "Mminiti {{count}} zichaide",
+    "streamQuality": "Bubotu Bwakuswiilila",
+    "equalizer": "Equalizer",
+    "off": "Yajaigwa",
+    "minutesShort": "Mminiti {{count}}",
+    "backgroundNote": "Kuswiilila kuzumanana musule alimwi aatuulo lujaigwa — mukonzya kwiiendelezya a Bluetooth naa mabbatani aa headset."
+  },
+  "settings": {
+    "equalizerPresets": {
+      "flat": "Flat",
+      "bassBoost": "Bass Yakayungizigwa",
+      "vocal": "Jwi",
+      "trebleBoost": "Treble Yakayungizigwa"
+    },
+    "themeOptions": {
+      "dark": "Mudima",
+      "light": "Mumuni",
+      "system": "Mbuli Foni Mbuyiimvwi"
+    },
+    "appearance": "Bulangilizi",
+    "language": "Mwaambo",
+    "appLanguage": "Mwaambo wa App",
+    "audio": "Jwi",
+    "audioQuality": "Bubotu Bwajwi",
+    "notifications": "Zilengezyo",
+    "notificationToggles": {
+      "breakingNews": { "label": "Makani Aakufwambaana", "description": "Zilengezyo zyamakani aakufwambaana" },
+      "liveShows": { "label": "Zibonwa za Live", "description": "Nozitalika a Live" },
+      "newPodcasts": { "label": "Ma Podcast Mapya", "description": "Kuzwidilizigwa kwazibalo zipya" },
+      "announcements": { "label": "Zilengezyo", "description": "Zipya zyawailesi azintu zibede" }
+    },
+    "about": "Atuvwuntauzye",
+    "aboutStation": "Atuvwuntauzye {{appName}}",
+    "versionLabel": "Version {{version}}"
+  },
+  "audioQuality": {
+    "hint": "Ubotu bupati bulamvwika kabotu pele bubelesya data ziingi. Eezi zibeleka kuswiilila kwawailesi ya live.",
+    "descriptions": {
+      "dataSaver": "Kubamba data — kubotu kubelesya newalo iifwaafwi naa iichedwa",
+      "standard": "Bwiina bwiina — bubotu abubelesyi bwadata bweelene",
+      "highFidelity": "Bubotu bupati — jwi libotu kwiinda, libelesya data ziingi"
+    }
+  },
+  "equalizer": {
+    "hint": "Kusala oku kubeleka kuwailesi ya live aku kuswiilila kwazibalo za podcast."
+  },
+  "schedule": {
+    "loadError": "Tetwakonzya kutola ziindi. Amulange intaneti yanu.",
+    "nothingScheduled": "Taakwe cibikkidwe",
+    "nothingScheduledDescription": "Taakwe zibonwa zibikkidwe a {{day}} pe.",
+    "untitledProgram": "Cibonwa Citajisi Zina"
+  },
+  "podcasts": {
+    "searchPlaceholder": "Amuvwuntauzye ma podcast...",
+    "loadError": "Tetwakonzya kutola ma podcast. Amulange intaneti yanu.",
+    "noneFound": "Taakwe podcast yajanika",
+    "noResultsFor": "Taakwe zyakajanika za \"{{query}}\".",
+    "checkBackSoon": "Amuboole musule kuti mujane zibalo zipya.",
+    "continueListening": "Amuzumanane Kuswiilila",
+    "allPodcasts": "Ma Podcast Oonse",
+    "detail": {
+      "loadError": "Tetwakonzya kutola podcast eyi.",
+      "episodes": "Zibalo",
+      "episodesLoadError": "Tetwakonzya kutola zibalo.",
+      "noEpisodesTitle": "Taakwe cibalo pe"
+    }
+  },
+  "programs": {
+    "loadError": "Tetwakonzya kutola cibonwa eeci.",
+    "thisWeek": "Nsondo Lino",
+    "noAirtimes": "Taakwe ziindi zibikkidwe pe."
+  },
+  "news": {
+    "title": "Makani",
+    "tabs": {
+      "latest": "Mapya",
+      "trending": "Alangwa Kwiinda",
+      "breaking": "Aakufwambaana"
+    },
+    "loadError": "Tetwakonzya kutola makani. Amulange intaneti yanu.",
+    "noneFound": "Taakwe makani ajanika",
+    "checkBackSoon": "Amuboole musule kuti mujane zipya.",
+    "breakingBadge": "MAKANI AAKUFWAMBAANA",
+    "detail": {
+      "loadError": "Tetwakonzya kutola makani aaya.",
+      "photosAndVideos": "Zifwanikiso a Ziko",
+      "media": "Cifwanikiso/Ciko"
+    }
+  },
+  "profile": {
+    "signInPromptTitle": "Amunjile kuti mujane bwiimo bwanu",
+    "signInPromptDescription": "Amubambe zisaanidwe, mubone bwiimo bwakuswiilila kwanu, mutolele zibalo kuti muzimvwe kunze aa intaneti, azimwi zinji.",
+    "logOut": "Amuzwe",
+    "logOutConfirmMessage": "Sena mulisinizizye kuti muyanda kuzwa?",
+    "menu": {
+      "favorites": "Zisaanidwe",
+      "listeningHistory": "Bwiimo Bwakuswiilila",
+      "downloads": "Zyakatolelwa",
+      "notifications": "Zilengezyo",
+      "settings": "Zibikilwe",
+      "songRequest": "Kulomba Lwiimbo",
+      "privacyPolicy": "Ntaamu Zyakusisikene",
+      "termsOfService": "Milawu Yamulimo",
+      "about": "Atuvwuntauzye"
+    }
+  },
+  "editProfile": {
+    "title": "Amuchinche Bwiimo Bwanu",
+    "changePhoto": "Amuchinche cifwanikiso",
+    "fullNameLabel": "Zina Lyoonse",
+    "phoneLabel": "Nombolo ya Foni",
+    "preferredLanguageLabel": "Mwaambo ngomuyanda (mbuli, en, ny, toi, sn)",
+    "saveChanges": "Amubambe Zyakachinca",
+    "permissionNeededTitle": "Cizuminano Ciyandikene",
+    "permissionNeededMessage": "Amuzumizye kunjila muzifwanikiso zyanu kuti muchinche cifwanikiso canu.",
+    "errors": {
+      "preferredLanguageRequired": "Mwaambo ngomuyanda uyandikene"
+    }
+  },
+  "favorites": {
+    "filters": {
+      "podcasts": "Ma Podcast",
+      "episodes": "Zibalo",
+      "news": "Makani",
+      "programs": "Zibonwa",
+      "presenters": "Bawambi"
+    },
+    "entityLabels": {
+      "podcast": "Podcast",
+      "episode": "Cibalo",
+      "news": "Makani",
+      "program": "Cibonwa",
+      "presenter": "Muwambi"
+    },
+    "emptyTitle": "Taakwe cisaanidwe pe",
+    "emptyDescription": "Amujate cifwanikiso camoyo aama podcast, zibalo, makani, zibonwa naa bawambi kuti muzibambe kuno.",
+    "view": "Bona"
+  },
+  "listeningHistory": {
+    "title": "Bwiimo Bwakuswiilila",
+    "emptyTitle": "Taakwe bwiimo bwakuswiilila pe",
+    "emptyDescription": "Amuswiilile wailesi ya live naa cibalo ca podcast alimwi ziyoboneka kuno.",
+    "liveRadio": "Wailesi ya Live",
+    "podcastEpisode": "Cibalo ca Podcast",
+    "durationListened": "{{duration}} mwaswiilila"
+  },
+  "downloads": {
+    "downloadedEpisode": "Cibalo Cakatolelwa",
+    "removeTitle": "Amugusye Cakatolelwa",
+    "removeMessage": "Amugusye \"{{title}}\" aafoni yanu?",
+    "thisEpisode": "cibalo eeci",
+    "remove": "Amugusye",
+    "emptyTitle": "Taakwe zyakatolelwa pe",
+    "emptyDescription": "Amutolele zibalo za podcast kuti muzimvwe kunze aa intaneti, koonse koonse.",
+    "untitledEpisode": "Cibalo Citajisi Zina",
+    "downloaded": "Cakatolelwa",
+    "status": {
+      "queued": "Cilindilide",
+      "downloading": "Kilitolelwa",
+      "completed": "Camana",
+      "failed": "Tecakazwidilila"
+    }
+  },
+  "languageSettings": {
+    "hint": "Amusale mwaambo ubelesyegwa mu app yoonse."
+  },
+  "about": {
+    "tagline": "Jwi lyanu. Wailesi yanu. Koonse koonse.",
+    "whoWeAreTitle": "Nduswe Bani",
+    "whoWeAreBody": "{{appName}} nga wailesi yamazuba aano ikumuletela zibonwa za live, ma podcast aasalidwe, makani aakufwambaana, alimwi akwaanzana abawambi abibonwa mbomuyanda — koonse mu app yomwe. Nikuba mulaswiilila a live, mulazwidilizya cibalo ca podcast kunze aa intaneti, naa mulalomba lwiimbo ndomuyanda, tulipo kumujatilizya kujwi lyabukkalabo bwanu, koonse koonse nkomubede.",
+    "missionTitle": "Makanze Eesu",
+    "missionBody": "Kwaambila, kubotezya, alimwi akwaanzania baswiilizi besu kwiinda muwailesi ya live iibotezya, ma podcast eesu lwesu, alimwi amakani aaciindi eeco — kwapedwe abubotu abusinizyo mbobayandisya baswiilizi bamazuba aano, aacintu koonse ncobasala.",
+    "connectWithUs": "Amwaanzane aswe",
+    "copyright": "© {{year}} {{appName}}. Ceelede coonse cibambidwe."
+  },
+  "legal": {
+    "lastUpdated": "Yakachinca lwakumaninina: {{date}}",
+    "privacy": {
+      "section1": "1. Zilengwa Nzitubunganya",
+      "section2": "2. Mbotubelesya Zilengwa Zyanu",
+      "section3": "3. Kubamba Zifwanikiso a Milimo ya Third-Party",
+      "section4": "4. Kwaabana Zilengwa",
+      "section5": "5. Kubamba a Kukwabilila Zilengwa",
+      "section6": "6. Ceelede a Zisale Zyanu",
+      "section7": "7. Zyakusisikene Zyabana",
+      "section8": "8. Kuchinca Kwantaamu Eezi",
+      "section9": "9. Amuvwuntauzye"
+    },
+    "terms": {
+      "section1": "1. Kweelela a Akkaunti",
+      "section2": "2. Kubelesya Kweelede",
+      "section3": "3. Zintu a Ceelede Cakulemba",
+      "section4": "4. Zibelesi Nzibabambizya",
+      "section5": "5. Kwaambaula a Live a Milawu ya Nkamu",
+      "section6": "6. Kujanika a Kuchinca kwa Mulimo",
+      "section7": "7. Milimo ya Third-Party",
+      "section8": "8. Zilengwa a Musinsyo wa Mulandu",
+      "section9": "9. Kumaninina kwa Mulimo",
+      "section10": "10. Kuchinca kwa Milawu Eeyi",
+      "section11": "11. Amuvwuntauzye"
+    }
+  },
+  "presenters": {
+    "loadError": "Tetwakonzya kutola bawambi. Amulange intaneti yanu.",
+    "noneFound": "Taakwe muwambi wajanika",
+    "emptyDescription": "Bawambi bayooboneka kuno nobayungizigwa.",
+    "searchPlaceholder": "Amuvwuntauzye bawambi...",
+    "detail": {
+      "loadError": "Tetwakonzya kutola bwiimo bwamuwambi ooyu.",
+      "programsHosted": "Zibonwa Nzyibeendelezya"
+    }
+  },
+  "gallery": {
+    "photos": "Zifwanikiso",
+    "videos": "Ziko",
+    "emptyTitle": "Taakwe cifwanikiso pe",
+    "emptyDescription": "Amuboole musule kuti mujane zifwanikiso a ziko zyawailesi.",
+    "videoUnavailable": "Kubona ciko mu app tacinajanika pe.",
+    "openVideo": "Amujalule Ciko"
+  },
+  "contact": {
+    "title": "Amuvwuntauzye",
+    "call": "Amufoone",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "address": "Adilesi",
+    "followUs": "Amututobele"
+  },
+  "chat": {
+    "subtitle": "Amwaambaule abaswiilizi banu",
+    "emptyTitle": "Taakwe mulumbe pe",
+    "emptyDescription": "Amube wakusaanguna kupa mikwelo.",
+    "messagePlaceholder": "Amulembe mulumbe…",
+    "signInPrompt": "Amunjile kuti mubelesye mumakani",
+    "lockedMessage": "Kwaambaula a live kwajaigwa awailesi lino"
+  },
+  "songRequest": {
+    "title": "Amulombe Lwiimbo",
+    "subtitle": "Amutwaambile ncomuyanda kumvwa amumoyo",
+    "nameLabel": "Zina Lyanu",
+    "songTitleLabel": "Zina lya Lwiimbo",
+    "artistLabel": "Muwambi",
+    "messageLabel": "Mulumbe (teiyandikene)",
+    "sendButton": "Amutumine Cilombwa",
+    "sentTitle": "Cilombwa catuminwa!",
+    "sentDescription": "Twalumba — bawambi besu bayoolanga cilombwa canu calwiimbo kucibonwa ciboola.",
+    "submitAnother": "Amutumine cilombwa cimbi",
+    "errors": {
+      "nameRequired": "Zina lyanu liyandikene",
+      "titleRequired": "Zina lya lwiimbo liyandikene",
+      "artistRequired": "Zina lya muwambi liyandikene"
+    }
+  },
+  "notifications": {
+    "signInTitle": "Amunjile kuti mubone zilengezyo",
+    "signInDescription": "Amubambe akkaunti naa munjile kuti mujane zipya zyamakani aakufwambaana, zibonwa za live a ma podcast mapya.",
+    "emptyTitle": "Taakwe cilengezyo pe",
+    "emptyDescription": "Tulamwaambila naa kwaba cintu cipya."
+  },
+  "search": {
+    "placeholder": "Amuvwuntauzye zibonwa, bawambi, makani…",
+    "emptyTitle": "Amuvwuntauzye {{appName}}",
+    "emptyDescription": "Amujane zibonwa, bawambi, makani, ma podcast a zibalo.",
+    "noResultsTitle": "Taakwe zyakajanika",
+    "noResultsDescription": "Tetwakajana cintu ca \"{{query}}\".",
+    "programs": "Zibonwa"
+  },
+  "splash": {
+    "tagline": "{{frequency}} · Wailesi ya Live, Ma Podcast a Makani"
+  },
+  "onboarding": {
+    "skip": "Amusiye",
+    "getStarted": "Amutalike",
+    "next": "Kutobela",
+    "slide1": {
+      "title": "Wailesi ya live, lyoonse",
+      "description": "Amuswiilile Modern Voice Radio mububotu bupati, a live mahowa 24/7, koonse koonse nkomubede."
+    },
+    "slide2": {
+      "title": "Ma podcast aciindi canu",
+      "description": "Amuzwidilizye zibonwa nzimuyanda, mutolele zibalo, alimwi amuzumanane nkomwakasiya."
+    },
+    "slide3": {
+      "title": "Mutabuli ciindi nociba comwe",
+      "description": "Amutambule zilengezyo zyakufwambaana zyamakani aakufwambaana, zibonwa nzimuyanda, a ma podcast mapya."
+    }
+  },
+  "advertisement": {
+    "badge": "CIVWIISYO",
+    "shortBadge": "AD",
+    "visitWebsite": "Amuye kuwebusaiti",
+    "continueToApp": "Amuzumanane ku App"
+  },
+  "nowPlaying": {
+    "playingLive": "TULATUMINA A LIVE",
+    "nowPlaying": "TULAIMBA LINO",
+    "shareMessage": "Ndaswiilila \"{{title}}\" wa {{artist}} a {{appName}}.",
+    "lyricsUnavailableEpisode": "Mabala alwiimbo tanaajanika kucibalo eeci pe. Amuboole musule — mabala eendelene alaza ku {{appName}}.",
+    "lyricsUnavailableBroadcast": "Mabala alwiimbo tanaajanika kumoyo ooyu pe. Amuboole musule — mabala eendelene alaza ku {{appName}}."
+  }
+}

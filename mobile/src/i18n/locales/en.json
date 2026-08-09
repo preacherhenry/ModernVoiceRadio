@@ -1,0 +1,430 @@
+{
+  "common": {
+    "somethingWentWrong": "Something went wrong",
+    "seeAll": "See All",
+    "categoryAll": "All",
+    "cancel": "Cancel",
+    "live": "LIVE",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "errorState": {
+      "title": "Something went wrong",
+      "description": "Please check your connection and try again.",
+      "tryAgain": "Try again"
+    },
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    },
+    "days": {
+      "sunday": "Sunday",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday"
+    },
+    "timeAgo": {
+      "justNow": "Just now",
+      "minutes": "{{count}}m ago",
+      "hours": "{{count}}h ago",
+      "days": "{{count}}d ago",
+      "weeks": "{{count}}w ago",
+      "months": "{{count}}mo ago",
+      "years": "{{count}}y ago"
+    }
+  },
+  "tabs": {
+    "home": "Home",
+    "live": "Live",
+    "schedule": "Schedule",
+    "podcasts": "Podcasts",
+    "profile": "Profile"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to continue enjoying {{appName}}",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "forgotPassword": "Forgot password?",
+      "signInButton": "Sign In",
+      "continueAsGuest": "Continue as guest",
+      "noAccount": "Don't have an account? ",
+      "signUp": "Sign Up"
+    },
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Join thousands of listeners tuning in every day",
+      "fullNameLabel": "Full name",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone (optional)",
+      "passwordLabel": "Password",
+      "createAccountButton": "Create Account",
+      "successMessage": "Account created — redirecting to sign in…",
+      "haveAccount": "Already have an account? ",
+      "signIn": "Sign In"
+    },
+    "forgotPassword": {
+      "title": "Forgot password?",
+      "subtitle": "Enter the email linked to your account and we'll send you a 6-digit reset code.",
+      "emailLabel": "Email",
+      "sentMessage": "If an account exists for this email, a reset code is on its way.",
+      "enterCodeButton": "Enter reset code",
+      "sendCodeButton": "Send reset code"
+    },
+    "resetPassword": {
+      "title": "Reset your password",
+      "subtitle": "Enter the code sent to {{email}} and choose a new password.",
+      "codeLabel": "6-digit code",
+      "newPasswordLabel": "New password",
+      "successMessage": "Password reset — redirecting to login…",
+      "submitButton": "Reset Password"
+    },
+    "errors": {
+      "invalidEmail": "Enter a valid email",
+      "emailRequired": "Email is required",
+      "passwordMin": "At least 8 characters",
+      "passwordRequired": "Password is required",
+      "passwordNumber": "Include at least one number",
+      "fullNameMin": "Too short",
+      "fullNameRequired": "Full name is required",
+      "otpLength": "Enter the 6-digit code",
+      "otpRequired": "Code is required",
+      "newPasswordRequired": "New password is required"
+    }
+  },
+  "home": {
+    "quickLinks": {
+      "schedule": "Schedule",
+      "podcasts": "Podcasts",
+      "presenters": "Presenters",
+      "liveChat": "Live Chat",
+      "requests": "Requests",
+      "gallery": "Gallery",
+      "contact": "Contact"
+    },
+    "defaultShowTitle": "Modern Voice Radio",
+    "onAirNow": "On air now",
+    "listenersCount": "{{count}} listening",
+    "upcomingToday": "Upcoming Today",
+    "featuredPodcasts": "Featured Podcasts",
+    "latestNews": "Latest News"
+  },
+  "live": {
+    "title": "Live Radio",
+    "listenersNowCount": "{{count}} listening now",
+    "liveBroadcast": "Live Broadcast",
+    "sleepTimerLabel": "Sleep Timer",
+    "minutesLeft": "{{count}} min left",
+    "streamQuality": "Stream Quality",
+    "equalizer": "Equalizer",
+    "off": "Off",
+    "minutesShort": "{{count}} minutes",
+    "backgroundNote": "Playback continues in the background and from your lock screen — control it via Bluetooth or headset buttons too."
+  },
+  "settings": {
+    "equalizerPresets": {
+      "flat": "Flat",
+      "bassBoost": "Bass Boost",
+      "vocal": "Vocal",
+      "trebleBoost": "Treble Boost"
+    },
+    "themeOptions": {
+      "dark": "Dark",
+      "light": "Light",
+      "system": "System"
+    },
+    "appearance": "Appearance",
+    "language": "Language",
+    "appLanguage": "App Language",
+    "audio": "Audio",
+    "audioQuality": "Audio Quality",
+    "notifications": "Notifications",
+    "notificationToggles": {
+      "breakingNews": { "label": "Breaking News", "description": "Urgent news alerts" },
+      "liveShows": { "label": "Live Shows", "description": "When a show goes live" },
+      "newPodcasts": { "label": "New Podcasts", "description": "New episode releases" },
+      "announcements": { "label": "Announcements", "description": "Station updates & events" }
+    },
+    "about": "About",
+    "aboutStation": "About {{appName}}",
+    "versionLabel": "Version {{version}}"
+  },
+  "audioQuality": {
+    "hint": "Higher bitrates sound better but use more mobile data. This applies to live radio streaming.",
+    "descriptions": {
+      "dataSaver": "Data saver — best for limited or slow connections",
+      "standard": "Standard — balanced quality and data usage",
+      "highFidelity": "High fidelity — best sound, uses more data"
+    }
+  },
+  "equalizer": {
+    "hint": "The selected preset applies to both live radio and podcast episode playback."
+  },
+  "schedule": {
+    "loadError": "Couldn't load the schedule. Please check your connection.",
+    "nothingScheduled": "Nothing scheduled",
+    "nothingScheduledDescription": "No programs are scheduled for {{day}} yet.",
+    "untitledProgram": "Untitled Program"
+  },
+  "podcasts": {
+    "searchPlaceholder": "Search podcasts...",
+    "loadError": "Couldn't load podcasts. Please check your connection.",
+    "noneFound": "No podcasts found",
+    "noResultsFor": "No results for \"{{query}}\".",
+    "checkBackSoon": "Check back soon for new episodes.",
+    "continueListening": "Continue Listening",
+    "allPodcasts": "All Podcasts",
+    "detail": {
+      "loadError": "Couldn't load this podcast.",
+      "episodes": "Episodes",
+      "episodesLoadError": "Couldn't load episodes.",
+      "noEpisodesTitle": "No episodes yet"
+    }
+  },
+  "programs": {
+    "loadError": "Couldn't load this program.",
+    "thisWeek": "This Week",
+    "noAirtimes": "No scheduled airtimes yet."
+  },
+  "news": {
+    "title": "News",
+    "tabs": {
+      "latest": "Latest",
+      "trending": "Trending",
+      "breaking": "Breaking"
+    },
+    "loadError": "Couldn't load news. Please check your connection.",
+    "noneFound": "No articles found",
+    "checkBackSoon": "Check back soon for updates.",
+    "breakingBadge": "BREAKING",
+    "detail": {
+      "loadError": "Couldn't load this article.",
+      "photosAndVideos": "Photos & Videos",
+      "media": "Media"
+    }
+  },
+  "profile": {
+    "signInPromptTitle": "Sign in to unlock your profile",
+    "signInPromptDescription": "Save favorites, track your listening history, download episodes for offline play, and more.",
+    "logOut": "Log Out",
+    "logOutConfirmMessage": "Are you sure you want to log out?",
+    "menu": {
+      "favorites": "Favorites",
+      "listeningHistory": "Listening History",
+      "downloads": "Downloads",
+      "notifications": "Notifications",
+      "settings": "Settings",
+      "songRequest": "Song Request",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "about": "About"
+    }
+  },
+  "editProfile": {
+    "title": "Edit Profile",
+    "changePhoto": "Change photo",
+    "fullNameLabel": "Full name",
+    "phoneLabel": "Phone",
+    "preferredLanguageLabel": "Preferred language (e.g. en, ny, toi, sn)",
+    "saveChanges": "Save Changes",
+    "permissionNeededTitle": "Permission needed",
+    "permissionNeededMessage": "Please allow photo library access to change your avatar.",
+    "errors": {
+      "preferredLanguageRequired": "Preferred language is required"
+    }
+  },
+  "favorites": {
+    "filters": {
+      "podcasts": "Podcasts",
+      "episodes": "Episodes",
+      "news": "News",
+      "programs": "Programs",
+      "presenters": "Presenters"
+    },
+    "entityLabels": {
+      "podcast": "Podcast",
+      "episode": "Episode",
+      "news": "News Article",
+      "program": "Program",
+      "presenter": "Presenter"
+    },
+    "emptyTitle": "No favorites yet",
+    "emptyDescription": "Tap the heart icon on podcasts, episodes, news, programs or presenters to save them here.",
+    "view": "View"
+  },
+  "listeningHistory": {
+    "title": "Listening History",
+    "emptyTitle": "No listening history yet",
+    "emptyDescription": "Tune in to live radio or play a podcast episode and it'll show up here.",
+    "liveRadio": "Live Radio",
+    "podcastEpisode": "Podcast Episode",
+    "durationListened": "{{duration}} listened"
+  },
+  "downloads": {
+    "downloadedEpisode": "Downloaded Episode",
+    "removeTitle": "Remove Download",
+    "removeMessage": "Remove \"{{title}}\" from your device?",
+    "thisEpisode": "this episode",
+    "remove": "Remove",
+    "emptyTitle": "No downloads yet",
+    "emptyDescription": "Download podcast episodes to listen offline, anywhere.",
+    "untitledEpisode": "Untitled Episode",
+    "downloaded": "Downloaded",
+    "status": {
+      "queued": "Queued",
+      "downloading": "Downloading",
+      "completed": "Completed",
+      "failed": "Failed"
+    }
+  },
+  "languageSettings": {
+    "hint": "Choose the language used throughout the app."
+  },
+  "about": {
+    "tagline": "Your voice. Your station. Anywhere.",
+    "whoWeAreTitle": "Who We Are",
+    "whoWeAreBody": "{{appName}} is a modern radio station bringing you live broadcasts, curated podcasts, breaking news, and a direct line to the presenters and programs you love — all in one app. Whether you're tuning into the live stream, catching up on a podcast episode offline, or requesting your favorite song, we're here to keep you connected to the sound of your community, anywhere you go.",
+    "missionTitle": "Our Mission",
+    "missionBody": "To inform, entertain, and connect our listeners through compelling live radio, original podcasts, and timely news — delivered with the quality and reliability a modern audience expects, on whatever device they choose.",
+    "connectWithUs": "Connect with us",
+    "copyright": "© {{year}} {{appName}}. All rights reserved."
+  },
+  "legal": {
+    "lastUpdated": "Last updated: {{date}}",
+    "privacy": {
+      "section1": "1. Information We Collect",
+      "section2": "2. How We Use Your Information",
+      "section3": "3. Media Storage & Third-Party Services",
+      "section4": "4. Data Sharing",
+      "section5": "5. Data Retention & Security",
+      "section6": "6. Your Rights & Choices",
+      "section7": "7. Children's Privacy",
+      "section8": "8. Changes to This Policy",
+      "section9": "9. Contact Us"
+    },
+    "terms": {
+      "section1": "1. Eligibility & Accounts",
+      "section2": "2. Acceptable Use",
+      "section3": "3. Content & Intellectual Property",
+      "section4": "4. User-Generated Content",
+      "section5": "5. Live Chat & Community Guidelines",
+      "section6": "6. Availability & Changes to the Service",
+      "section7": "7. Third-Party Services",
+      "section8": "8. Disclaimers & Limitation of Liability",
+      "section9": "9. Termination",
+      "section10": "10. Changes to These Terms",
+      "section11": "11. Contact Us"
+    }
+  },
+  "presenters": {
+    "loadError": "Couldn't load presenters. Please check your connection.",
+    "noneFound": "No presenters found",
+    "emptyDescription": "Presenters will appear here once added.",
+    "searchPlaceholder": "Search presenters...",
+    "detail": {
+      "loadError": "Couldn't load this presenter's profile.",
+      "programsHosted": "Programs Hosted"
+    }
+  },
+  "gallery": {
+    "photos": "Photos",
+    "videos": "Videos",
+    "emptyTitle": "No media yet",
+    "emptyDescription": "Check back soon for photos and videos from the station.",
+    "videoUnavailable": "In-app video playback isn't available yet.",
+    "openVideo": "Open Video"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "call": "Call",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "address": "Address",
+    "followUs": "Follow us"
+  },
+  "chat": {
+    "subtitle": "Chat with fellow listeners",
+    "emptyTitle": "No messages yet",
+    "emptyDescription": "Be the first to say hello.",
+    "messagePlaceholder": "Type a message…",
+    "signInPrompt": "Sign in to join the conversation",
+    "lockedMessage": "Live chat is currently locked by the station"
+  },
+  "songRequest": {
+    "title": "Request a Song",
+    "subtitle": "Tell us what you want to hear on air",
+    "nameLabel": "Your name",
+    "songTitleLabel": "Song title",
+    "artistLabel": "Artist",
+    "messageLabel": "Message (optional)",
+    "sendButton": "Send Request",
+    "sentTitle": "Request sent!",
+    "sentDescription": "Thanks — our presenters will consider your song request for an upcoming show.",
+    "submitAnother": "Submit another request",
+    "errors": {
+      "nameRequired": "Your name is required",
+      "titleRequired": "Song title is required",
+      "artistRequired": "Artist name is required"
+    }
+  },
+  "notifications": {
+    "signInTitle": "Sign in to see notifications",
+    "signInDescription": "Create an account or sign in to get updates on breaking news, live shows and new podcasts.",
+    "emptyTitle": "No notifications yet",
+    "emptyDescription": "We'll let you know when there's something new."
+  },
+  "search": {
+    "placeholder": "Search programs, presenters, news…",
+    "emptyTitle": "Search {{appName}}",
+    "emptyDescription": "Find programs, presenters, news, podcasts and episodes.",
+    "noResultsTitle": "No results found",
+    "noResultsDescription": "We couldn't find anything for \"{{query}}\".",
+    "programs": "Programs"
+  },
+  "splash": {
+    "tagline": "{{frequency}} · Live Radio, Podcasts & News"
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "getStarted": "Get Started",
+    "next": "Next",
+    "slide1": {
+      "title": "Live radio, always on",
+      "description": "Stream Modern Voice Radio in crystal-clear quality, live 24/7, wherever you are."
+    },
+    "slide2": {
+      "title": "Podcasts on your schedule",
+      "description": "Catch up on your favorite shows, download episodes, and pick up right where you left off."
+    },
+    "slide3": {
+      "title": "Never miss a moment",
+      "description": "Get instant alerts for breaking news, your favorite programs, and new podcast drops."
+    }
+  },
+  "advertisement": {
+    "badge": "ADVERTISEMENT",
+    "shortBadge": "AD",
+    "visitWebsite": "Visit Website",
+    "continueToApp": "Continue to App"
+  },
+  "nowPlaying": {
+    "playingLive": "PLAYING LIVE",
+    "nowPlaying": "NOW PLAYING",
+    "shareMessage": "Listening to \"{{title}}\" by {{artist}} on {{appName}}.",
+    "lyricsUnavailableEpisode": "Lyrics aren't available for this episode yet. Check back soon — synced lyrics are coming to {{appName}}.",
+    "lyricsUnavailableBroadcast": "Lyrics aren't available for this broadcast yet. Check back soon — synced lyrics are coming to {{appName}}."
+  }
+}

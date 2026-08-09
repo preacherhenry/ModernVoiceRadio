@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Backend
+backend/logs/
+
+# Admin (Vite build output)
+admin/dist/
+admin/dist-ssr/
+
+# Mobile (Expo/React Native)
+mobile/.expo/
+mobile/dist/
+mobile/web-build/
+mobile/ios/
+mobile/android/
+mobile/*.orig.*
+mobile/google-services.json
+mobile/GoogleService-Info.plist
+mobile/*.jks
+mobile/*.p8
+mobile/*.p12
+mobile/*.key
+mobile/*.mobileprovision
+
+# TypeScript build info
+*.tsbuildinfo

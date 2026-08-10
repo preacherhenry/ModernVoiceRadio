@@ -59,7 +59,10 @@ const NewsScreen: React.FC = () => {
   } = useGetNewsQuery(queryParams);
   const articles = data?.data ?? [];
 
-  const { data: inlineAdsData } = useGetActiveAdvertisementsQuery({ placement: 'news_inline' });
+  const { data: inlineAdsData } = useGetActiveAdvertisementsQuery(
+    { placement: 'news_inline' },
+    { pollingInterval: 60000 },
+  );
   const inlineAds = inlineAdsData?.data ?? [];
 
   const breakingArticles = articles.filter((a) => a.is_breaking);

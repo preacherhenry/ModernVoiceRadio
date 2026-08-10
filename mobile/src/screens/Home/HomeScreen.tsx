@@ -72,7 +72,10 @@ const HomeScreen: React.FC = () => {
   const { data: scheduleData, isLoading: scheduleLoading, refetch: refetchSchedule } = useGetTodayScheduleQuery();
   const { data: podcastsData, isLoading: podcastsLoading, refetch: refetchPodcasts } = useGetPodcastsQuery({ featured: true });
   const { data: newsData, isLoading: newsLoading, refetch: refetchNews } = useGetNewsQuery({ page: 1 });
-  const { data: adsData } = useGetActiveAdvertisementsQuery({ placement: 'home_banner' });
+  const { data: adsData, refetch: refetchAds } = useGetActiveAdvertisementsQuery(
+    { placement: 'home_banner' },
+    { pollingInterval: 60000 },
+  );
   const [registerImpression] = useRegisterImpressionMutation();
   const [registerClick] = useRegisterClickMutation();
   const ads = adsData?.data ?? [];
@@ -119,7 +122,8 @@ const HomeScreen: React.FC = () => {
     refetchPodcasts();
     refetchNews();
     refetchNowPlaying();
-  }, [refetchSchedule, refetchPodcasts, refetchNews, refetchNowPlaying]);
+    refetchAds();
+  }, [refetchSchedule, refetchPodcasts, refetchNews, refetchNowPlaying, refetchAds]);
 
   return (
     <ScreenContainer onRefresh={onRefresh} refreshing={false}>

@@ -3,7 +3,16 @@
     "allow": [
       "Bash(python -m pip install --quiet numpy)",
       "Bash(curl -s http://localhost:4000/api/v1/streams/active)",
-      "Bash(curl -s http://localhost:4000/api/v1/streams/now-playing)"
+      "Bash(curl -s http://localhost:4000/api/v1/streams/now-playing)",
+      "Bash(curl -s -m 30 https://modern-voice-radio.onrender.com/api/v1/podcasts/the-weekly-debrief/episodes)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\)['data']; [print\\(p['title'],'|',p['slug']\\) for p in d]\")",
+      "Bash(curl -s -m 30 https://modern-voice-radio.onrender.com/api/v1/podcasts/72307758-c3d3-4464-bbe3-962c36e9b27a/episodes)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\)['data']; print\\('total:',len\\(d\\)\\); [print\\(g['media_type'],'|',g['title']\\) for g in d]\")",
+      "Bash(python -c ' *)",
+      "Bash(node -e ' *)",
+      "Bash(npx tsc *)",
+      "Bash(npx eslint *)",
+      "Bash(echo \"--- exit: $? ---\")"
     ]
   }
 }

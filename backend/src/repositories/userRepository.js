@@ -61,6 +61,25 @@ export const userRepository = {
     await query('UPDATE users SET fcm_token = $2 WHERE id = $1', [id, fcmToken]);
   },
 
+  /**
+   * Everyone reachable by a per-device push, with the name needed to personalize it.
+   * Reads the existing users table — personalization deliberately introduces no second
+   * store of user data. Rows without a token can't be reached individually and are
+   * excluded; duplicate tokens (same device re-used by another account) are collapsed
+   * to the most recently updated owner so a device never gets the same push twice.
+   */
+  listPushRecipients: async () => {
+    const { rows } = await query(
+      `SELECT DISTINCT ON (fcm_token) id, full_name, fcm_token
+       FROM users
+       WHERE fcm_token IS NOT NULL
+         AND fcm_token <> ''
+         AND is_active = true
+       ORDER BY fcm_token, updated_at DESC NULLS LAST`,
+    );
+    return rows;
+  },
+
   touchLastLogin: async (id) => {
     await query('UPDATE users SET last_login_at = now() WHERE id = $1', [id]);
   },

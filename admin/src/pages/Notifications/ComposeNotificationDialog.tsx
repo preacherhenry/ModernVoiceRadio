@@ -1,8 +1,9 @@
 import React from 'react';
 import {
   Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Grid, Box, MenuItem,
+  Chip, Stack, Typography, Alert,
 } from '@mui/material';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
@@ -16,6 +17,20 @@ const TYPE_OPTIONS = [
 ];
 
 const TOPIC_OPTIONS = ['all', 'breaking_news', 'live_show', 'new_podcast'];
+
+/** Mirrors the backend's placeholder set — see backend/src/utils/personalize.js. */
+const PLACEHOLDERS = [
+  { token: '{firstName}', help: "Recipient's first name" },
+  { token: '{name}', help: "Recipient's full name" },
+];
+const PLACEHOLDER_REGEX = /\{\{?\s*(first[_\s-]?name|name)\s*\}?\}/gi;
+/** Matches the backend's FALLBACK_NAME, used when a recipient has no name on file. */
+const FALLBACK_NAME = 'there';
+
+/** Renders admin copy the way a recipient would actually receive it. */
+const previewFor = (text: string, firstName: string) => text.replace(PLACEHOLDER_REGEX, firstName);
+
+const hasPlaceholder = (text: string) => new RegExp(PLACEHOLDER_REGEX.source, 'i').test(text);
 
 const schema = yup.object({
   title: yup.string().max(180).required('Title is required'),
@@ -36,13 +51,24 @@ const ComposeNotificationDialog: React.FC<Props> = ({ open, onClose }) => {
   const [createNotification, { isLoading }] = useCreateNotificationMutation();
 
   const {
-    control, handleSubmit, reset, formState: { errors },
+    control, handleSubmit, reset, setValue, getValues, formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
       title: '', body: '', type: 'announcement', imageUrl: '', targetTopic: 'all',
     },
   });
+
+  const watchedTitle = useWatch({ control, name: 'title' }) ?? '';
+  const watchedBody = useWatch({ control, name: 'body' }) ?? '';
+  const isPersonalized = hasPlaceholder(watchedTitle) || hasPlaceholder(watchedBody);
+
+  /** Appends a placeholder to the message field so admins don't have to type it exactly. */
+  const insertPlaceholder = (token: string) => {
+    const current = getValues('body') ?? '';
+    const needsSpace = current.length > 0 && !/\s$/.test(current);
+    setValue('body', `${current}${needsSpace ? ' ' : ''}${token}`, { shouldValidate: true });
+  };
 
   const handleClose = () => { reset(); onClose(); };
 
@@ -80,6 +106,41 @@ const ComposeNotificationDialog: React.FC<Props> = ({ open, onClose }) => {
             )}
             />
           </Grid>
+          <Grid item xs={12}>
+            <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
+              <Typography variant="caption" color="text.secondary">Personalize:</Typography>
+              {PLACEHOLDERS.map((p) => (
+                <Chip
+                  key={p.token}
+                  label={p.token}
+                  title={p.help}
+                  size="small"
+                  variant="outlined"
+                  onClick={() => insertPlaceholder(p.token)}
+                />
+              ))}
+            </Stack>
+          </Grid>
+
+          {isPersonalized && (
+            <Grid item xs={12}>
+              <Alert severity="info" sx={{ '& .MuiAlert-message': { width: '100%' } }}>
+                <Typography variant="caption" display="block" sx={{ fontWeight: 600, mb: 0.5 }}>
+                  Each listener receives their own name. Preview:
+                </Typography>
+                {[['Preacher', 'a listener named Preacher'], ['John', 'a listener named John'], [FALLBACK_NAME, 'someone with no name on file']].map(([who, label]) => (
+                  <Typography key={who} variant="body2" sx={{ mb: 0.5 }}>
+                    <Box component="span" sx={{ color: 'text.secondary' }}>{label}: </Box>
+                    {previewFor(watchedTitle, who) && (
+                      <Box component="span" sx={{ fontWeight: 600 }}>{previewFor(watchedTitle, who)} — </Box>
+                    )}
+                    {previewFor(watchedBody, who)}
+                  </Typography>
+                ))}
+              </Alert>
+            </Grid>
+          )}
+
           <Grid item xs={6}>
             <Controller name="type" control={control} render={({ field }) => (
               <TextField {...field} select fullWidth label="Type">
@@ -90,7 +151,16 @@ const ComposeNotificationDialog: React.FC<Props> = ({ open, onClose }) => {
           </Grid>
           <Grid item xs={6}>
             <Controller name="targetTopic" control={control} render={({ field }) => (
-              <TextField {...field} select fullWidth label="Target audience">
+              <TextField
+                {...field}
+                select
+                fullWidth
+                label="Target audience"
+                disabled={isPersonalized}
+                helperText={isPersonalized
+                  ? 'Personalized messages go to every signed-in listener individually'
+                  : undefined}
+              >
                 {TOPIC_OPTIONS.map((t) => <MenuItem key={t} value={t}>{t === 'all' ? 'Everyone' : t}</MenuItem>)}
               </TextField>
             )}

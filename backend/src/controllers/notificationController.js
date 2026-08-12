@@ -24,7 +24,9 @@ export const list = asyncHandler(async (req, res) => {
 
 export const listMine = asyncHandler(async (req, res) => {
   const { page, limit, offset } = parseListQuery(req.query, { defaultLimit: 20 });
-  const { rows, total } = await notificationService.listMine({ userId: req.user.id, offset, limit });
+  const { rows, total } = await notificationService.listMine({
+    userId: req.user.id, fullName: req.user.fullName, offset, limit,
+  });
   sendSuccess(res, 200, 'Notifications retrieved', rows, buildPaginationMeta(page, limit, total));
 });
 

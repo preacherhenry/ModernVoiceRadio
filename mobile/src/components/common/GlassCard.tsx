@@ -9,6 +9,12 @@ interface Props {
   style?: ViewStyle;
   intensity?: number;
   padded?: boolean;
+  /**
+   * Heavily frosted, near-opaque variant for surfaces that float over arbitrary
+   * content and must stay readable — the mini player and the popup ad card. The
+   * default (see-through) variant is for decorative tiles sitting on a known background.
+   */
+  strong?: boolean;
 }
 
 /**
@@ -17,38 +23,51 @@ interface Props {
  * historically renders inconsistently across OEM skins.
  */
 const GlassCard: React.FC<Props> = ({
-  children, style, intensity = 40, padded = true,
+  children, style, intensity = 40, padded = true, strong = false,
 }) => {
   const { colors, isDark } = useAppTheme();
-
-  const content = (
-    <View
-      style={[
-        styles.border,
-        { borderColor: colors.glassBorder },
-        padded && styles.padding,
-        style,
-      ]}
-    >
-      {children}
-    </View>
-  );
 
   if (Platform.OS === 'ios') {
     return (
       <BlurView
-        intensity={intensity}
+        intensity={strong ? 90 : intensity}
         tint={isDark ? 'dark' : 'light'}
         style={[styles.container, style]}
       >
-        <View style={padded ? styles.padding : undefined}>{children}</View>
+        {/* On iOS the blur alone still reads as translucent; a tint layered on top
+            keeps the frosted look while cutting how much shows through. */}
+        <View
+          style={[
+            strong && { backgroundColor: colors.glassTintStrong },
+            strong && styles.border,
+            strong && { borderColor: colors.glassBorder },
+            padded && styles.padding,
+          ]}
+        >
+          {children}
+        </View>
       </BlurView>
     );
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.glassFill }, style]}>
-      {content}
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: strong ? colors.glassFillStrong : colors.glassFill },
+        style,
+      ]}
+    >
+      <View
+        style={[
+          styles.border,
+          { borderColor: colors.glassBorder },
+          padded && styles.padding,
+          style,
+        ]}
+      >
+        {children}
+      </View>
     </View>
   );
 };

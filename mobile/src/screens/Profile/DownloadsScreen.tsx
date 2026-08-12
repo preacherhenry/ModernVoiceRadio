@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 
 import ScreenContainer from '@components/common/ScreenContainer';
 import LoadingIndicator from '@components/common/LoadingIndicator';
-import EmptyState from '@components/common/EmptyState';
+import ComingSoonState from '@components/common/ComingSoonState';
 import ErrorState from '@components/common/ErrorState';
 
 import { useAppTheme } from '@theme/ThemeProvider';
@@ -105,11 +105,10 @@ const DownloadsScreen: React.FC = () => {
       ) : error ? (
         <ErrorState onRetry={refetch} />
       ) : downloads.length === 0 ? (
-        <EmptyState
-          icon="download-outline"
-          title={t('downloads.emptyTitle')}
-          description={t('downloads.emptyDescription')}
-        />
+        // Downloads can only come from podcast episodes, which aren't live yet — so
+        // an empty list here means "not available yet", not "you haven't saved any".
+        // The list rendering below stays intact and takes over once episodes are real.
+        <ComingSoonState icon="download-outline" description={t('comingSoon.downloads')} />
       ) : (
         <FlatList
           data={downloads}

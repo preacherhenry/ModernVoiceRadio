@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import ScreenContainer from '@components/common/ScreenContainer';
+import { AuthWall, useRequiresAuth } from '@components/common/AuthRequired';
 import LoadingIndicator from '@components/common/LoadingIndicator';
 import ErrorState from '@components/common/ErrorState';
 import EmptyState from '@components/common/EmptyState';
@@ -33,6 +34,7 @@ const ScheduleScreen: React.FC = () => {
   const navigation = useNavigation<Nav>();
   const { status } = useAppSelector((state) => state.auth);
   const isAuthenticated = status === 'authenticated';
+  const { blocked, resolving } = useRequiresAuth();
 
   const today = new Date().getDay();
   const [selectedDay, setSelectedDay] = useState(today);
@@ -135,6 +137,19 @@ const ScheduleScreen: React.FC = () => {
           );
         })}
       </View>
+    );
+  }
+
+  // Guests get the sign-in wall instead of the schedule. Placed after every hook so
+  // hook order stays stable across the authenticated/guest branches.
+  if (blocked) {
+    return (
+      <AuthWall
+        resolving={resolving}
+        titleKey="tabs.schedule"
+        descriptionKey="authGate.schedule"
+        icon="calendar-clock"
+      />
     );
   }
 

@@ -8,6 +8,7 @@ import { TextInput as PaperTextInput } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import ScreenContainer from '@components/common/ScreenContainer';
+import { AuthWall, useRequiresAuth } from '@components/common/AuthRequired';
 import AppTextInput from '@components/common/AppTextInput';
 import AppButton from '@components/common/AppButton';
 
@@ -26,6 +27,7 @@ const SongRequestScreen: React.FC = () => {
   const { colors } = useAppTheme();
   const { t } = useTranslation();
   const { user } = useAppSelector((state) => state.auth);
+  const { blocked, resolving } = useRequiresAuth();
   const [submitSongRequest, { isLoading, error }] = useSubmitSongRequestMutation();
   const [submitted, setSubmitted] = useState(false);
 
@@ -78,6 +80,19 @@ const SongRequestScreen: React.FC = () => {
           <AppButton label={t('songRequest.submitAnother')} onPress={submitAnother} style={styles.submitAnotherButton} />
         </View>
       </ScreenContainer>
+    );
+  }
+
+  // Guests get the sign-in wall instead of this feature. Placed after every hook
+  // so hook order stays stable across the authenticated/guest branches.
+  if (blocked) {
+    return (
+      <AuthWall
+        resolving={resolving}
+        titleKey="songRequest.title"
+        descriptionKey="authGate.songRequest"
+        icon="music-note-plus"
+      />
     );
   }
 

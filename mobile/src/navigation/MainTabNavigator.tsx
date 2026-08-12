@@ -44,6 +44,9 @@ const MainTabNavigator: React.FC = () => {
   return (
     <View style={styles.flex}>
       <Tab.Navigator
+        // Schedule is declared first (far-left position), which would otherwise make it
+        // the landing tab — the app must always open on Home regardless of tab order.
+        initialRouteName="HomeTab"
         screenOptions={({ route }) => ({
           headerShown: false,
           tabBarActiveTintColor: colors.primary,
@@ -63,9 +66,11 @@ const MainTabNavigator: React.FC = () => {
           tabBarLabel: LABELS[route.name as keyof MainTabParamList],
         })}
       >
-        <Tab.Screen name="HomeTab" component={HomeStackNavigator} />
-        <Tab.Screen name="LiveTab" component={LiveStackNavigator} />
+        {/* Order is deliberate: Schedule anchors the far left and Home sits dead
+            centre (3rd of 5), the easiest slot to reach with a thumb. */}
         <Tab.Screen name="ScheduleTab" component={ScheduleStackNavigator} />
+        <Tab.Screen name="LiveTab" component={LiveStackNavigator} />
+        <Tab.Screen name="HomeTab" component={HomeStackNavigator} />
         <Tab.Screen name="PodcastsTab" component={PodcastsStackNavigator} />
         <Tab.Screen
           name="ProfileTab"
@@ -98,15 +103,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     borderTopWidth: 0,
     elevation: 0,
-    height: Platform.OS === 'ios' ? 84 : 64,
-    paddingTop: 8,
+    height: Platform.OS === 'ios' ? 88 : 70,
+    paddingTop: 10,
+    paddingBottom: Platform.OS === 'ios' ? 28 : 10,
   },
-  tabLabel: { fontSize: 11, fontWeight: '600' },
+  tabLabel: { fontSize: 11, fontWeight: '600', marginTop: 2 },
   miniPlayerSlot: {
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: Platform.OS === 'ios' ? 90 : 70,
+    // Sits just above the tab bar (whose height changed above) with a small gap.
+    bottom: Platform.OS === 'ios' ? 94 : 76,
   },
 });
 

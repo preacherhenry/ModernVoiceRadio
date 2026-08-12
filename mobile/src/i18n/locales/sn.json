@@ -153,10 +153,22 @@
     "audioQuality": "Kunaka kweRuzha",
     "notifications": "Zviziviso",
     "notificationToggles": {
-      "breakingNews": { "label": "Nhau Dzinokurumidza", "description": "Zviziviso zvenhau dzinokurumidza" },
-      "liveShows": { "label": "Zviratidziro zveLive", "description": "Kana purogiramu yatanga paLive" },
-      "newPodcasts": { "label": "Ma Podcast Matsva", "description": "Kuburitswa kwezvikamu zvitsva" },
-      "announcements": { "label": "Zvazivisiwa", "description": "Zvazvitsva zveredhiyo nezviitiko" }
+      "breakingNews": {
+        "label": "Nhau Dzinokurumidza",
+        "description": "Zviziviso zvenhau dzinokurumidza"
+      },
+      "liveShows": {
+        "label": "Zviratidziro zveLive",
+        "description": "Kana purogiramu yatanga paLive"
+      },
+      "newPodcasts": {
+        "label": "Ma Podcast Matsva",
+        "description": "Kuburitswa kwezvikamu zvitsva"
+      },
+      "announcements": {
+        "label": "Zvazivisiwa",
+        "description": "Zvazvitsva zveredhiyo nezviitiko"
+      }
     },
     "about": "Nezvedu",
     "aboutStation": "Nezve {{appName}}",
@@ -418,7 +430,29 @@
     "badge": "ZVEKUSHAMBADZA",
     "shortBadge": "AD",
     "visitWebsite": "Shanyira Webhusaiti",
-    "continueToApp": "Enderera kuApp"
+    "continueToApp": "Enderera kuApp",
+    "learnMore": "Dzidza Zvimwe",
+    "dismiss": "Kwete ndatenda"
+  },
+  "authGate": {
+    "title": "Pinda kuti uenderere",
+    "signIn": "Pinda",
+    "createAccount": "Gadzira Account Yemahara",
+    "schedule": "Pinda kuti uone chirongwa chizere chemapurogiramu uye usambofa wakapotsa chiratidziro chaunoda.",
+    "presenters": "Pinda kuti uzive vaPresenter vemapurogiramu aunoda.",
+    "liveChat": "Pinda kuti ubatane nekutaurirana nevamwe vateereri vari kuteerera.",
+    "songRequest": "Pinda kuti ukumbire rwiyo uye urunzwe ruchiridzwa paairi.",
+    "gallery": "Pinda kuti uone mifananidzo nemavhidhiyo echiteshi.",
+    "news": "Pinda kuti uverenge nhau dzazvino, dzinokurumidza uye zvitsva zvechiteshi."
+  },
+  "comingSoon": {
+    "badge": "ZVIRI KUUYA",
+    "title": "Zviri kuuya",
+    "description": "Tichiri kuzvigadzirira. Dzokera nokukurumidza — zvichasvika munguva pfupi.",
+    "podcasts": "Ma podcast edu ari kugadzirwa. Munguva pfupi uchakwanisa kuteerera nekudhawunirodha zvikamu zvizere pano.",
+    "downloads": "Kudhawunirodha kuti uteerere usina intaneti kuri kuuya pamwe chete nema podcast edu. Uchakwanisa kuchengetedza zvikamu wozoteerera usingashandisi data.",
+    "equalizer": "Sarudzo dzeruzha dziri kuuya. Parizvino, kuridza kunoshandisa marongero eruzha edivhaisi yako.",
+    "map": "Mepu yechiteshi iri kuuya. Panguva ino, shandisa kero nenhamba dziri pamusoro apa."
   },
   "nowPlaying": {
     "playingLive": "TIRI KURIDZA PALIVE",

@@ -21,12 +21,11 @@ import {
 } from '@services/audioPlayerService';
 import { joinLiveListenerPresence, leaveLiveListenerPresence } from '@services/listenerPresenceService';
 import { setVolume, setSelectedBitrate } from '@redux/slices/playerSlice';
-import { setEqualizerPreset } from '@redux/slices/settingsSlice';
 
 import { gradients } from '@constants/colors';
 import { spacing, radius } from '@constants/spacing';
 import { fontFamily, fontSize, typeStyles } from '@constants/typography';
-import { SLEEP_TIMER_PRESETS_MIN, EQUALIZER_PRESETS, EQUALIZER_PRESET_LABEL_KEYS } from '@constants/config';
+import { SLEEP_TIMER_PRESETS_MIN } from '@constants/config';
 
 const LiveRadioScreen: React.FC = () => {
   const { colors } = useAppTheme();
@@ -36,7 +35,6 @@ const LiveRadioScreen: React.FC = () => {
   const {
     currentTrack, playbackState, liveListenerCount, volume, sleepTimerEndsAt,
   } = useAppSelector((state) => state.player);
-  const equalizerPreset = useAppSelector((state) => state.settings.equalizerPreset);
 
   const isPlaying = playbackState === 'playing';
   const isBuffering = playbackState === 'buffering' || playbackState === 'loading';
@@ -52,7 +50,6 @@ const LiveRadioScreen: React.FC = () => {
 
   const [bitrateSheetOpen, setBitrateSheetOpen] = useState(false);
   const [sleepSheetOpen, setSleepSheetOpen] = useState(false);
-  const [eqSheetOpen, setEqSheetOpen] = useState(false);
 
   const pulse = useSharedValue(1);
   useEffect(() => {
@@ -164,10 +161,8 @@ const LiveRadioScreen: React.FC = () => {
             {remainingSleepLabel || t('live.sleepTimerLabel')}
           </Text>
         </Pressable>
-        <Pressable style={styles.toolButton} onPress={() => setEqSheetOpen(true)}>
-          <MaterialCommunityIcons name="equalizer" size={22} color={colors.textSecondary} />
-          <Text style={[styles.toolLabel, { color: colors.textSecondary }]}>{t(EQUALIZER_PRESET_LABEL_KEYS[equalizerPreset])}</Text>
-        </Pressable>
+        {/* No equalizer shortcut here: presets have no effect on playback yet. It
+            stays in Settings, where it's clearly marked as coming soon. */}
         <Pressable style={styles.toolButton} onPress={() => setBitrateSheetOpen(true)}>
           <MaterialCommunityIcons name="broadcast" size={22} color={colors.textSecondary} />
           <Text style={[styles.toolLabel, { color: colors.textSecondary }]}>{activeStream.bitrate_kbps} kbps</Text>
@@ -201,14 +196,6 @@ const LiveRadioScreen: React.FC = () => {
         onDismiss={() => setSleepSheetOpen(false)}
       />
 
-      <OptionSheet
-        visible={eqSheetOpen}
-        title={t('live.equalizer')}
-        selectedValue={equalizerPreset}
-        options={EQUALIZER_PRESETS.map((preset) => ({ label: t(EQUALIZER_PRESET_LABEL_KEYS[preset]), value: preset }))}
-        onSelect={(value) => dispatch(setEqualizerPreset(value))}
-        onDismiss={() => setEqSheetOpen(false)}
-      />
     </ScreenContainer>
   );
 };

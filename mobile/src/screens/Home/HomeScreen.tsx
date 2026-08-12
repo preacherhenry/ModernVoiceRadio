@@ -17,13 +17,11 @@ import LoadingIndicator from '@components/common/LoadingIndicator';
 import AdvertisementCarousel from '@components/common/AdvertisementCarousel';
 import WaveformAnimation from '@components/player/WaveformAnimation';
 import ProgramCard from '@components/cards/ProgramCard';
-import PodcastCard from '@components/cards/PodcastCard';
 import NewsCard from '@components/cards/NewsCard';
 
 import { useAppTheme } from '@theme/ThemeProvider';
 import { useAppSelector } from '@redux/hooks';
 import { useGetTodayScheduleQuery } from '@redux/api/scheduleApi';
-import { useGetPodcastsQuery } from '@redux/api/podcastsApi';
 import { useGetNewsQuery } from '@redux/api/newsApi';
 import { useGetActiveStreamQuery, useGetNowPlayingQuery } from '@redux/api/streamsApi';
 import { useGetActiveAdvertisementsQuery, useRegisterClickMutation, useRegisterImpressionMutation } from '@redux/api/advertisementsApi';
@@ -33,7 +31,7 @@ import { joinLiveListenerPresence } from '@services/listenerPresenceService';
 import { spacing, radius } from '@constants/spacing';
 import { fontFamily, fontSize, typeStyles } from '@constants/typography';
 import { gradients } from '@constants/colors';
-import { APP_NAME } from '@constants/config';
+import { APP_NAME, STATION_FREQUENCY } from '@constants/config';
 import { formatTimeOfDay as formatTime } from '@utils/formatters';
 import type { HomeStackParamList, MainTabParamList, ProfileStackParamList } from '@navigation/types';
 
@@ -41,6 +39,9 @@ type Nav = CompositeNavigationProp<
   NativeStackNavigationProp<HomeStackParamList>,
   BottomTabNavigationProp<MainTabParamList>
 >;
+
+// Split so the digits can be typeset larger than the "FM" suffix beside them.
+const [frequencyValue, frequencyUnit = ''] = STATION_FREQUENCY.split(' ');
 
 const QUICK_LINKS: Array<{ icon: keyof typeof MaterialCommunityIcons.glyphMap; labelKey: string; screen: keyof ProfileStackParamList | 'Schedule' | 'Podcasts' }> = [
   { icon: 'calendar-clock', labelKey: 'home.quickLinks.schedule', screen: 'Schedule' },
@@ -70,7 +71,6 @@ const HomeScreen: React.FC = () => {
   const nowPlaying = nowPlayingData?.data;
 
   const { data: scheduleData, isLoading: scheduleLoading, refetch: refetchSchedule } = useGetTodayScheduleQuery();
-  const { data: podcastsData, isLoading: podcastsLoading, refetch: refetchPodcasts } = useGetPodcastsQuery({ featured: true });
   const { data: newsData, isLoading: newsLoading, refetch: refetchNews } = useGetNewsQuery({ page: 1 });
   const { data: adsData, refetch: refetchAds } = useGetActiveAdvertisementsQuery(
     { placement: 'home_banner' },
@@ -119,11 +119,10 @@ const HomeScreen: React.FC = () => {
 
   const onRefresh = useCallback(() => {
     refetchSchedule();
-    refetchPodcasts();
     refetchNews();
     refetchNowPlaying();
     refetchAds();
-  }, [refetchSchedule, refetchPodcasts, refetchNews, refetchNowPlaying, refetchAds]);
+  }, [refetchSchedule, refetchNews, refetchNowPlaying, refetchAds]);
 
   return (
     <ScreenContainer onRefresh={onRefresh} refreshing={false}>
@@ -173,6 +172,13 @@ const HomeScreen: React.FC = () => {
                 <MaterialCommunityIcons name={isPlaying ? 'pause' : 'play'} size={32} color={colors.primary} />
               )}
             </Pressable>
+
+            {/* Station frequency — deliberately the largest type on the banner. */}
+            <View style={styles.frequencyWrap}>
+              <Text style={styles.frequencyValue}>{frequencyValue}</Text>
+              {!!frequencyUnit && <Text style={styles.frequencyUnit}>{frequencyUnit}</Text>}
+            </View>
+
             <WaveformAnimation active={isPlaying} barCount={5} />
           </View>
         </LinearGradient>
@@ -240,21 +246,9 @@ const HomeScreen: React.FC = () => {
         </>
       )}
 
-      {/* Featured Podcasts */}
-      <SectionHeader title={t('home.featuredPodcasts')} actionLabel={t('common.seeAll')} onActionPress={() => navigation.navigate('PodcastsTab' as never)} />
-      {podcastsLoading ? <LoadingIndicator /> : (
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={podcastsData?.data ?? []}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.horizontalListPad}
-          ItemSeparatorComponent={() => <View style={{ width: spacing.sm }} />}
-          renderItem={({ item }) => (
-            <PodcastCard podcast={item} onPress={() => (navigation as any).navigate('PodcastsTab', { screen: 'PodcastDetail', params: { idOrSlug: item.slug } })} />
-          )}
-        />
-      )}
+      {/* Featured Podcasts — hidden entirely while the catalogue is placeholder-only,
+          since every card would lead to an episode list that can't play. The Podcasts
+          tab carries the "coming soon" message. */}
 
       {/* Latest News */}
       <SectionHeader title={t('home.latestNews')} actionLabel={t('common.seeAll')} onActionPress={() => navigation.navigate('NewsMain')} />
@@ -295,6 +289,26 @@ const styles = StyleSheet.create({
   playButton: {
     width: 56, height: 56, borderRadius: 28, backgroundColor: '#FFFFFF',
     alignItems: 'center', justifyContent: 'center',
+  },
+  frequencyWrap: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    justifyContent: 'center',
+    gap: 5,
+  },
+  frequencyValue: {
+    color: '#FFFFFF',
+    fontFamily: fontFamily.headingBold,
+    // Intentionally above every other size on this banner (the show title is 24).
+    fontSize: 40,
+    letterSpacing: -0.5,
+  },
+  frequencyUnit: {
+    color: 'rgba(255,255,255,0.9)',
+    fontFamily: fontFamily.headingSemiBold,
+    fontSize: fontSize.lg,
+    letterSpacing: 0.5,
   },
 
   quickLinksRow: { paddingHorizontal: spacing.lg, gap: spacing.lg, marginBottom: spacing.lg },

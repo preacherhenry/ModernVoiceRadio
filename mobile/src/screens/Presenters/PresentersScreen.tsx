@@ -8,6 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import ScreenContainer from '@components/common/ScreenContainer';
+import { AuthWall, useRequiresAuth } from '@components/common/AuthRequired';
 import LoadingIndicator from '@components/common/LoadingIndicator';
 import ErrorState from '@components/common/ErrorState';
 import EmptyState from '@components/common/EmptyState';
@@ -26,6 +27,7 @@ const PresentersScreen: React.FC = () => {
   const { colors } = useAppTheme();
   const { t } = useTranslation();
   const navigation = useNavigation<Nav>();
+  const { blocked, resolving } = useRequiresAuth();
   const { width: windowWidth } = useWindowDimensions();
   const cardWidth = (windowWidth - spacing.lg * 2 - spacing.md) / 2;
 
@@ -72,6 +74,19 @@ const PresentersScreen: React.FC = () => {
             onPress={() => navigation.navigate('PresenterDetail', { idOrSlug: item.slug })}
           />
         )}
+      />
+    );
+  }
+
+  // Guests get the sign-in wall instead of this feature. Placed after every hook
+  // so hook order stays stable across the authenticated/guest branches.
+  if (blocked) {
+    return (
+      <AuthWall
+        resolving={resolving}
+        titleKey="home.quickLinks.presenters"
+        descriptionKey="authGate.presenters"
+        icon="account-group"
       />
     );
   }

@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import ScreenContainer from '@components/common/ScreenContainer';
+import ComingSoonState from '@components/common/ComingSoonState';
 
 import { useAppTheme } from '@theme/ThemeProvider';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
@@ -40,10 +41,10 @@ const EqualizerScreen: React.FC = () => {
         <View style={styles.backButton} />
       </View>
 
-      <Text style={[styles.hint, { color: colors.textSecondary }]}>
-        {t('equalizer.hint')}
-      </Text>
+      <ComingSoonState icon="equalizer" description={t('comingSoon.equalizer')} />
 
+      {/* Presets remain selectable and are persisted, but nothing consumes them in
+          the audio pipeline yet — the notice above keeps that honest. */}
       <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
         {EQUALIZER_PRESETS.map((preset, index) => {
           const isSelected = preset === equalizerPreset;
@@ -76,9 +77,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg, paddingTop: spacing.sm, marginBottom: spacing.sm,
   },
   backButton: { width: 28, height: 28, alignItems: 'center', justifyContent: 'center' },
-  hint: {
-    fontFamily: fontFamily.body, fontSize: fontSize.sm, paddingHorizontal: spacing.lg, marginBottom: spacing.md,
-  },
   card: {
     marginHorizontal: spacing.lg,
     borderRadius: radius.lg,

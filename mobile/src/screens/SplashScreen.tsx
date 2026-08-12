@@ -56,10 +56,14 @@ const SplashScreen: React.FC = () => {
       if (!hasOnboarded) {
         navigation.reset({ index: 0, routes: [{ name: 'Onboarding' }] });
       } else {
-        // Authenticated or guest, both land on Main — but route through the interstitial
-        // ad screen first, which shows once per cold start then continues to Main itself
-        // (immediately, with no ad shown, if none is configured).
-        navigation.reset({ index: 0, routes: [{ name: 'Interstitial' }] });
+        // Authenticated or guest, both land on Main. The interstitial ad is stacked
+        // on top as a transparent modal (not a replacement) so the app is visible
+        // behind it and the user can dismiss it — it pops itself immediately if no
+        // ad is configured.
+        navigation.reset({
+          index: 1,
+          routes: [{ name: 'Main' }, { name: 'Interstitial' }],
+        });
       }
     }, SPLASH_DURATION_MS);
     return () => clearTimeout(timer);

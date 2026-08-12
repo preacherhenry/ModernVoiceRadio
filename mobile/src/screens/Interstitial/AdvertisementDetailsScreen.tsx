@@ -43,7 +43,11 @@ const AdvertisementDetailsScreen: React.FC = () => {
   const [imageAspectRatio, setImageAspectRatio] = useState(16 / 10);
 
   const continueToApp = () => {
-    navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
+    // Main always sits below this screen (reached either by replacing the
+    // interstitial popup or by pushing from the home banner), so popping back
+    // preserves whatever tab/scroll state the user already had.
+    if (navigation.canGoBack()) navigation.goBack();
+    else navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
   };
 
   const rows = useMemo<ContactRow[]>(() => {

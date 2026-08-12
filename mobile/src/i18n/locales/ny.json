@@ -153,10 +153,22 @@
     "audioQuality": "Ubwino wa Mawu",
     "notifications": "Zidziwitso",
     "notificationToggles": {
-      "breakingNews": { "label": "Nkhani Zadzidzidzi", "description": "Zidziwitso za nkhani zofulumira" },
-      "liveShows": { "label": "Mapulogalamu a Live", "description": "Pamene pulogalamu yayamba pa live" },
-      "newPodcasts": { "label": "Ma Podcast Atsopano", "description": "Kutulutsidwa kwa mabuku atsopano" },
-      "announcements": { "label": "Zalengezedwa", "description": "Zatsopano za wailesi ndi zochitika" }
+      "breakingNews": {
+        "label": "Nkhani Zadzidzidzi",
+        "description": "Zidziwitso za nkhani zofulumira"
+      },
+      "liveShows": {
+        "label": "Mapulogalamu a Live",
+        "description": "Pamene pulogalamu yayamba pa live"
+      },
+      "newPodcasts": {
+        "label": "Ma Podcast Atsopano",
+        "description": "Kutulutsidwa kwa mabuku atsopano"
+      },
+      "announcements": {
+        "label": "Zalengezedwa",
+        "description": "Zatsopano za wailesi ndi zochitika"
+      }
     },
     "about": "Za Ife",
     "aboutStation": "Za {{appName}}",
@@ -418,7 +430,29 @@
     "badge": "ZOTSATSA",
     "shortBadge": "AD",
     "visitWebsite": "Pitani pa Webusaiti",
-    "continueToApp": "Pitirizani ku App"
+    "continueToApp": "Pitirizani ku App",
+    "learnMore": "Dziwani Zambiri",
+    "dismiss": "Ayi zikomo"
+  },
+  "authGate": {
+    "title": "Lowani kuti mupitirize",
+    "signIn": "Lowani",
+    "createAccount": "Pangani Akaunti Yaulere",
+    "schedule": "Lowani kuti muone ndondomeko yonse ya mapulogalamu ndipo musaphonye pulogalamu yomwe mumakonda.",
+    "presenters": "Lowani kuti mudziwe oyimba a mapulogalamu omwe mumakonda.",
+    "liveChat": "Lowani kuti mulowe nawo kucheza ndi omvera anzanu pa mpweya.",
+    "songRequest": "Lowani kuti mupemphe nyimbo ndipo muzimve ikuimbidwa pa mpweya.",
+    "gallery": "Lowani kuti muone zithunzi ndi makanema a wailesi.",
+    "news": "Lowani kuti muwerenge nkhani zaposachedwa, zadzidzidzi ndi zatsopano za wailesi."
+  },
+  "comingSoon": {
+    "badge": "IKUBWERA POSACHEDWA",
+    "title": "Ikubwera posachedwa",
+    "description": "Tikuikonzabe. Bwererani posachedwa — ifika posachedwapa.",
+    "podcasts": "Ma podcast athu akukonzedwa. Posachedwa mudzatha kumvera ndi kutsitsa mabuku onse pano.",
+    "downloads": "Kutsitsa kuti mumvere popanda intaneti kukubwera limodzi ndi ma podcast athu. Mudzatha kusunga mabuku ndi kumvera popanda data.",
+    "equalizer": "Kusankha mawu kukubwera. Pakadali pano, kaimbidwe kamagwiritsa ntchito zoikika za foni yanu.",
+    "map": "Mapu a wailesi akubwera. Pakadali pano, gwiritsani ntchito adilesi ndi nambala zomwe zili pamwambazi."
   },
   "nowPlaying": {
     "playingLive": "TIKUTUMIZA PA LIVE",

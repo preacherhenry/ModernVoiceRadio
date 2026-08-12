@@ -5,6 +5,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 
 import ScreenContainer from '@components/common/ScreenContainer';
+import { AuthWall, useRequiresAuth } from '@components/common/AuthRequired';
 import LoadingIndicator from '@components/common/LoadingIndicator';
 import ErrorState from '@components/common/ErrorState';
 import EmptyState from '@components/common/EmptyState';
@@ -43,6 +44,7 @@ const NewsScreen: React.FC = () => {
   const navigation = useNavigation<Nav>();
 
   const [activeTab, setActiveTab] = useState<TabKey>('latest');
+  const { blocked, resolving } = useRequiresAuth();
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>(undefined);
 
   const { data: categoriesData } = useGetNewsCategoriesQuery();
@@ -116,6 +118,18 @@ const NewsScreen: React.FC = () => {
           )
         ))}
       </View>
+    );
+  }
+
+  // News is for signed-in listeners only.
+  if (blocked) {
+    return (
+      <AuthWall
+        resolving={resolving}
+        titleKey="news.title"
+        descriptionKey="authGate.news"
+        icon="newspaper-variant-outline"
+      />
     );
   }
 

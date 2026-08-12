@@ -10,6 +10,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import ScreenContainer from '@components/common/ScreenContainer';
+import { AuthWall, useRequiresAuth } from '@components/common/AuthRequired';
 import LoadingIndicator from '@components/common/LoadingIndicator';
 import ErrorState from '@components/common/ErrorState';
 
@@ -42,6 +43,7 @@ const NewsDetailScreen: React.FC = () => {
   const { status } = useAppSelector((state) => state.auth);
   const isAuthenticated = status === 'authenticated';
   const { playbackState } = useAppSelector((state) => state.player);
+  const { blocked, resolving } = useRequiresAuth();
 
   const {
     data, isLoading, isError, refetch,
@@ -126,6 +128,18 @@ const NewsDetailScreen: React.FC = () => {
         </View>
         <ErrorState onRetry={refetch} description={t('news.detail.loadError')} />
       </ScreenContainer>
+    );
+  }
+
+  // News is for signed-in listeners only.
+  if (blocked) {
+    return (
+      <AuthWall
+        resolving={resolving}
+        titleKey="news.title"
+        descriptionKey="authGate.news"
+        icon="newspaper-variant-outline"
+      />
     );
   }
 

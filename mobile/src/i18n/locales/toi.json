@@ -153,10 +153,22 @@
     "audioQuality": "Bubotu Bwajwi",
     "notifications": "Zilengezyo",
     "notificationToggles": {
-      "breakingNews": { "label": "Makani Aakufwambaana", "description": "Zilengezyo zyamakani aakufwambaana" },
-      "liveShows": { "label": "Zibonwa za Live", "description": "Nozitalika a Live" },
-      "newPodcasts": { "label": "Ma Podcast Mapya", "description": "Kuzwidilizigwa kwazibalo zipya" },
-      "announcements": { "label": "Zilengezyo", "description": "Zipya zyawailesi azintu zibede" }
+      "breakingNews": {
+        "label": "Makani Aakufwambaana",
+        "description": "Zilengezyo zyamakani aakufwambaana"
+      },
+      "liveShows": {
+        "label": "Zibonwa za Live",
+        "description": "Nozitalika a Live"
+      },
+      "newPodcasts": {
+        "label": "Ma Podcast Mapya",
+        "description": "Kuzwidilizigwa kwazibalo zipya"
+      },
+      "announcements": {
+        "label": "Zilengezyo",
+        "description": "Zipya zyawailesi azintu zibede"
+      }
     },
     "about": "Atuvwuntauzye",
     "aboutStation": "Atuvwuntauzye {{appName}}",
@@ -418,7 +430,29 @@
     "badge": "CIVWIISYO",
     "shortBadge": "AD",
     "visitWebsite": "Amuye kuwebusaiti",
-    "continueToApp": "Amuzumanane ku App"
+    "continueToApp": "Amuzumanane ku App",
+    "learnMore": "Amuziba Zinji",
+    "dismiss": "Peepe ndalumba"
+  },
+  "authGate": {
+    "title": "Amunjile kutegwa muzumanane",
+    "signIn": "Amunjile",
+    "createAccount": "Amupange Akkaunti Yabuyo",
+    "schedule": "Amunjile kutegwa mubone ndondomeko yoonse yamapulogilamu alimwi mutasowi pulogilamu njomuyanda.",
+    "presenters": "Amunjile kutegwa muzibe basikwaambaula bamapulogilamu ngomuyanda.",
+    "liveChat": "Amunjile kutegwa mubandike abaswiilizi banyoko amuyoba.",
+    "songRequest": "Amunjile kutegwa mulombe lwiimbo alimwi mululimvwe kaluimbwa amuyoba.",
+    "gallery": "Amunjile kutegwa mubone zifwanikiso azivideyo zyacikoleyo.",
+    "news": "Amunjile kutegwa mubale makani mapya, aacaali alimwi azyacitika kucikoleyo."
+  },
+  "comingSoon": {
+    "badge": "CILAASIKA LINO",
+    "title": "Cilaasika lino",
+    "description": "Tucicibambulula. Amuboole lino — cilaasika kufwambaana.",
+    "podcasts": "Ma podcast eesu alabambululwa. Lino muyookonzya kuswiilila akutola zibeela zyoonse aano.",
+    "downloads": "Kutola kutegwa muswiilile kakunyina intaneti kulaasika antoomwe ama podcast eesu. Muyookonzya kubamba zibeela akuswiilila kakunyina data.",
+    "equalizer": "Kusala mweembo wamajwi kulaasika. Kwaciindi cino, kuswiilila kubelesya nzila zya foni yanu.",
+    "map": "Mapu aacikoleyo alaasika. Kwaciindi cino, amubelesye adilesi anamba zili atala aawa."
   },
   "nowPlaying": {
     "playingLive": "TULATUMINA A LIVE",

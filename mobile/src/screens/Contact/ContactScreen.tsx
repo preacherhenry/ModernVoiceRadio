@@ -2,11 +2,11 @@ import React, { useMemo } from 'react';
 import {
   StyleSheet, View, Text, Pressable, Linking,
 } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import ScreenContainer from '@components/common/ScreenContainer';
+import ComingSoonState from '@components/common/ComingSoonState';
 import GlassCard from '@components/common/GlassCard';
 import LoadingIndicator from '@components/common/LoadingIndicator';
 import ErrorState from '@components/common/ErrorState';
@@ -14,7 +14,7 @@ import ErrorState from '@components/common/ErrorState';
 import { useAppTheme } from '@theme/ThemeProvider';
 import { useGetContactInformationQuery } from '@redux/api/settingsApi';
 
-import { spacing, radius } from '@constants/spacing';
+import { spacing } from '@constants/spacing';
 import { fontFamily, fontSize, typeStyles } from '@constants/typography';
 
 type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
@@ -81,8 +81,6 @@ const ContactScreen: React.FC = () => {
     return list;
   }, [contact]);
 
-  const hasCoordinates = contact?.latitude != null && contact?.longitude != null;
-
   if (isLoading) {
     return (
       <ScreenContainer edges={['top']}>
@@ -142,24 +140,12 @@ const ContactScreen: React.FC = () => {
         </View>
       )}
 
-      {hasCoordinates && (
-        <View style={styles.mapWrap}>
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: contact.latitude as number,
-              longitude: contact.longitude as number,
-              latitudeDelta: 0.01,
-              longitudeDelta: 0.01,
-            }}
-          >
-            <Marker
-              coordinate={{ latitude: contact.latitude as number, longitude: contact.longitude as number }}
-              title={contact.station_name}
-            />
-          </MapView>
-        </View>
-      )}
+      {/* The map needs a Google Maps API key, which isn't provisioned yet — rendering
+          MapView without one yields a blank grey box, so show the pending notice
+          instead until a key is configured. */}
+      <View style={styles.mapNoticeWrap}>
+        <ComingSoonState compact icon="map-outline" description={t('comingSoon.map')} />
+      </View>
     </ScreenContainer>
   );
 };
@@ -177,10 +163,7 @@ const styles = StyleSheet.create({
   socialsTitle: { fontFamily: fontFamily.bodyMedium, fontSize: fontSize.sm, marginBottom: spacing.sm },
   socialsRow: { flexDirection: 'row', gap: spacing.sm, flexWrap: 'wrap' },
   socialButton: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
-  mapWrap: {
-    marginHorizontal: spacing.lg, marginTop: spacing.lg, borderRadius: radius.lg, overflow: 'hidden', height: 220,
-  },
-  map: { width: '100%', height: '100%' },
+  mapNoticeWrap: { marginTop: spacing.lg },
 });
 
 export default ContactScreen;

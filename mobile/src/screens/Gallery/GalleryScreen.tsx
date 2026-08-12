@@ -8,6 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import ScreenContainer from '@components/common/ScreenContainer';
+import { AuthWall, useRequiresAuth } from '@components/common/AuthRequired';
 import LoadingIndicator from '@components/common/LoadingIndicator';
 import ErrorState from '@components/common/ErrorState';
 import EmptyState from '@components/common/EmptyState';
@@ -38,6 +39,7 @@ const GalleryScreen: React.FC = () => {
   const { t } = useTranslation();
   const [filter, setFilter] = useState<FilterValue>('all');
   const [selected, setSelected] = useState<GalleryItem | null>(null);
+  const { blocked, resolving } = useRequiresAuth();
 
   const {
     data, isLoading, isError, isFetching, refetch,
@@ -59,6 +61,19 @@ const GalleryScreen: React.FC = () => {
       )}
     </Pressable>
   );
+
+  // Guests get the sign-in wall instead of this feature. Placed after every hook
+  // so hook order stays stable across the authenticated/guest branches.
+  if (blocked) {
+    return (
+      <AuthWall
+        resolving={resolving}
+        titleKey="home.quickLinks.gallery"
+        descriptionKey="authGate.gallery"
+        icon="image-multiple-outline"
+      />
+    );
+  }
 
   return (
     <ScreenContainer scroll={false} edges={['top']}>

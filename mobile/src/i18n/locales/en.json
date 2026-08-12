@@ -153,10 +153,22 @@
     "audioQuality": "Audio Quality",
     "notifications": "Notifications",
     "notificationToggles": {
-      "breakingNews": { "label": "Breaking News", "description": "Urgent news alerts" },
-      "liveShows": { "label": "Live Shows", "description": "When a show goes live" },
-      "newPodcasts": { "label": "New Podcasts", "description": "New episode releases" },
-      "announcements": { "label": "Announcements", "description": "Station updates & events" }
+      "breakingNews": {
+        "label": "Breaking News",
+        "description": "Urgent news alerts"
+      },
+      "liveShows": {
+        "label": "Live Shows",
+        "description": "When a show goes live"
+      },
+      "newPodcasts": {
+        "label": "New Podcasts",
+        "description": "New episode releases"
+      },
+      "announcements": {
+        "label": "Announcements",
+        "description": "Station updates & events"
+      }
     },
     "about": "About",
     "aboutStation": "About {{appName}}",
@@ -418,7 +430,29 @@
     "badge": "ADVERTISEMENT",
     "shortBadge": "AD",
     "visitWebsite": "Visit Website",
-    "continueToApp": "Continue to App"
+    "continueToApp": "Continue to App",
+    "learnMore": "Learn More",
+    "dismiss": "No thanks"
+  },
+  "authGate": {
+    "title": "Sign in to continue",
+    "signIn": "Sign In",
+    "createAccount": "Create Free Account",
+    "schedule": "Sign in to see the full programme schedule and never miss your favourite show.",
+    "presenters": "Sign in to meet the presenters behind your favourite programmes.",
+    "liveChat": "Sign in to join the conversation with fellow listeners on air.",
+    "songRequest": "Sign in to request a song and hear it played on air.",
+    "gallery": "Sign in to browse photos and videos from the station.",
+    "news": "Sign in to read the latest news, breaking stories and updates from the station."
+  },
+  "comingSoon": {
+    "badge": "COMING SOON",
+    "title": "Coming soon",
+    "description": "We're still putting this together. Check back soon — it'll be here shortly.",
+    "podcasts": "Our podcast library is being prepared. Soon you'll be able to stream and download full episodes here.",
+    "downloads": "Offline downloads arrive together with our podcast library. You'll be able to save episodes and listen without data.",
+    "equalizer": "Custom sound presets are on the way. For now, playback uses your device's default audio settings.",
+    "map": "The station map is on the way. In the meantime, use the address and contact details above."
   },
   "nowPlaying": {
     "playingLive": "PLAYING LIVE",

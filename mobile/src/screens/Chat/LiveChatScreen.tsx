@@ -10,6 +10,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import ScreenContainer from '@components/common/ScreenContainer';
+import { AuthWall, useRequiresAuth } from '@components/common/AuthRequired';
 import Avatar from '@components/common/Avatar';
 import AppButton from '@components/common/AppButton';
 import LoadingIndicator from '@components/common/LoadingIndicator';
@@ -38,6 +39,7 @@ const LiveChatScreen: React.FC = () => {
   const { status, user, accessToken } = useAppSelector((state) => state.auth);
   const isAuthenticated = status === 'authenticated';
   const isModerator = !!user && ['moderator', 'admin', 'super_admin'].includes(user.role);
+  const { blocked, resolving } = useRequiresAuth();
 
   const {
     data: historyData, isLoading, isError, refetch,
@@ -133,6 +135,19 @@ const LiveChatScreen: React.FC = () => {
       </View>
     </View>
   ), [colors]);
+
+  // Guests get the sign-in wall instead of this feature. Placed after every hook
+  // so hook order stays stable across the authenticated/guest branches.
+  if (blocked) {
+    return (
+      <AuthWall
+        resolving={resolving}
+        titleKey="home.quickLinks.liveChat"
+        descriptionKey="authGate.liveChat"
+        icon="chat-processing-outline"
+      />
+    );
+  }
 
   return (
     <ScreenContainer scroll={false} edges={['top']}>

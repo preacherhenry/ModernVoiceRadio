@@ -43,7 +43,7 @@ const MiniPlayer: React.FC = () => {
       <Pressable
         onPress={() => navigation.navigate('NowPlaying', { source: currentTrack.source, episodeId: currentTrack.source === 'episode' ? currentTrack.id : undefined })}
       >
-        <GlassCard style={styles.card} padded={false}>
+        <GlassCard style={styles.card} padded={false} strong>
           <View style={styles.row}>
             {currentTrack.artworkUrl ? (
               <Image source={{ uri: currentTrack.artworkUrl }} style={styles.artwork} />
@@ -90,16 +90,24 @@ const styles = StyleSheet.create({
   },
   card: {
     borderRadius: radius.lg,
+    // Lifts the bar off the content scrolling beneath it, so the frosted panel
+    // reads as a distinct floating surface rather than a washed-out overlay.
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 12,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: spacing.sm,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.sm,
     gap: spacing.sm,
   },
   artwork: {
-    width: 44,
-    height: 44,
+    width: 46,
+    height: 46,
     borderRadius: radius.sm,
   },
   meta: { flex: 1 },

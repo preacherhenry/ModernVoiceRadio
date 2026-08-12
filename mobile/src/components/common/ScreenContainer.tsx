@@ -1,10 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, type ViewStyle, RefreshControl } from 'react-native';
+import { StyleSheet, View, type ViewStyle, RefreshControl, Platform } from 'react-native';
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useAppTheme } from '@theme/ThemeProvider';
 import GradientBackground from './GradientBackground';
-import { spacing } from '@constants/spacing';
 
 interface Props {
   children: React.ReactNode;
@@ -47,9 +46,16 @@ const ScreenContainer: React.FC<Props> = ({
   );
 };
 
+/**
+ * Enough room to clear the floating tab bar *and* the mini player that sits above it,
+ * so the last item in any list stays reachable while something is playing. Reserved
+ * unconditionally — a little extra whitespace when idle beats clipped content.
+ */
+const BOTTOM_INSET = Platform.OS === 'ios' ? 168 : 148;
+
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  scrollContent: { paddingBottom: spacing.xxxl },
+  scrollContent: { paddingBottom: BOTTOM_INSET },
 });
 
 export default ScreenContainer;

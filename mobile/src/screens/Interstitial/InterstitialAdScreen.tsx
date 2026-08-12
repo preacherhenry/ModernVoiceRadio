@@ -1,31 +1,40 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View, Pressable, Text } from 'react-native';
+import {
+  StyleSheet, View, Pressable, Text, useWindowDimensions,
+} from 'react-native';
 import { Image } from 'expo-image';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Animated, { FadeIn, FadeOut, ZoomIn } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 
+import { useAppTheme } from '@theme/ThemeProvider';
 import { useGetActiveAdvertisementsQuery, useRegisterImpressionMutation, useRegisterClickMutation } from '@redux/api/advertisementsApi';
-import { spacing } from '@constants/spacing';
+import { spacing, radius } from '@constants/spacing';
 import { fontFamily, fontSize } from '@constants/typography';
 import type { RootStackParamList } from '@navigation/types';
 
 const COUNTDOWN_SECONDS = 5;
 
 /**
- * Shown once per cold start, right after Splash, before Main — a natural break point in
- * the app's lifecycle. Never lasts longer than COUNTDOWN_SECONDS: tapping the ad within
- * that window goes to its details page, otherwise it auto-continues to Main. If no
- * interstitial ad is configured it continues through immediately with nothing rendered.
+ * A dismissible popup ad shown once per cold start, stacked over Main as a
+ * transparent modal so the app stays visible behind the scrim. It never traps the
+ * user: an explicit close button is available immediately, and it auto-dismisses
+ * after COUNTDOWN_SECONDS. Renders nothing (and pops straight away) if no ad is
+ * configured for this placement.
  */
 const InterstitialAdScreen: React.FC = () => {
+  const { colors } = useAppTheme();
+  const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const { data, isLoading } = useGetActiveAdvertisementsQuery({ placement: 'interstitial' });
   const [registerImpression] = useRegisterImpressionMutation();
   const [registerClick] = useRegisterClickMutation();
   const hasNavigatedAway = useRef(false);
   const [secondsLeft, setSecondsLeft] = useState(COUNTDOWN_SECONDS);
+  const [imageAspectRatio, setImageAspectRatio] = useState(4 / 5);
 
   const ad = useMemo(() => {
     const ads = data?.data ?? [];
@@ -33,27 +42,36 @@ const InterstitialAdScreen: React.FC = () => {
     return ads[Math.floor(Math.random() * ads.length)];
   }, [data]);
 
-  const continueToMain = () => {
+  const dismiss = () => {
     if (hasNavigatedAway.current) return;
     hasNavigatedAway.current = true;
-    navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
+    // Main already sits beneath this modal, so dismissing is just a pop.
+    navigation.goBack();
   };
 
   useEffect(() => {
-    if (!isLoading && !ad) continueToMain();
+    if (!isLoading && !ad) dismiss();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, ad]);
+
+  // This modal renders nothing until an ad arrives, but still sits over the app. A
+  // slow ads request (the API cold-starts) would leave an invisible layer swallowing
+  // taps, so give up waiting after a moment and hand the app back to the user.
+  useEffect(() => {
+    if (ad) return undefined;
+    const bailout = setTimeout(dismiss, 3000);
+    return () => clearTimeout(bailout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ad]);
 
   useEffect(() => {
     if (ad) void registerImpression(ad.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ad?.id]);
 
-  // The 5s countdown that caps how long this screen can stay up, regardless of user action.
-  // The interval only ticks state down (a pure update); the actual navigation side-effect
-  // lives in the separate effect below, once secondsLeft reaches 0 — dispatching a
-  // navigation action from inside a setState updater trips React's cross-component
-  // render warning, since navigation.reset() itself updates a different component's state.
+  // The interval only ticks state down (a pure update); the dismissal side-effect
+  // lives in the effect below, once secondsLeft reaches 0 — dispatching navigation
+  // from inside a setState updater trips React's cross-component render warning.
   useEffect(() => {
     if (!ad) return undefined;
     const timer = setInterval(() => {
@@ -63,7 +81,7 @@ const InterstitialAdScreen: React.FC = () => {
   }, [ad?.id]);
 
   useEffect(() => {
-    if (ad && secondsLeft === 0) continueToMain();
+    if (ad && secondsLeft === 0) dismiss();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ad, secondsLeft]);
 
@@ -73,56 +91,103 @@ const InterstitialAdScreen: React.FC = () => {
     if (hasNavigatedAway.current) return;
     hasNavigatedAway.current = true;
     void registerClick(ad.id);
-    navigation.reset({ index: 0, routes: [{ name: 'AdvertisementDetails', params: { ad } }] });
+    navigation.replace('AdvertisementDetails', { ad });
   };
 
+  // Keep the card comfortably inside the viewport whatever the poster's shape is.
+  const cardWidth = Math.min(windowWidth - spacing.lg * 2, 420);
+  const maxImageHeight = windowHeight * 0.6;
+  const imageHeight = Math.min(cardWidth / imageAspectRatio, maxImageHeight);
+
   return (
-    <View style={styles.container}>
-      <Pressable style={StyleSheet.absoluteFillObject} onPress={onPressAd}>
-        <Image source={{ uri: ad.image_url }} style={styles.image} contentFit="contain" />
-      </Pressable>
-      <SafeAreaView style={StyleSheet.absoluteFillObject} pointerEvents="box-none" edges={['top']}>
-        <View style={styles.topRow}>
-          <View style={styles.countdownBadge}>
-            <Text style={styles.countdownText}>{secondsLeft}</Text>
+    <Animated.View entering={FadeIn.duration(220)} exiting={FadeOut.duration(180)} style={styles.root}>
+      {/* Tapping the scrim dismisses, matching standard popup behaviour. */}
+      <Pressable style={[styles.scrim, { backgroundColor: colors.overlay }]} onPress={dismiss} />
+
+      <Animated.View entering={ZoomIn.duration(260)} style={[styles.card, { width: cardWidth, backgroundColor: colors.surface }]}>
+        <View style={styles.headerRow}>
+          <View style={[styles.badge, { backgroundColor: colors.surfaceVariant }]}>
+            <Text style={[styles.badgeText, { color: colors.textSecondary }]}>{t('advertisement.badge')}</Text>
           </View>
-          <Pressable onPress={continueToMain} hitSlop={12} style={styles.closeButton}>
-            <MaterialCommunityIcons name="close" size={22} color="#FFFFFF" />
-          </Pressable>
+          <View style={styles.headerRight}>
+            <View style={[styles.countdownBadge, { backgroundColor: colors.surfaceVariant }]}>
+              <Text style={[styles.countdownText, { color: colors.textSecondary }]}>{secondsLeft}</Text>
+            </View>
+            <Pressable
+              onPress={dismiss}
+              hitSlop={14}
+              accessibilityRole="button"
+              accessibilityLabel={t('common.cancel')}
+              style={[styles.closeButton, { backgroundColor: colors.surfaceVariant }]}
+            >
+              <MaterialCommunityIcons name="close" size={20} color={colors.textPrimary} />
+            </Pressable>
+          </View>
         </View>
-      </SafeAreaView>
-    </View>
+
+        <Pressable onPress={onPressAd} style={styles.imageWrap}>
+          <Image
+            source={{ uri: ad.image_url }}
+            style={{ width: '100%', height: imageHeight, borderRadius: radius.md }}
+            contentFit="contain"
+            transition={200}
+            onLoad={(event) => {
+              const { width, height } = event.source;
+              if (width && height) setImageAspectRatio(width / height);
+            }}
+          />
+        </Pressable>
+
+        <Text numberOfLines={2} style={[styles.title, { color: colors.textPrimary }]}>{ad.title}</Text>
+
+        <Pressable onPress={onPressAd} style={[styles.ctaButton, { backgroundColor: colors.primary }]}>
+          <Text style={styles.ctaText}>{t('advertisement.learnMore')}</Text>
+          <MaterialCommunityIcons name="arrow-right" size={18} color="#FFFFFF" />
+        </Pressable>
+
+        <Pressable onPress={dismiss} hitSlop={8} style={styles.dismissLink}>
+          <Text style={[styles.dismissText, { color: colors.textMuted }]}>{t('advertisement.dismiss')}</Text>
+        </Pressable>
+      </Animated.View>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#000000' },
-  image: { width: '100%', height: '100%' },
-  topRow: {
-    marginTop: spacing.md,
-    marginHorizontal: spacing.lg,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  root: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  scrim: { ...StyleSheet.absoluteFillObject },
+  card: {
+    borderRadius: radius.xl,
+    padding: spacing.md,
+    shadowColor: '#000',
+    shadowOpacity: 0.35,
+    shadowRadius: 24,
+    shadowOffset: { width: 0, height: 10 },
+    elevation: 16,
   },
+  headerRow: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: spacing.sm,
+  },
+  headerRight: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
+  badge: { paddingHorizontal: spacing.sm, paddingVertical: 4, borderRadius: radius.sm },
+  badgeText: { fontSize: 10, fontFamily: fontFamily.bodySemiBold, letterSpacing: 0.6 },
   countdownBadge: {
-    minWidth: 28,
-    height: 28,
-    paddingHorizontal: 8,
-    borderRadius: 14,
-    backgroundColor: 'rgba(0,0,0,0.45)',
-    alignItems: 'center',
-    justifyContent: 'center',
+    minWidth: 26, height: 26, paddingHorizontal: 7, borderRadius: 13,
+    alignItems: 'center', justifyContent: 'center',
   },
-  countdownText: { color: '#FFFFFF', fontFamily: fontFamily.bodySemiBold, fontSize: fontSize.sm },
-  closeButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: 'rgba(0,0,0,0.45)',
-    alignItems: 'center',
-    justifyContent: 'center',
+  countdownText: { fontFamily: fontFamily.bodySemiBold, fontSize: fontSize.xs },
+  closeButton: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
+  imageWrap: { borderRadius: radius.md, overflow: 'hidden' },
+  title: {
+    fontFamily: fontFamily.headingBold, fontSize: fontSize.lg, marginTop: spacing.sm,
   },
+  ctaButton: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: spacing.xs,
+    height: 46, borderRadius: radius.pill, marginTop: spacing.md,
+  },
+  ctaText: { color: '#FFFFFF', fontFamily: fontFamily.bodySemiBold, fontSize: fontSize.base },
+  dismissLink: { alignSelf: 'center', paddingVertical: spacing.sm },
+  dismissText: { fontFamily: fontFamily.bodyMedium, fontSize: fontSize.sm },
 });
 
 export default InterstitialAdScreen;

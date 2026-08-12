@@ -21,9 +21,15 @@ const RootNavigator: React.FC = () => (
     <Stack.Screen name="Splash" component={SplashScreen} />
     <Stack.Screen name="Onboarding" component={OnboardingScreen} />
     <Stack.Screen name="Auth" component={AuthNavigator} />
-    <Stack.Screen name="Interstitial" component={InterstitialAdScreen} />
     <Stack.Screen name="AdvertisementDetails" component={AdvertisementDetailsScreen} />
     <Stack.Screen name="Main" component={MainTabNavigator} />
+    {/* Transparent so the app stays visible behind the ad card — Splash pushes this
+        on top of Main rather than replacing it, making it a dismissible popup. */}
+    <Stack.Screen
+      name="Interstitial"
+      component={InterstitialAdScreen}
+      options={{ presentation: 'transparentModal', animation: 'fade' }}
+    />
     <Stack.Group screenOptions={{ presentation: 'modal', animation: 'slide_from_bottom' }}>
       <Stack.Screen name="NowPlaying" component={NowPlayingScreen} />
       <Stack.Screen name="Search" component={SearchScreen} />

@@ -33,6 +33,11 @@ export interface ThemeColors {
   border: string;
   glassFill: string;
   glassBorder: string;
+  /** Near-opaque frosted fill for surfaces that must stay legible over any content
+   *  (the mini player, popup ad card) — used directly on Android, where BlurView is
+   *  unreliable, and layered over the blur on iOS to cut its transparency. */
+  glassFillStrong: string;
+  glassTintStrong: string;
   textPrimary: string;
   textSecondary: string;
   textMuted: string;
@@ -59,6 +64,8 @@ export const darkColors: ThemeColors = {
   border: '#22314D',
   glassFill: 'rgba(255,255,255,0.06)',
   glassBorder: 'rgba(255,255,255,0.12)',
+  glassFillStrong: 'rgba(19,31,55,0.94)',
+  glassTintStrong: 'rgba(19,31,55,0.55)',
   textPrimary: '#F2F5FA',
   textSecondary: '#AEB9CC',
   textMuted: '#7C8AA3',
@@ -85,6 +92,8 @@ export const lightColors: ThemeColors = {
   border: '#DCE4F0',
   glassFill: 'rgba(51,98,147,0.06)',
   glassBorder: 'rgba(51,98,147,0.12)',
+  glassFillStrong: 'rgba(255,255,255,0.96)',
+  glassTintStrong: 'rgba(255,255,255,0.6)',
   textPrimary: '#12203A',
   textSecondary: '#4C5A73',
   textMuted: '#8592A8',

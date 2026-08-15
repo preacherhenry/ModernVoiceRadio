@@ -6,6 +6,15 @@ dotenv.config();
 
 const { Pool } = pg;
 
+/**
+ * DATE columns carry a calendar day with no time and no zone. node-postgres otherwise
+ * parses them into a JS Date at local midnight, which then serialises to the previous
+ * day for anyone behind UTC — a report_date of 2026-08-15 reached the app as
+ * "2026-08-14T22:00:00.000Z" here (UTC+2). Hand DATEs back as plain 'YYYY-MM-DD'
+ * strings so the day the admin picked is the day everyone sees.
+ */
+pg.types.setTypeParser(pg.types.builtins.DATE, (value) => value);
+
 export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,

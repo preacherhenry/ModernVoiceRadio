@@ -11,7 +11,10 @@ export const pool = new Pool({
   ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
   max: 20,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000,
+  // Serverless Postgres (Neon) suspends an idle compute and takes several seconds to
+  // wake. 5s wasn't enough headroom for that cold start, which surfaced as repeated
+  // "Connection terminated due to connection timeout" boots.
+  connectionTimeoutMillis: 30000,
 });
 
 pool.on('error', (err) => {

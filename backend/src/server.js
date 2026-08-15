@@ -29,14 +29,37 @@ app.set('io', io);
 
 initFirebase();
 
-async function start() {
-  try {
-    await pool.query('SELECT 1');
-    logger.info('PostgreSQL connection established.');
-  } catch (err) {
-    logger.error(`Failed to connect to PostgreSQL: ${err.message}`);
-    process.exit(1);
+const DB_CONNECT_ATTEMPTS = 5;
+const DB_RETRY_DELAY_MS = 3000;
+
+/**
+ * Waits for the database, retrying before giving up. A serverless Postgres (Neon)
+ * suspends its compute when idle and can take several seconds to wake — exiting on the
+ * first failed attempt turned that ordinary cold start into a restart loop on the host,
+ * since the process died faster than the database could come back.
+ */
+async function connectWithRetry() {
+  for (let attempt = 1; attempt <= DB_CONNECT_ATTEMPTS; attempt += 1) {
+    try {
+      // eslint-disable-next-line no-await-in-loop -- attempts are intentionally sequential
+      await pool.query('SELECT 1');
+      logger.info(`PostgreSQL connection established${attempt > 1 ? ` (attempt ${attempt})` : ''}.`);
+      return;
+    } catch (err) {
+      const lastAttempt = attempt === DB_CONNECT_ATTEMPTS;
+      logger.error(
+        `Failed to connect to PostgreSQL (attempt ${attempt}/${DB_CONNECT_ATTEMPTS}): ${err.message}`
+        + (lastAttempt ? '' : ` — retrying in ${DB_RETRY_DELAY_MS}ms`),
+      );
+      if (lastAttempt) process.exit(1);
+      // eslint-disable-next-line no-await-in-loop -- deliberate backoff between attempts
+      await new Promise((resolve) => { setTimeout(resolve, DB_RETRY_DELAY_MS); });
+    }
   }
+}
+
+async function start() {
+  await connectWithRetry();
 
   server.listen(PORT, () => {
     logger.info(`Modern Voice Radio API listening on port ${PORT} [${process.env.NODE_ENV || 'development'}]`);

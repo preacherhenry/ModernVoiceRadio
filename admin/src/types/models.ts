@@ -109,6 +109,9 @@ export interface NewsArticle {
   is_published: boolean;
   view_count: number;
   published_at: string;
+  /** Optional article credits, shown after the article body. Null when not credited. */
+  reporter_name: string | null;
+  report_date: string | null;
   /** Only present on the single-article detail response, not the list response. */
   media?: NewsMediaItem[];
 }

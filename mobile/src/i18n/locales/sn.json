@@ -225,7 +225,8 @@
     "detail": {
       "loadError": "Hatina kukwanisa kutora nyaya iyi.",
       "photosAndVideos": "Mifananidzo neMavhidhiyo",
-      "media": "Mifananidzo/Vhidhiyo"
+      "media": "Mifananidzo/Vhidhiyo",
+      "reportedBy": "Yanyorwa na: {{name}}"
     }
   },
   "profile": {

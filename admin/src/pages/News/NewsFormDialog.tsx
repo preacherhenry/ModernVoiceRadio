@@ -26,6 +26,8 @@ const schema = yup.object({
   isBreaking: yup.boolean().default(false),
   isTrending: yup.boolean().default(false),
   isPublished: yup.boolean().default(true),
+  reporterName: yup.string().max(160).optional(),
+  reportDate: yup.string().optional(),
 });
 type FormValues = yup.InferType<typeof schema>;
 
@@ -60,6 +62,7 @@ const NewsFormDialog: React.FC<Props> = ({ open, article, onClose }) => {
     resolver: yupResolver(schema),
     defaultValues: {
       title: '', categoryId: '', excerpt: '', content: '', isBreaking: false, isTrending: false, isPublished: true,
+      reporterName: '', reportDate: '',
     },
   });
 
@@ -73,6 +76,8 @@ const NewsFormDialog: React.FC<Props> = ({ open, article, onClose }) => {
         isBreaking: article?.is_breaking ?? false,
         isTrending: article?.is_trending ?? false,
         isPublished: article?.is_published ?? true,
+        reporterName: article?.reporter_name ?? '',
+        reportDate: article?.report_date?.slice(0, 10) ?? '',
       });
       setCoverFile(null);
       setCoverPreview(article?.cover_image_url ?? null);
@@ -124,6 +129,9 @@ const NewsFormDialog: React.FC<Props> = ({ open, article, onClose }) => {
     formData.append('isBreaking', String(values.isBreaking));
     formData.append('isTrending', String(values.isTrending));
     formData.append('isPublished', String(values.isPublished));
+    // Sent even when blank: the backend treats an empty string as "clear this credit".
+    formData.append('reporterName', values.reporterName ?? '');
+    formData.append('reportDate', values.reportDate ?? '');
     if (coverFile) formData.append('cover', coverFile);
     pendingMedia.forEach(({ file }) => formData.append('media', file));
 
@@ -179,6 +187,35 @@ const NewsFormDialog: React.FC<Props> = ({ open, article, onClose }) => {
           <Grid item xs={12}>
             <Controller name="content" control={control} render={({ field }) => (
               <TextField {...field} fullWidth multiline minRows={8} label="Content" error={!!errors.content} helperText={errors.content?.message} />
+            )}
+            />
+          </Grid>
+
+          {/* Credits — optional; shown on one line straight after the article body. */}
+          <Grid item xs={12} sm={7}>
+            <Controller name="reporterName" control={control} render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Reporter Name (optional)"
+                placeholder="e.g. Patrick Kangwa"
+                error={!!errors.reporterName}
+                helperText={errors.reporterName?.message ?? 'Leave blank for an uncredited article'}
+              />
+            )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={5}>
+            <Controller name="reportDate" control={control} render={({ field }) => (
+              <TextField
+                {...field}
+                type="date"
+                fullWidth
+                label="Report Date (optional)"
+                InputLabelProps={{ shrink: true }}
+                error={!!errors.reportDate}
+                helperText={errors.reportDate?.message}
+              />
             )}
             />
           </Grid>

@@ -18,6 +18,10 @@ export const createNewsValidator = [
   body('isBreaking').optional().toBoolean().isBoolean(),
   body('isTrending').optional().toBoolean().isBoolean(),
   body('isPublished').optional().toBoolean().isBoolean(),
+  body('reporterName').optional({ values: 'null' }).isString().isLength({ max: 160 })
+    .withMessage('reporterName must be at most 160 characters'),
+  body('reportDate').optional({ values: 'null' }).custom((v) => v === '' || !Number.isNaN(Date.parse(v)))
+    .withMessage('reportDate must be a valid date'),
 ];
 
 export const updateNewsValidator = [
@@ -30,4 +34,8 @@ export const updateNewsValidator = [
   body('isBreaking').optional().toBoolean().isBoolean(),
   body('isTrending').optional().toBoolean().isBoolean(),
   body('isPublished').optional().toBoolean().isBoolean(),
+  body('reporterName').optional({ values: 'null' }).isString().isLength({ max: 160 })
+    .withMessage('reporterName must be at most 160 characters'),
+  body('reportDate').optional({ values: 'null' }).custom((v) => v === '' || !Number.isNaN(Date.parse(v)))
+    .withMessage('reportDate must be a valid date'),
 ];

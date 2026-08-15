@@ -225,7 +225,8 @@
     "detail": {
       "loadError": "Sitinathe kutenga nkhani iyi.",
       "photosAndVideos": "Zithunzi ndi Makanema",
-      "media": "Zithunzi/Kanema"
+      "media": "Zithunzi/Kanema",
+      "reportedBy": "Yalembedwa ndi: {{name}}"
     }
   },
   "profile": {

@@ -51,7 +51,7 @@ const ScreenContainer: React.FC<Props> = ({
  * so the last item in any list stays reachable while something is playing. Reserved
  * unconditionally — a little extra whitespace when idle beats clipped content.
  */
-const BOTTOM_INSET = Platform.OS === 'ios' ? 168 : 148;
+export const BOTTOM_INSET = Platform.OS === 'ios' ? 168 : 148;
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },

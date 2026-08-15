@@ -75,26 +75,30 @@ export const newsRepository = {
 
   create: async ({
     categoryId, authorId, title, slug, excerpt, content, coverImageUrl, coverPublicId,
-    isBreaking, isTrending, isPublished,
+    isBreaking, isTrending, isPublished, reporterName, reportDate,
   }) => {
     const { rows } = await query(
       `INSERT INTO news
          (category_id, author_id, title, slug, excerpt, content, cover_image_url, cover_public_id,
-          is_breaking, is_trending, is_published)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+          is_breaking, is_trending, is_published, reporter_name, report_date)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
        RETURNING *`,
       [categoryId || null, authorId || null, title, slug, excerpt || null, content,
         coverImageUrl || null, coverPublicId || null, !!isBreaking, !!isTrending,
-        isPublished === undefined ? true : !!isPublished],
+        isPublished === undefined ? true : !!isPublished,
+        reporterName || null, reportDate || null],
     );
     return rows[0];
   },
 
   update: async (id, {
     categoryId, title, slug, excerpt, content, coverImageUrl, coverPublicId,
-    isBreaking, isTrending, isPublished,
+    isBreaking, isTrending, isPublished, reporterName, reportDate,
   }) => {
     const { rows } = await query(
+      // The credit columns use CASE rather than COALESCE so a credit can actually be
+      // removed: undefined (field absent) leaves the column alone, while an explicit
+      // empty string clears it. COALESCE can't tell those apart — both arrive as null.
       `UPDATE news SET
          category_id = COALESCE($2, category_id),
          title = COALESCE($3, title),
@@ -105,11 +109,15 @@ export const newsRepository = {
          cover_public_id = COALESCE($8, cover_public_id),
          is_breaking = COALESCE($9, is_breaking),
          is_trending = COALESCE($10, is_trending),
-         is_published = COALESCE($11, is_published)
+         is_published = COALESCE($11, is_published),
+         reporter_name = CASE WHEN $12::text IS NULL THEN reporter_name ELSE NULLIF($12::text, '') END,
+         report_date   = CASE WHEN $13::text IS NULL THEN report_date   ELSE NULLIF($13::text, '')::date END
        WHERE id = $1
        RETURNING *`,
       [id, categoryId, title, slug, excerpt, content, coverImageUrl, coverPublicId,
-        isBreaking, isTrending, isPublished],
+        isBreaking, isTrending, isPublished,
+        reporterName === undefined ? null : reporterName,
+        reportDate === undefined ? null : reportDate],
     );
     return rows[0] || null;
   },

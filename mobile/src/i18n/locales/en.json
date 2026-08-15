@@ -225,7 +225,8 @@
     "detail": {
       "loadError": "Couldn't load this article.",
       "photosAndVideos": "Photos & Videos",
-      "media": "Media"
+      "media": "Media",
+      "reportedBy": "Reported by: {{name}}"
     }
   },
   "profile": {

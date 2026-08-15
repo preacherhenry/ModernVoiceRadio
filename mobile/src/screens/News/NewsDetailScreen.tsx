@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   StyleSheet, View, Text, Pressable, Share, FlatList, Dimensions, Linking,
 } from 'react-native';
@@ -9,7 +9,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
-import ScreenContainer from '@components/common/ScreenContainer';
+import ScreenContainer, { BOTTOM_INSET } from '@components/common/ScreenContainer';
 import { AuthWall, useRequiresAuth } from '@components/common/AuthRequired';
 import LoadingIndicator from '@components/common/LoadingIndicator';
 import ErrorState from '@components/common/ErrorState';
@@ -25,7 +25,7 @@ import { readArticleAloud, stopReadingAloud } from '@services/newsReaderService'
 
 import { spacing, radius } from '@constants/spacing';
 import { fontFamily, fontSize, typeStyles } from '@constants/typography';
-import { truncate, formatRelativeTime } from '@utils/formatters';
+import { truncate, formatRelativeTime, formatDayMonthYear } from '@utils/formatters';
 import type { HomeStackParamList } from '@navigation/types';
 import type { NewsMediaItem } from '@apptypes/models';
 
@@ -49,6 +49,24 @@ const NewsDetailScreen: React.FC = () => {
     data, isLoading, isError, refetch,
   } = useGetNewsArticleQuery(idOrSlug);
   const article = data?.data;
+
+  /**
+   * "Reported by: Patrick Kangwa | 15 August 2026". Both credit fields are optional, so
+   * whichever parts exist are joined — a name alone, a date alone, or neither (in which
+   * case nothing is rendered at all).
+   */
+  const creditLine = useMemo(() => {
+    if (!article) return '';
+    const parts: string[] = [];
+    if (article.reporter_name?.trim()) {
+      parts.push(t('news.detail.reportedBy', { name: article.reporter_name.trim() }));
+    }
+    if (article.report_date) {
+      const formatted = formatDayMonthYear(article.report_date);
+      if (formatted) parts.push(formatted);
+    }
+    return parts.join(' | ');
+  }, [article, t]);
 
   const [selectedMedia, setSelectedMedia] = useState<NewsMediaItem | null>(null);
   const [isReadingAloud, setIsReadingAloud] = useState(false);
@@ -191,6 +209,13 @@ const NewsDetailScreen: React.FC = () => {
           {article.content}
         </Text>
 
+        {/* Credits close out the article body itself — deliberately a plain line of text
+            continuing the same column, not a titled section or card. Rendered only when
+            the article actually carries a credit. */}
+        {!!creditLine && (
+          <Text style={[styles.credit, { color: colors.textMuted }]}>{creditLine}</Text>
+        )}
+
         {!!article.media?.length && (
           <View style={styles.mediaSection}>
             <Text style={[typeStyles.h4, { color: colors.textPrimary, marginBottom: spacing.sm }]}>
@@ -235,7 +260,13 @@ const NewsDetailScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  scrollContent: { paddingBottom: spacing.xxxl },
+  scrollContent: { paddingBottom: BOTTOM_INSET },
+  credit: {
+    fontFamily: fontFamily.body,
+    fontSize: fontSize.sm,
+    fontStyle: 'italic',
+    marginTop: spacing.sm,
+  },
   backRow: { paddingHorizontal: spacing.lg, paddingTop: spacing.sm },
   headerWrap: { width: '100%', aspectRatio: 16 / 10, position: 'relative', marginBottom: spacing.lg },
   headerImage: { width: '100%', height: '100%' },

@@ -225,7 +225,8 @@
     "detail": {
       "loadError": "Tetwakonzya kutola makani aaya.",
       "photosAndVideos": "Zifwanikiso a Ziko",
-      "media": "Cifwanikiso/Ciko"
+      "media": "Cifwanikiso/Ciko",
+      "reportedBy": "Yalembwa a: {{name}}"
     }
   },
   "profile": {

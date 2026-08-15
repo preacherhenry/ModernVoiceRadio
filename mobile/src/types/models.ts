@@ -126,6 +126,9 @@ export interface NewsArticle {
   is_trending: boolean;
   view_count: number;
   published_at: ISODateString;
+  /** Optional article credits, rendered after the article body. Null when not credited. */
+  reporter_name: string | null;
+  report_date: ISODateString | null;
   /** Only present on the single-article detail response, not the list response. */
   media?: NewsMediaItem[];
 }

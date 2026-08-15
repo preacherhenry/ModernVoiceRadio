@@ -56,6 +56,29 @@ export function formatFullDate(date: Date): string {
 }
 
 /**
+ * "15 August 2026" — the day-first form used in article credits. Parsed as a plain
+ * calendar date: report_date is a DATE column with no time or zone, so reading it with
+ * `new Date()` in a timezone behind UTC would shift it back a day.
+ */
+export function formatDayMonthYear(input: string | Date): string {
+  let year: number;
+  let monthIndex: number;
+  let day: number;
+
+  if (typeof input === 'string') {
+    const [datePart] = input.split('T');
+    const [y, m, d] = datePart.split('-').map(Number);
+    if (!y || !m || !d) return '';
+    year = y; monthIndex = m - 1; day = d;
+  } else {
+    year = input.getFullYear(); monthIndex = input.getMonth(); day = input.getDate();
+  }
+
+  const month = i18n.t(`common.months.${MONTH_KEYS[monthIndex]}`);
+  return `${day} ${month} ${year}`;
+}
+
+/**
  * Short relative-time label ("3h ago", "2d ago"). Written independently of date-fns's
  * locale system, which has no data for Nyanja/Chitonga — this always routes through
  * i18next so it translates into whatever language is active.

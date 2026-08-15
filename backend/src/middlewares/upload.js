@@ -54,3 +54,20 @@ const newsMediaStorage = new CloudinaryStorage({
   ),
 });
 export const newsMediaUpload = multer({ storage: newsMediaStorage, limits: { fileSize: 100 * 1024 * 1024 } });
+
+/**
+ * Handles advertisement uploads carrying the required `image` (the main poster shown in
+ * the home banner) plus up to four optional `supporting` pictures for the details
+ * gallery. Both are plain images; the poster keeps living in mvradio/images so existing
+ * adverts' URLs stay untouched, while supporting pictures get their own folder.
+ * Used with `.fields([...])`.
+ */
+const advertisementStorage = new CloudinaryStorage({
+  cloudinary,
+  params: (req, file) => (
+    file.fieldname === 'image'
+      ? { folder: 'mvradio/images', allowed_formats: ['jpg', 'jpeg', 'png', 'webp'], resource_type: 'image' }
+      : { folder: 'mvradio/ad-media', allowed_formats: ['jpg', 'jpeg', 'png', 'webp'], resource_type: 'image' }
+  ),
+});
+export const advertisementUpload = multer({ storage: advertisementStorage, limits: { fileSize: 50 * 1024 * 1024 } });

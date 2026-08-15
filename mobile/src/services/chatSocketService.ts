@@ -76,6 +76,22 @@ export function onChatModeration(callbacks: {
   };
 }
 
+/**
+ * Fires whenever an admin creates, edits, activates/deactivates or deletes an advert
+ * (see backend/src/controllers/advertisementController.js). The event is only a signal —
+ * which adverts a device should show depends on placement, the active flag and the
+ * station-local date window, so the app refetches rather than trusting a pushed payload.
+ *
+ * Lives here because this module owns the single shared socket connection; adding a
+ * second connection just for adverts would be wasteful.
+ */
+export function onAdvertisementsChanged(callback: () => void): () => void {
+  const s = connectChatSocket();
+  const handler = () => callback();
+  s.on('advertisements_changed', handler);
+  return () => s.off('advertisements_changed', handler);
+}
+
 /** The admin dashboard broadcasts this whenever it locks/unlocks the chat. */
 export function onChatLockChanged(callback: (locked: boolean) => void): () => void {
   const s = connectChatSocket();

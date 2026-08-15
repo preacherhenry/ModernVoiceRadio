@@ -3,6 +3,28 @@ import { createBaseRepository } from './baseRepository.js';
 
 const base = createBaseRepository('advertisements');
 
+/**
+ * Attaches each advert's supporting pictures in one extra round trip rather than one
+ * per advert. Adverts with no supporting pictures get an empty array, which is the
+ * common case and what every "main poster only" advert looks like.
+ */
+const attachMedia = async (ads) => {
+  if (!ads.length) return ads;
+  const { rows } = await query(
+    `SELECT id, advertisement_id, media_url, media_public_id, display_order
+     FROM advertisement_media
+     WHERE advertisement_id = ANY($1::uuid[])
+     ORDER BY display_order ASC, created_at ASC`,
+    [ads.map((ad) => ad.id)],
+  );
+  const byAd = new Map();
+  for (const row of rows) {
+    if (!byAd.has(row.advertisement_id)) byAd.set(row.advertisement_id, []);
+    byAd.get(row.advertisement_id).push(row);
+  }
+  return ads.map((ad) => ({ ...ad, media: byAd.get(ad.id) ?? [] }));
+};
+
 export const advertisementRepository = {
   ...base,
 
@@ -35,7 +57,7 @@ export const advertisementRepository = {
       params,
     );
 
-    return { rows, total: countRows[0].count };
+    return { rows: await attachMedia(rows), total: countRows[0].count };
   },
 
   active: async (placement) => {
@@ -56,6 +78,75 @@ export const advertisementRepository = {
     const { rows } = await query(
       `SELECT * FROM advertisements WHERE ${conditions.join(' AND ')} ORDER BY display_order ASC`,
       params,
+    );
+    return attachMedia(rows);
+  },
+
+  findByIdWithMedia: async (id) => {
+    const ad = await base.findById(id);
+    if (!ad) return null;
+    const [withMedia] = await attachMedia([ad]);
+    return withMedia;
+  },
+
+  listMedia: async (advertisementId) => {
+    const { rows } = await query(
+      'SELECT * FROM advertisement_media WHERE advertisement_id = $1 ORDER BY display_order ASC, created_at ASC',
+      [advertisementId],
+    );
+    return rows;
+  },
+
+  countMedia: async (advertisementId) => {
+    const { rows } = await query(
+      'SELECT COUNT(*)::int AS count FROM advertisement_media WHERE advertisement_id = $1',
+      [advertisementId],
+    );
+    return rows[0].count;
+  },
+
+  /**
+   * The order value new pictures should start at. Derived from the highest existing
+   * order rather than the row count: after removing pictures from the middle of the
+   * set, the count no longer matches the sequence and new rows would collide with
+   * surviving ones (e.g. drop orders 0-1 of four, and a count-based start of 2 would
+   * duplicate the surviving 2 and 3).
+   */
+  nextMediaOrder: async (advertisementId) => {
+    const { rows } = await query(
+      'SELECT COALESCE(MAX(display_order) + 1, 0)::int AS next FROM advertisement_media WHERE advertisement_id = $1',
+      [advertisementId],
+    );
+    return rows[0].next;
+  },
+
+  /**
+   * Appends supporting pictures, continuing the existing display_order sequence so
+   * previously uploaded pictures keep their position when more are added later.
+   */
+  addMedia: async (advertisementId, items, startOrder = 0) => {
+    if (!items.length) return [];
+    const values = [];
+    const params = [];
+    items.forEach((item, i) => {
+      const base_ = i * 4;
+      values.push(`($${base_ + 1}, $${base_ + 2}, $${base_ + 3}, $${base_ + 4})`);
+      params.push(advertisementId, item.mediaUrl, item.mediaPublicId || null, startOrder + i);
+    });
+    const { rows } = await query(
+      `INSERT INTO advertisement_media (advertisement_id, media_url, media_public_id, display_order)
+       VALUES ${values.join(', ')}
+       RETURNING *`,
+      params,
+    );
+    return rows;
+  },
+
+  removeMedia: async (mediaIds, advertisementId) => {
+    if (!mediaIds.length) return [];
+    const { rows } = await query(
+      'DELETE FROM advertisement_media WHERE id = ANY($1::uuid[]) AND advertisement_id = $2 RETURNING *',
+      [mediaIds, advertisementId],
     );
     return rows;
   },

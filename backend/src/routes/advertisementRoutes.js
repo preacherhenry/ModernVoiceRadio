@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as advertisementController from '../controllers/advertisementController.js';
 import { requireAuth, requireRole } from '../middlewares/auth.js';
-import { imageUpload } from '../middlewares/upload.js';
+import { advertisementUpload } from '../middlewares/upload.js';
 import { writeLimiter } from '../middlewares/rateLimiter.js';
 import validate from '../middlewares/validate.js';
 import {
@@ -10,6 +10,12 @@ import {
 
 const router = Router();
 const requireAdmin = [requireAuth, requireRole('admin', 'super_admin')];
+
+/** One main poster + up to four optional supporting pictures. */
+const adUploadFields = advertisementUpload.fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'supporting', maxCount: 4 },
+]);
 
 router.get('/active', advertisementController.active);
 
@@ -21,7 +27,7 @@ router.get('/', ...requireAdmin, advertisementController.list);
 router.post(
   '/',
   ...requireAdmin,
-  imageUpload.single('image'),
+  adUploadFields,
   createAdvertisementValidator,
   validate,
   advertisementController.create,
@@ -29,7 +35,7 @@ router.post(
 router.put(
   '/:id',
   ...requireAdmin,
-  imageUpload.single('image'),
+  adUploadFields,
   updateAdvertisementValidator,
   validate,
   advertisementController.update,

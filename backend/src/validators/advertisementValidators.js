@@ -19,6 +19,11 @@ export const createAdvertisementValidator = [
   body('contactAddress').optional({ values: 'falsy' }).isString().isLength({ max: 500 }),
 ];
 
+/**
+ * `removedMediaIds` carries the ids of previously saved supporting pictures the admin
+ * removed in this edit. It arrives as a JSON array (or comma-separated list) inside
+ * multipart form data, so it's accepted loosely here and parsed in the service.
+ */
 export const updateAdvertisementValidator = [
   param('id').isUUID().withMessage('A valid id is required'),
   body('title').optional().trim().isLength({ min: 2, max: 180 }),
@@ -33,4 +38,5 @@ export const updateAdvertisementValidator = [
   body('contactWhatsapp').optional({ values: 'falsy' }).isString().isLength({ max: 30 }),
   body('contactEmail').optional({ values: 'falsy' }).isEmail().withMessage('contactEmail must be a valid email'),
   body('contactAddress').optional({ values: 'falsy' }).isString().isLength({ max: 500 }),
+  body('removedMediaIds').optional({ values: 'falsy' }),
 ];

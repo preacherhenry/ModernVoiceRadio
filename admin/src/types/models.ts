@@ -123,10 +123,22 @@ export interface GalleryItem {
   event_date: string | null;
 }
 
+/** An optional supporting picture shown in the advert's details gallery. */
+export interface AdvertisementMedia {
+  id: UUID;
+  advertisement_id: UUID;
+  media_url: string;
+  media_public_id: string | null;
+  display_order: number;
+}
+
 export interface Advertisement {
   id: UUID;
   title: string;
+  /** The required main poster (2.8:1), shown in the home banner carousel. */
   image_url: string;
+  /** Up to 4 optional supporting pictures. Empty for poster-only adverts. */
+  media?: AdvertisementMedia[];
   target_url: string | null;
   placement: 'home_banner' | 'interstitial' | 'news_inline';
   start_date: string | null;

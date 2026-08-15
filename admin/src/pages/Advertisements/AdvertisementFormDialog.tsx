@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
   Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Grid, Avatar, Box, Stack, MenuItem, Typography, Divider,
+  IconButton, Alert,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -14,6 +17,14 @@ const PLACEMENTS = [
   { value: 'interstitial', label: 'Interstitial' },
   { value: 'news_inline', label: 'News Inline' },
 ];
+
+/** Mirrors MAX_SUPPORTING_IMAGES in backend/src/services/advertisementService.js. */
+const MAX_SUPPORTING = 4;
+
+/** A supporting picture already saved on the server, or one picked in this session. */
+type SupportingItem =
+  | { kind: 'existing'; id: string; url: string }
+  | { kind: 'new'; file: File; url: string };
 
 const schema = yup.object({
   title: yup.string().min(2, 'Too short').required('Title is required'),
@@ -42,6 +53,9 @@ const AdvertisementFormDialog: React.FC<Props> = ({ open, advertisement, onClose
   const [updateAd, { isLoading: updating }] = useUpdateAdvertisementMutation();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [supporting, setSupporting] = useState<SupportingItem[]>([]);
+  /** Ids of already-saved supporting pictures the admin removed; sent on save. */
+  const [removedMediaIds, setRemovedMediaIds] = useState<string[]>([]);
 
   const {
     control, handleSubmit, reset, formState: { errors },
@@ -79,14 +93,49 @@ const AdvertisementFormDialog: React.FC<Props> = ({ open, advertisement, onClose
       });
       setImageFile(null);
       setImagePreview(advertisement?.image_url ?? null);
+      setSupporting(
+        (advertisement?.media ?? []).map((m) => ({ kind: 'existing' as const, id: m.id, url: m.media_url })),
+      );
+      setRemovedMediaIds([]);
     }
   }, [open, advertisement, reset]);
+
+  // Object URLs created for local previews are released when the dialog closes, so
+  // picking several images across edits doesn't leak blobs for the tab's lifetime.
+  useEffect(() => () => {
+    supporting.forEach((item) => { if (item.kind === 'new') URL.revokeObjectURL(item.url); });
+  }, [supporting]);
 
   const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
+  };
+
+  const onSupportingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const picked = Array.from(e.target.files ?? []);
+    if (!picked.length) return;
+    const room = MAX_SUPPORTING - supporting.length;
+    const accepted = picked.slice(0, Math.max(room, 0));
+    if (picked.length > accepted.length) {
+      enqueueSnackbar(`Only ${MAX_SUPPORTING} supporting pictures are allowed`, { variant: 'warning' });
+    }
+    setSupporting((prev) => [
+      ...prev,
+      ...accepted.map((file) => ({ kind: 'new' as const, file, url: URL.createObjectURL(file) })),
+    ]);
+    // Reset so re-picking the same file still fires a change event.
+    e.target.value = '';
+  };
+
+  const removeSupporting = (index: number) => {
+    setSupporting((prev) => {
+      const item = prev[index];
+      if (item.kind === 'existing') setRemovedMediaIds((ids) => [...ids, item.id]);
+      else URL.revokeObjectURL(item.url);
+      return prev.filter((_, i) => i !== index);
+    });
   };
 
   const onSubmit = async (values: FormValues) => {
@@ -103,6 +152,15 @@ const AdvertisementFormDialog: React.FC<Props> = ({ open, advertisement, onClose
     if (values.contactEmail) formData.append('contactEmail', values.contactEmail);
     if (values.contactAddress) formData.append('contactAddress', values.contactAddress);
     if (imageFile) formData.append('image', imageFile);
+    supporting.forEach((item) => {
+      if (item.kind === 'new') formData.append('supporting', item.file);
+    });
+    if (removedMediaIds.length) formData.append('removedMediaIds', JSON.stringify(removedMediaIds));
+
+    if (!advertisement && !imageFile) {
+      enqueueSnackbar('A main poster is required', { variant: 'error' });
+      return;
+    }
 
     try {
       if (advertisement) {
@@ -123,13 +181,90 @@ const AdvertisementFormDialog: React.FC<Props> = ({ open, advertisement, onClose
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>{advertisement ? 'Edit Advertisement' : 'Add Advertisement'}</DialogTitle>
       <DialogContent>
-        <Stack alignItems="center" spacing={1} sx={{ mb: 2, mt: 1 }}>
-          <Avatar src={imagePreview ?? undefined} variant="rounded" sx={{ width: 160, height: 70 }} />
-          <Button component="label" size="small">
-            Upload Image
-            <input type="file" hidden accept="image/*" onChange={onImageChange} />
-          </Button>
-        </Stack>
+        {/* ---- Main poster (required) ---- */}
+        <Box sx={{ mt: 1, mb: 2 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+            Main Poster <Box component="span" sx={{ color: 'error.main' }}>*</Box>
+          </Typography>
+          <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1 }}>
+            Shown in the Home Screen banner. Use a 2.8:1 image (recommended 1400 × 500 px) so it
+            fills the banner without being cropped.
+          </Typography>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Avatar
+              src={imagePreview ?? undefined}
+              variant="rounded"
+              sx={{ width: 196, height: 70, bgcolor: 'action.hover' }}
+            >
+              <AddPhotoAlternateIcon color="disabled" />
+            </Avatar>
+            <Button component="label" size="small" variant="outlined">
+              {imagePreview ? 'Replace Poster' : 'Upload Poster'}
+              <input type="file" hidden accept="image/*" onChange={onImageChange} />
+            </Button>
+          </Stack>
+        </Box>
+
+        {/* ---- Supporting pictures (optional, up to 4) ---- */}
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+            Supporting Pictures <Box component="span" sx={{ color: 'text.secondary', fontWeight: 400 }}>(Optional, up to {MAX_SUPPORTING})</Box>
+          </Typography>
+          <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1 }}>
+            Shown as a swipeable gallery when a listener taps the advert. Any shape — they are
+            never cropped.
+          </Typography>
+
+          <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap alignItems="center">
+            {supporting.map((item, index) => (
+              <Box key={item.kind === 'existing' ? item.id : `${item.file.name}-${index}`} sx={{ position: 'relative' }}>
+                <Avatar src={item.url} variant="rounded" sx={{ width: 84, height: 84 }} />
+                <IconButton
+                  size="small"
+                  aria-label="Remove picture"
+                  onClick={() => removeSupporting(index)}
+                  sx={{
+                    position: 'absolute', top: -8, right: -8, bgcolor: 'background.paper',
+                    border: 1, borderColor: 'divider', '&:hover': { bgcolor: 'error.main', color: 'common.white' },
+                  }}
+                >
+                  <CloseIcon sx={{ fontSize: 14 }} />
+                </IconButton>
+              </Box>
+            ))}
+
+            {supporting.length < MAX_SUPPORTING && (
+              <Button
+                component="label"
+                variant="outlined"
+                sx={{
+                  width: 84, height: 84, minWidth: 84, borderStyle: 'dashed',
+                  display: 'flex', flexDirection: 'column', gap: 0.5,
+                }}
+              >
+                <AddPhotoAlternateIcon fontSize="small" />
+                <Typography variant="caption">Add</Typography>
+                <input type="file" hidden multiple accept="image/*" onChange={onSupportingChange} />
+              </Button>
+            )}
+          </Stack>
+
+          {supporting.length > 0 && (
+            <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+              {supporting.length} of {MAX_SUPPORTING} added
+              {removedMediaIds.length > 0 && ` · ${removedMediaIds.length} will be removed on save`}
+            </Typography>
+          )}
+        </Box>
+
+        {!advertisement && !imagePreview && (
+          <Alert severity="info" sx={{ mb: 2 }}>
+            A main poster is required. Supporting pictures are optional — an advert can have
+            anywhere from 1 to {MAX_SUPPORTING + 1} images in total.
+          </Alert>
+        )}
+
+        <Divider sx={{ mb: 2 }} />
 
         <Grid container spacing={2}>
           <Grid item xs={12}>

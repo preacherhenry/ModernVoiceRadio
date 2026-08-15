@@ -24,6 +24,8 @@ import { ThemeProvider, useAppTheme } from '@theme/ThemeProvider';
 import RootNavigator from '@navigation/RootNavigator';
 import { setupAudioPlayer } from '@services/audioPlayerService';
 import { initPushNotifications } from '@services/pushNotificationService';
+import { onAdvertisementsChanged } from '@services/chatSocketService';
+import { advertisementsApi } from '@redux/api/advertisementsApi';
 
 SplashScreenModule.preventAutoHideAsync().catch(() => {});
 
@@ -62,6 +64,17 @@ export default function App() {
       await initPushNotifications().catch(() => {});
       setBootstrapped(true);
     })();
+  }, []);
+
+  // Advert changes made in the admin dashboard land immediately, wherever the user is:
+  // dropping the Advertisement tag makes RTK Query refetch every mounted ad query (home
+  // banner carousel, news inline, interstitial), which re-runs the server's placement and
+  // date filtering rather than guessing at it here.
+  useEffect(() => {
+    const unsubscribe = onAdvertisementsChanged(() => {
+      store.dispatch(advertisementsApi.util.invalidateTags([{ type: 'Advertisement', id: 'LIST' }]));
+    });
+    return unsubscribe;
   }, []);
 
   const onLayoutReady = useCallback(async () => {

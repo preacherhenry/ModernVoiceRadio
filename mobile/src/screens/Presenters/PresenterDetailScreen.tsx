@@ -9,7 +9,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
-import ScreenContainer from '@components/common/ScreenContainer';
+import ScreenContainer, { BOTTOM_INSET } from '@components/common/ScreenContainer';
 import LoadingIndicator from '@components/common/LoadingIndicator';
 import ErrorState from '@components/common/ErrorState';
 import SectionHeader from '@components/common/SectionHeader';
@@ -173,7 +173,7 @@ const PresenterDetailScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  scrollContent: { paddingBottom: spacing.xxxl },
+  scrollContent: { paddingBottom: BOTTOM_INSET },
   backRow: { paddingHorizontal: spacing.lg, paddingTop: spacing.sm },
   headerWrap: { width: '100%', aspectRatio: 1.1, position: 'relative', marginBottom: spacing.lg },
   headerImage: { width: '100%', height: '100%' },

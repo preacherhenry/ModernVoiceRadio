@@ -7,7 +7,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
-import ScreenContainer from '@components/common/ScreenContainer';
+import ScreenContainer, { BOTTOM_INSET } from '@components/common/ScreenContainer';
 import LoadingIndicator from '@components/common/LoadingIndicator';
 import EmptyState from '@components/common/EmptyState';
 import ErrorState from '@components/common/ErrorState';
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   flexList: { flex: 1 },
   pill: { paddingHorizontal: spacing.md, paddingVertical: 8, borderRadius: radius.pill },
   pillLabel: { fontFamily: fontFamily.bodySemiBold, fontSize: fontSize.xs },
-  listContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl, gap: spacing.sm },
+  listContent: { paddingHorizontal: spacing.lg, paddingBottom: BOTTOM_INSET, gap: spacing.sm },
   row: {
     flexDirection: 'row', alignItems: 'center', gap: spacing.sm,
     padding: spacing.sm, borderRadius: radius.md, borderWidth: StyleSheet.hairlineWidth,

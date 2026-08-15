@@ -6,7 +6,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
-import ScreenContainer from '@components/common/ScreenContainer';
+import ScreenContainer, { BOTTOM_INSET } from '@components/common/ScreenContainer';
 import LoadingIndicator from '@components/common/LoadingIndicator';
 import ErrorState from '@components/common/ErrorState';
 import EmptyState from '@components/common/EmptyState';
@@ -219,7 +219,7 @@ const PodcastDetailScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  scrollContent: { paddingBottom: spacing.xxxl },
+  scrollContent: { paddingBottom: BOTTOM_INSET },
   header: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     paddingHorizontal: spacing.lg, marginBottom: spacing.md,

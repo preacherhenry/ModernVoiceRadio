@@ -7,7 +7,7 @@ import { Portal, Modal } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
-import ScreenContainer from '@components/common/ScreenContainer';
+import ScreenContainer, { BOTTOM_INSET } from '@components/common/ScreenContainer';
 import { AuthWall, useRequiresAuth } from '@components/common/AuthRequired';
 import LoadingIndicator from '@components/common/LoadingIndicator';
 import ErrorState from '@components/common/ErrorState';
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   filterPill: { paddingHorizontal: spacing.md, paddingVertical: 8, borderRadius: radius.pill },
   filterLabel: { fontFamily: fontFamily.bodySemiBold, fontSize: fontSize.sm },
   gridWrap: { flex: 1 },
-  gridContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+  gridContent: { paddingHorizontal: spacing.lg, paddingBottom: BOTTOM_INSET },
   columnWrapper: { gap: GAP },
   thumbWrap: { width: ITEM_SIZE, height: ITEM_SIZE, marginBottom: GAP, borderRadius: radius.sm, overflow: 'hidden' },
   thumb: { width: '100%', height: '100%' },

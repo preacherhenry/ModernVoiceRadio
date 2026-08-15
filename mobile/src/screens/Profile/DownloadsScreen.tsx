@@ -8,7 +8,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
-import ScreenContainer from '@components/common/ScreenContainer';
+import ScreenContainer, { BOTTOM_INSET } from '@components/common/ScreenContainer';
 import LoadingIndicator from '@components/common/LoadingIndicator';
 import ComingSoonState from '@components/common/ComingSoonState';
 import ErrorState from '@components/common/ErrorState';
@@ -156,7 +156,7 @@ const DownloadsScreen: React.FC = () => {
 const styles = StyleSheet.create({
   header: { paddingHorizontal: spacing.lg, marginBottom: spacing.md },
   flexList: { flex: 1 },
-  listContent: { paddingBottom: spacing.xxl },
+  listContent: { paddingBottom: BOTTOM_INSET },
   row: {
     flexDirection: 'row',
     alignItems: 'center',

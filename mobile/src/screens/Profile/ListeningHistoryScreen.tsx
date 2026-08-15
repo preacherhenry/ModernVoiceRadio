@@ -7,7 +7,7 @@ import { isToday, isYesterday } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import i18n from '@i18n/index';
 
-import ScreenContainer from '@components/common/ScreenContainer';
+import ScreenContainer, { BOTTOM_INSET } from '@components/common/ScreenContainer';
 import LoadingIndicator from '@components/common/LoadingIndicator';
 import EmptyState from '@components/common/EmptyState';
 import ErrorState from '@components/common/ErrorState';
@@ -122,7 +122,7 @@ const ListeningHistoryScreen: React.FC = () => {
 const styles = StyleSheet.create({
   header: { paddingHorizontal: spacing.lg, marginBottom: spacing.md },
   flexList: { flex: 1 },
-  listContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+  listContent: { paddingHorizontal: spacing.lg, paddingBottom: BOTTOM_INSET },
   sectionTitle: {
     fontFamily: fontFamily.bodySemiBold, fontSize: fontSize.xs, letterSpacing: 0.4,
     textTransform: 'uppercase', marginTop: spacing.md, marginBottom: spacing.xs,

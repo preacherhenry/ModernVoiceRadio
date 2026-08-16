@@ -9,7 +9,7 @@ interface AuthPayload {
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    register: builder.mutation<ApiEnvelope<AuthPayload>, { fullName: string; email: string; phone?: string; password: string }>({
+    register: builder.mutation<ApiEnvelope<AuthPayload>, { fullName: string; email: string; phone?: string; password: string; acceptedTerms: boolean }>({
       query: (body) => ({ url: '/auth/register', method: 'POST', data: body }),
     }),
     login: builder.mutation<ApiEnvelope<AuthPayload>, { email: string; password: string }>({

@@ -6,6 +6,10 @@ export type AuthStackParamList = {
   Register: undefined;
   ForgotPassword: undefined;
   ResetPassword: { email: string };
+  // Reachable before signing in — the terms have to be readable while deciding whether
+  // to accept them. Also registered in ProfileStack for signed-in users.
+  Terms: undefined;
+  PrivacyPolicy: undefined;
 };
 
 export type HomeStackParamList = {

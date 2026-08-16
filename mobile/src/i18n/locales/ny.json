@@ -103,6 +103,12 @@
       "otpLength": "Lowetsani nambala ya zizindikiro 6",
       "otpRequired": "Nambala ikufunika",
       "newPasswordRequired": "Mawu achinsinsi atsopano akufunika"
+    },
+    "terms": {
+      "agreePrefix": "Ndikuvomereza ",
+      "termsLink": "Malamulo ndi Mikhalidwe",
+      "agreeSuffix": " a Modern Voice FM.",
+      "mustAccept": "Chonde vomerezani Malamulo ndi Mikhalidwe kuti mupange akaunti yanu."
     }
   },
   "home": {

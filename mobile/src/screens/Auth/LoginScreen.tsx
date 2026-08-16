@@ -126,12 +126,36 @@ const LoginScreen: React.FC = () => {
           <Text style={{ color: colors.primary, fontFamily: fontFamily.bodySemiBold }}>{t('auth.login.signUp')}</Text>
         </Pressable>
       </View>
+
+      {/* Readable here too, but acceptance is only recorded when the account is created —
+          returning listeners are never asked to agree again. */}
+      <View style={styles.legalRow}>
+        <Text
+          onPress={() => navigation.navigate('Terms')}
+          style={[styles.legalLink, { color: colors.textMuted }]}
+        >
+          {t('auth.terms.termsLink')}
+        </Text>
+        <Text style={[styles.legalSeparator, { color: colors.textMuted }]}>·</Text>
+        <Text
+          onPress={() => navigation.navigate('PrivacyPolicy')}
+          style={[styles.legalLink, { color: colors.textMuted }]}
+        >
+          {t('profile.menu.privacyPolicy')}
+        </Text>
+      </View>
     </ScreenContainer>
   );
 };
 
 const styles = StyleSheet.create({
   header: { alignItems: 'center', paddingHorizontal: spacing.xl, paddingTop: spacing.xl, paddingBottom: spacing.lg },
+  legalRow: {
+    flexDirection: 'row', justifyContent: 'center', alignItems: 'center',
+    gap: spacing.xs, marginTop: spacing.sm, paddingHorizontal: spacing.xl,
+  },
+  legalLink: { fontFamily: fontFamily.body, fontSize: 12, textDecorationLine: 'underline' },
+  legalSeparator: { fontFamily: fontFamily.body, fontSize: 12 },
   logoCircle: { width: 64, height: 64, borderRadius: 32, alignItems: 'center', justifyContent: 'center' },
   form: { paddingHorizontal: spacing.xl },
   forgotLink: { alignSelf: 'flex-end', marginBottom: spacing.md },

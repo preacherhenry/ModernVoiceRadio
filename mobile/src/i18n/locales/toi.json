@@ -103,6 +103,12 @@
       "otpLength": "Amulembe nombolo yazyeelo zili 6",
       "otpRequired": "Nombolo iyandikene",
       "newPasswordRequired": "Mabala mapya aasisikene ayandikene"
+    },
+    "terms": {
+      "agreePrefix": "Ndazumina ",
+      "termsLink": "Milawo a Mbeleko",
+      "agreeSuffix": " ya Modern Voice FM.",
+      "mustAccept": "Amuzumine Milawo a Mbeleko kutegwa mubambe akkaunti yanu."
     }
   },
   "home": {

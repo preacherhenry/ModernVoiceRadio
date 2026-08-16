@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import userRepository from '../repositories/userRepository.js';
 import tokenRepository from '../repositories/tokenRepository.js';
 import ApiError from '../utils/ApiError.js';
+import { CURRENT_TERMS_VERSION } from '../constants/legal.js';
 import {
   signAccessToken, signRefreshToken, verifyRefreshToken, hashToken, refreshTokenExpiryDate,
 } from '../utils/jwt.js';
@@ -24,8 +25,14 @@ const issueTokenPair = async (user, meta = {}) => {
 
 export const authService = {
   register: async ({
-    fullName, email, phone, password,
+    fullName, email, phone, password, acceptedTerms,
   }, meta) => {
+    // Enforced server-side as well as in the app: the checkbox is a convenience, this
+    // is the record that matters.
+    if (!acceptedTerms) {
+      throw ApiError.badRequest('You must accept the Terms & Conditions to create an account');
+    }
+
     const existing = await userRepository.findByEmail(email);
     if (existing) throw ApiError.conflict('An account with this email already exists');
 
@@ -35,6 +42,7 @@ export const authService = {
     const passwordHash = await bcrypt.hash(password, 12);
     const created = await userRepository.create({
       roleId: listenerRole.id, fullName, email, phone, passwordHash,
+      termsVersion: CURRENT_TERMS_VERSION,
     });
 
     const fullUser = await userRepository.findByEmail(email);

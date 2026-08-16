@@ -103,6 +103,12 @@
       "otpLength": "Isa kodhi yenhamba 6",
       "otpRequired": "Kodhi inodiwa",
       "newPasswordRequired": "Password itsva inodiwa"
+    },
+    "terms": {
+      "agreePrefix": "Ndinobvuma ",
+      "termsLink": "Mitemo neZvinodiwa",
+      "agreeSuffix": " zveModern Voice FM.",
+      "mustAccept": "Ndapota bvuma Mitemo neZvinodiwa kuti ugadzire account yako."
     }
   },
   "home": {

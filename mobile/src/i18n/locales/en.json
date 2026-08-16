@@ -103,6 +103,12 @@
       "otpLength": "Enter the 6-digit code",
       "otpRequired": "Code is required",
       "newPasswordRequired": "New password is required"
+    },
+    "terms": {
+      "agreePrefix": "I agree to the Modern Voice FM ",
+      "termsLink": "Terms and Conditions",
+      "agreeSuffix": ".",
+      "mustAccept": "Please accept the Terms and Conditions to create your account."
     }
   },
   "home": {

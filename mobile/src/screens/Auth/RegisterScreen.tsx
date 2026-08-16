@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { TextInput as PaperTextInput } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ScreenContainer from '@components/common/ScreenContainer';
 import AppTextInput from '@components/common/AppTextInput';
 import AppButton from '@components/common/AppButton';
@@ -25,6 +26,9 @@ const RegisterScreen: React.FC = () => {
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
   const [register, { isLoading, isSuccess, error }] = useRegisterMutation();
+  // Acceptance is a deliberate action, so it starts unticked on every visit and is never
+  // remembered — the account record, written at registration, is the lasting proof.
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const schema = useMemo(() => yup.object({
     fullName: yup.string().min(2, t('auth.errors.fullNameMin')).required(t('auth.errors.fullNameRequired')),
@@ -42,7 +46,7 @@ const RegisterScreen: React.FC = () => {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      await register(values).unwrap();
+      await register({ ...values, acceptedTerms }).unwrap();
       navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
     } catch {
       // Surfaced via the `error` state from useRegisterMutation below — nothing else to do here.
@@ -130,7 +134,36 @@ const RegisterScreen: React.FC = () => {
           </Text>
         )}
 
-        <AppButton label={t('auth.register.createAccountButton')} onPress={handleSubmit(onSubmit)} loading={isLoading} style={styles.submit} />
+        <Pressable
+          onPress={() => setAcceptedTerms((v) => !v)}
+          style={styles.termsRow}
+          accessibilityRole="checkbox"
+          accessibilityState={{ checked: acceptedTerms }}
+        >
+          <MaterialCommunityIcons
+            name={acceptedTerms ? 'checkbox-marked' : 'checkbox-blank-outline'}
+            size={22}
+            color={acceptedTerms ? colors.primary : colors.textMuted}
+          />
+          <Text style={[styles.termsText, { color: colors.textSecondary }]}>
+            {t('auth.terms.agreePrefix')}
+            <Text
+              onPress={() => navigation.navigate('Terms')}
+              style={[styles.termsLink, { color: colors.primary }]}
+            >
+              {t('auth.terms.termsLink')}
+            </Text>
+            {t('auth.terms.agreeSuffix')}
+          </Text>
+        </Pressable>
+
+        <AppButton
+          label={t('auth.register.createAccountButton')}
+          onPress={handleSubmit(onSubmit)}
+          loading={isLoading}
+          disabled={!acceptedTerms}
+          style={styles.submit}
+        />
       </View>
 
       <View style={styles.footer}>
@@ -148,6 +181,12 @@ const styles = StyleSheet.create({
   form: { paddingHorizontal: spacing.xl },
   apiError: { fontFamily: fontFamily.body, fontSize: 13, marginBottom: spacing.sm, textAlign: 'center' },
   submit: { marginTop: spacing.xs },
+  termsRow: {
+    flexDirection: 'row', alignItems: 'flex-start', gap: spacing.xs,
+    marginTop: spacing.sm, marginBottom: spacing.sm,
+  },
+  termsText: { flex: 1, fontFamily: fontFamily.body, fontSize: 13, lineHeight: 19 },
+  termsLink: { fontFamily: fontFamily.bodySemiBold, textDecorationLine: 'underline' },
   footer: { flexDirection: 'row', justifyContent: 'center', paddingVertical: spacing.xl },
 });
 

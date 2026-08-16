@@ -6,6 +6,8 @@ export const registerValidator = [
   body('phone').optional({ values: 'falsy' }).isMobilePhone('any').withMessage('Invalid phone number'),
   body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters')
     .matches(/\d/).withMessage('Password must contain at least one number'),
+  body('acceptedTerms').toBoolean().equals('true')
+    .withMessage('You must accept the Terms & Conditions to create an account'),
 ];
 
 export const loginValidator = [

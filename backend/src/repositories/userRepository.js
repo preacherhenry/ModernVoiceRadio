@@ -27,12 +27,17 @@ export const userRepository = {
 
   create: async ({
     roleId, fullName, email, phone, passwordHash, provider = 'local', providerId = null,
+    termsVersion = null,
   }) => {
     const { rows } = await query(
-      `INSERT INTO users (role_id, full_name, email, phone, password_hash, provider, provider_id, is_verified)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
-       RETURNING id, full_name, email, phone, provider, is_verified, created_at`,
-      [roleId, fullName, email, phone, passwordHash, provider, providerId, provider !== 'local'],
+      // Acceptance is stamped at creation: now() when a version was agreed to, null
+      // otherwise, so the record always reflects what the user actually agreed to.
+      `INSERT INTO users (role_id, full_name, email, phone, password_hash, provider, provider_id, is_verified,
+                          terms_accepted_at, terms_version)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8, CASE WHEN $9::text IS NULL THEN NULL ELSE now() END, $9)
+       RETURNING id, full_name, email, phone, provider, is_verified, created_at,
+                 terms_accepted_at, terms_version`,
+      [roleId, fullName, email, phone, passwordHash, provider, providerId, provider !== 'local', termsVersion],
     );
     return rows[0];
   },

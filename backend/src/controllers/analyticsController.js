@@ -28,3 +28,34 @@ export const trend = asyncHandler(async (req, res) => {
   const data = await analyticsService.trend(days);
   sendSuccess(res, 200, 'Analytics trend retrieved', data);
 });
+
+const periodQuery = (req) => ({
+  period: req.query.period,
+  from: req.query.from,
+  to: req.query.to,
+});
+
+export const listenerSummary = asyncHandler(async (req, res) => {
+  const data = await analyticsService.listenerSummary(periodQuery(req));
+  sendSuccess(res, 200, 'Listener summary retrieved', data);
+});
+
+export const listenerBreakdown = asyncHandler(async (req, res) => {
+  const { rows, total } = await analyticsService.listenerBreakdown({
+    ...periodQuery(req),
+    sortBy: req.query.sortBy,
+    limit: Math.min(Number(req.query.limit) || 50, 200),
+    offset: Number(req.query.offset) || 0,
+  });
+  sendSuccess(res, 200, 'Listeners retrieved', rows, { total });
+});
+
+export const listenerHistory = asyncHandler(async (req, res) => {
+  const data = await analyticsService.listenerHistory({
+    ...periodQuery(req),
+    userId: req.params.userId,
+    limit: Math.min(Number(req.query.limit) || 100, 500),
+    offset: Number(req.query.offset) || 0,
+  });
+  sendSuccess(res, 200, 'Listener history retrieved', data);
+});

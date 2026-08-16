@@ -1,6 +1,7 @@
 import { baseApi } from '@api/baseApi';
 import type {
   AnalyticsOverview, ApiEnvelope, CityStat, CountryStat, DeviceStat, TrendPoint,
+  ListenerSummary, ListenerRow, ListenerHistory, ListenerPeriodQuery,
 } from '@apptypes/models';
 
 export const analyticsApi = baseApi.injectEndpoints({
@@ -21,9 +22,22 @@ export const analyticsApi = baseApi.injectEndpoints({
     getTrend: builder.query<ApiEnvelope<TrendPoint[]>, { days?: number } | void>({
       query: (params) => ({ url: '/analytics/trend', params: params ?? { days: 30 } }),
     }),
+
+    getListenerSummary: builder.query<ApiEnvelope<ListenerSummary>, ListenerPeriodQuery>({
+      query: (params) => ({ url: '/analytics/listeners/summary', params }),
+      providesTags: [{ type: 'Analytics', id: 'LISTENERS' }],
+    }),
+    getListeners: builder.query<ApiEnvelope<ListenerRow[]>, ListenerPeriodQuery & { sortBy?: string; limit?: number; offset?: number }>({
+      query: (params) => ({ url: '/analytics/listeners', params }),
+      providesTags: [{ type: 'Analytics', id: 'LISTENERS' }],
+    }),
+    getListenerHistory: builder.query<ApiEnvelope<ListenerHistory>, ListenerPeriodQuery & { userId: string }>({
+      query: ({ userId, ...params }) => ({ url: `/analytics/listeners/${userId}/history`, params }),
+    }),
   }),
 });
 
 export const {
   useGetOverviewQuery, useGetCountriesQuery, useGetCitiesQuery, useGetDevicesQuery, useGetTrendQuery,
+  useGetListenerSummaryQuery, useGetListenersQuery, useGetListenerHistoryQuery,
 } = analyticsApi;

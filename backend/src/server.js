@@ -5,8 +5,9 @@ import app from './app.js';
 import logger from './config/logger.js';
 import { pool } from './config/database.js';
 import { initFirebase } from './config/firebase.js';
+import { attachSocketUser } from './utils/socketAuth.js';
 import registerChatSocket from './sockets/chatSocket.js';
-import registerListenerSocket from './sockets/listenerSocket.js';
+import registerListenerSocket, { closeOrphanedSessions } from './sockets/listenerSocket.js';
 import { scheduleAnalyticsRollup } from './jobs/rollupAnalytics.js';
 import { scheduleChatMessageExpiry } from './jobs/expireChatMessages.js';
 
@@ -23,6 +24,8 @@ const io = new Server(server, {
   },
 });
 
+// Resolve the handshake token once, before any feature handler runs.
+attachSocketUser(io);
 registerChatSocket(io);
 registerListenerSocket(io);
 app.set('io', io);
@@ -64,6 +67,9 @@ async function start() {
   server.listen(PORT, () => {
     logger.info(`Modern Voice Radio API listening on port ${PORT} [${process.env.NODE_ENV || 'development'}]`);
   });
+
+  // Sessions left open by a previous run would otherwise never get a duration.
+  await closeOrphanedSessions().catch((err) => logger.error(`Orphan session cleanup failed: ${err.message}`));
 
   scheduleAnalyticsRollup();
   scheduleChatMessageExpiry(io);

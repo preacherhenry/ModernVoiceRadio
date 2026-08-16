@@ -247,3 +247,61 @@ export interface ChatMessage {
   is_deleted: boolean;
   created_at: string;
 }
+
+// ── Registered-listener analytics ────────────────────────────────────────────
+
+export type ListenerPeriod = 'today' | '7d' | '30d' | 'all' | 'custom';
+
+export interface ListenerPeriodQuery {
+  period?: ListenerPeriod;
+  /** 'YYYY-MM-DD' in station local time; only used when period is 'custom'. */
+  from?: string;
+  to?: string;
+}
+
+export interface ListenerSummary {
+  period: ListenerPeriod;
+  from: string | null;
+  to: string | null;
+  uniqueListeners: number;
+  totalSeconds: number;
+  averageSessionSeconds: number;
+  returningListeners: number;
+  returningPercentage: number;
+  mostActiveListener: {
+    userId: UUID;
+    fullName: string;
+    email: string;
+    avatarUrl: string | null;
+    totalSeconds: number;
+  } | null;
+}
+
+export interface ListenerRow {
+  userId: UUID;
+  fullName: string;
+  email: string;
+  avatarUrl: string | null;
+  totalSeconds: number;
+  sessionCount: number;
+  activeDays: number;
+  lastListenedAt: string | null;
+}
+
+export interface ListenerSession {
+  id: UUID;
+  startedAt: string;
+  endedAt: string | null;
+  durationSeconds: number | null;
+  deviceType: string | null;
+}
+
+export interface ListenerHistory {
+  user: { id: UUID; fullName: string; email: string; avatarUrl: string | null } | null;
+  totalSeconds: number;
+  sessionCount: number;
+  activeDays: number;
+  firstListenedAt: string | null;
+  lastListenedAt: string | null;
+  sessions: ListenerSession[];
+}

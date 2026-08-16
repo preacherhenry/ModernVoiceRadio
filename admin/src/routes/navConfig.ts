@@ -15,6 +15,7 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { label: 'Dashboard', path: '/', icon: 'SpaceDashboard' },
       { label: 'Analytics', path: '/analytics', icon: 'Insights' },
+      { label: 'Listener Analytics', path: '/listener-analytics', icon: 'Headphones' },
     ],
   },
   {

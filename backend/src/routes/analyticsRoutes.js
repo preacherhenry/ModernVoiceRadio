@@ -12,4 +12,9 @@ router.get('/cities', analyticsController.cities);
 router.get('/devices', analyticsController.devices);
 router.get('/trend', analyticsController.trend);
 
+// Registered-listener analytics (admin dashboard "Listener Analytics")
+router.get('/listeners/summary', analyticsController.listenerSummary);
+router.get('/listeners', analyticsController.listenerBreakdown);
+router.get('/listeners/:userId/history', analyticsController.listenerHistory);
+
 export default router;

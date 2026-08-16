@@ -9,6 +9,7 @@ import DashboardLayout from '@components/layout/DashboardLayout';
 import LoginPage from '@pages/Auth/LoginPage';
 import DashboardPage from '@pages/Dashboard/DashboardPage';
 import AnalyticsPage from '@pages/Dashboard/AnalyticsPage';
+import ListenerAnalyticsPage from '@pages/Dashboard/ListenerAnalyticsPage';
 import ProgramsPage from '@pages/Programs/ProgramsPage';
 import PresentersPage from '@pages/Presenters/PresentersPage';
 import SchedulePage from '@pages/Schedule/SchedulePage';
@@ -41,6 +42,7 @@ const App: React.FC = () => {
               <Route element={<DashboardLayout />}>
                 <Route path="/" element={<DashboardPage />} />
                 <Route path="/analytics" element={<AnalyticsPage />} />
+                <Route path="/listener-analytics" element={<ListenerAnalyticsPage />} />
                 <Route path="/programs" element={<ProgramsPage />} />
                 <Route path="/presenters" element={<PresentersPage />} />
                 <Route path="/schedule" element={<SchedulePage />} />

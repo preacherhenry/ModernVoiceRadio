@@ -3,31 +3,11 @@ import { query } from '../config/database.js';
 import chatRepository from '../repositories/chatRepository.js';
 import chatService from '../services/chatService.js';
 import logger from '../config/logger.js';
+import { resolveUserFromToken } from '../utils/socketAuth.js';
 
 const MODERATOR_ROLES = ['moderator', 'admin', 'super_admin'];
 const ROOM = 'chat';
 
-const resolveUserFromToken = async (token) => {
-  if (!token) return null;
-  try {
-    const decoded = verifyAccessToken(token);
-    const { rows } = await query(
-      `SELECT u.id, u.full_name, u.avatar_url, u.is_active, r.name AS role_name
-       FROM users u JOIN roles r ON r.id = u.role_id
-       WHERE u.id = $1`,
-      [decoded.id],
-    );
-    if (!rows.length || !rows[0].is_active) return null;
-    return {
-      id: rows[0].id,
-      fullName: rows[0].full_name,
-      avatarUrl: rows[0].avatar_url,
-      roleName: rows[0].role_name,
-    };
-  } catch {
-    return null;
-  }
-};
 
 /**
  * Registers live-chat handlers on the shared Socket.io server (room "chat").
@@ -39,17 +19,14 @@ const resolveUserFromToken = async (token) => {
 export default function registerChatSocket(io) {
   io.on('connection', (socket) => {
     socket.join(ROOM);
-    socket.data.chatUser = null;
 
+    // socket.data.user is resolved from the handshake token by attachSocketUser before
+    // this handler runs; re-authentication below updates it in place.
     const authenticate = async (token) => {
       const user = await resolveUserFromToken(token);
-      if (user) socket.data.chatUser = user;
+      if (user) socket.data.user = user;
       return user;
     };
-
-    // Allow auth via handshake payload: io(url, { auth: { token } })
-    const handshakeToken = socket.handshake.auth && socket.handshake.auth.token;
-    if (handshakeToken) authenticate(handshakeToken);
 
     // Or via an explicit event after connecting
     socket.on('authenticate', async (payload, callback) => {
@@ -61,7 +38,7 @@ export default function registerChatSocket(io) {
     socket.on('send_message', async (payload = {}, callback) => {
       try {
         const { message, replyToId } = payload;
-        const user = socket.data.chatUser;
+        const user = socket.data.user;
 
         if (!user) {
           socket.emit('error', { message: 'You must be signed in to send messages' });
@@ -105,7 +82,7 @@ export default function registerChatSocket(io) {
 
     socket.on('pin_message', async ({ id, isPinned } = {}) => {
       try {
-        const user = socket.data.chatUser;
+        const user = socket.data.user;
         if (!user || !MODERATOR_ROLES.includes(user.roleName)) {
           socket.emit('error', { message: 'You do not have permission to pin messages' });
           return;
@@ -120,7 +97,7 @@ export default function registerChatSocket(io) {
 
     socket.on('delete_message', async ({ id } = {}) => {
       try {
-        const user = socket.data.chatUser;
+        const user = socket.data.user;
         if (!user || !MODERATOR_ROLES.includes(user.roleName)) {
           socket.emit('error', { message: 'You do not have permission to delete messages' });
           return;

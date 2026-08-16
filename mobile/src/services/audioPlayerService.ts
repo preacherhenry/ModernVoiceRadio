@@ -7,6 +7,7 @@ import {
 } from '@redux/slices/playerSlice';
 import type { AudioStream, NowPlayingInfo, PodcastEpisode } from '@apptypes/models';
 import { ENV } from '@constants/config';
+import { joinLiveListenerPresence, leaveLiveListenerPresence } from './listenerPresenceService';
 
 let isSetup = false;
 let sleepTimerHandle: ReturnType<typeof setTimeout> | null = null;
@@ -120,9 +121,27 @@ export async function playEpisode(episode: PodcastEpisode, resumeFromSeconds = 0
   }));
 }
 
-export const pausePlayback = () => TrackPlayer.pause();
-export const resumePlayback = () => TrackPlayer.play();
+/**
+ * Pausing or stopping ends the listening session immediately; resuming live radio opens
+ * a new one. Handled here rather than per screen so a session closes however playback
+ * was ended — the mini player, the Live screen, or the lock-screen controls.
+ */
+export const pausePlayback = async () => {
+  const { currentTrack } = getStoreRef().getState().player;
+  if (currentTrack?.source === 'live') leaveLiveListenerPresence();
+  await TrackPlayer.pause();
+};
+
+export const resumePlayback = async () => {
+  const { currentTrack } = getStoreRef().getState().player;
+  if (currentTrack?.source === 'live' && lastLiveStream) {
+    joinLiveListenerPresence(lastLiveStream.id);
+  }
+  await TrackPlayer.play();
+};
+
 export const stopAudioPlayback = async () => {
+  leaveLiveListenerPresence();
   lastLiveStream = null;
   await TrackPlayer.stop();
   await TrackPlayer.reset();

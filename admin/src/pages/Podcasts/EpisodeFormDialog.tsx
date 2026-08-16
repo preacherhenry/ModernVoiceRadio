@@ -10,6 +10,7 @@ import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import type { PodcastEpisode } from '@apptypes/models';
 import { useCreateEpisodeMutation, useUpdateEpisodeMutation } from '@features/podcasts/podcastsApi';
+import { apiErrorMessage } from '@utils/apiError';
 
 const schema = yup.object({
   title: yup.string().min(2, 'Too short').required('Title is required'),
@@ -87,7 +88,7 @@ const EpisodeFormDialog: React.FC<Props> = ({
       }
       onClose();
     } catch (err) {
-      const message = (err as { data?: { message?: string } })?.data?.message || 'Something went wrong';
+      const message = apiErrorMessage(err, 'Something went wrong');
       enqueueSnackbar(message, { variant: 'error' });
     }
   };

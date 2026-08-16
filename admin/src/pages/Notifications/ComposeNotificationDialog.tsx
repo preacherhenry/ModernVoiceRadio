@@ -8,6 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useCreateNotificationMutation } from '@features/notifications/notificationsApi';
+import { apiErrorMessage } from '@utils/apiError';
 
 const TYPE_OPTIONS = [
   { value: 'announcement', label: 'Announcement' },
@@ -84,7 +85,7 @@ const ComposeNotificationDialog: React.FC<Props> = ({ open, onClose }) => {
       enqueueSnackbar('Notification sent', { variant: 'success' });
       handleClose();
     } catch (err) {
-      const message = (err as { data?: { message?: string } })?.data?.message || 'Failed to send notification';
+      const message = apiErrorMessage(err, 'Failed to send notification');
       enqueueSnackbar(message, { variant: 'error' });
     }
   };

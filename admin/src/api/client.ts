@@ -5,7 +5,12 @@ import { setTokens, signedOut } from '@features/auth/authSlice';
 
 export const httpClient = axios.create({
   baseURL: ENV.API_URL,
-  timeout: 20000,
+  // Generous because uploads stream through the API to Cloudinary: an advert with a
+  // poster plus four supporting pictures, or a podcast episode's audio, easily runs past
+  // 20s — and the host suspends an idle instance, so the first request after a quiet
+  // spell also pays a cold start. At 20s those saves aborted client-side and surfaced as
+  // a generic failure even though the server had accepted them.
+  timeout: 180000,
 });
 
 httpClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {

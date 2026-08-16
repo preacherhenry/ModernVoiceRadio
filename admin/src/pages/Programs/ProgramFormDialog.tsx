@@ -12,6 +12,7 @@ import { useGetPresentersQuery } from '@features/presenters/presentersApi';
 import {
   useCreateProgramMutation, useUpdateProgramMutation, useGetProgramQuery, type ProgramDetail,
 } from '@features/programs/programsApi';
+import { apiErrorMessage } from '@utils/apiError';
 
 const CATEGORY_OPTIONS = ['Talk', 'Music', 'News', 'Sports', 'Entertainment'];
 
@@ -98,7 +99,7 @@ const ProgramFormDialog: React.FC<Props> = ({ open, program, onClose }) => {
       }
       onClose();
     } catch (err) {
-      const message = (err as { data?: { message?: string } })?.data?.message || 'Something went wrong';
+      const message = apiErrorMessage(err, 'Something went wrong');
       enqueueSnackbar(message, { variant: 'error' });
     }
   };

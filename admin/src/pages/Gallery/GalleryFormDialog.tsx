@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useCreateGalleryItemMutation } from '@features/gallery/galleryApi';
+import { apiErrorMessage } from '@utils/apiError';
 
 const schema = yup.object({
   title: yup.string().optional(),
@@ -61,7 +62,7 @@ const GalleryFormDialog: React.FC<Props> = ({ open, onClose }) => {
       enqueueSnackbar('Media uploaded', { variant: 'success' });
       handleClose();
     } catch (err) {
-      const message = (err as { data?: { message?: string } })?.data?.message || 'Upload failed';
+      const message = apiErrorMessage(err, 'Upload failed');
       enqueueSnackbar(message, { variant: 'error' });
     }
   };

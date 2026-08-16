@@ -9,6 +9,7 @@ import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import type { AudioStream } from '@apptypes/models';
 import { useCreateAudioStreamMutation, useUpdateAudioStreamMutation } from '@features/audioStreams/audioStreamsApi';
+import { apiErrorMessage } from '@utils/apiError';
 
 const PROTOCOLS = ['icecast', 'shoutcast', 'hls'];
 const FORMATS = ['mp3', 'aac', 'ogg'];
@@ -72,7 +73,7 @@ const AudioStreamFormDialog: React.FC<Props> = ({ open, stream, onClose }) => {
       }
       onClose();
     } catch (err) {
-      const message = (err as { data?: { message?: string } })?.data?.message || 'Something went wrong';
+      const message = apiErrorMessage(err, 'Something went wrong');
       enqueueSnackbar(message, { variant: 'error' });
     }
   };

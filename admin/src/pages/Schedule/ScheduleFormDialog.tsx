@@ -9,6 +9,7 @@ import { useSnackbar } from 'notistack';
 import type { ScheduleSlot } from '@apptypes/models';
 import { useGetProgramsQuery } from '@features/programs/programsApi';
 import { useCreateScheduleSlotMutation, useUpdateScheduleSlotMutation } from '@features/schedule/scheduleApi';
+import { apiErrorMessage } from '@utils/apiError';
 
 const DAY_LABELS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -69,7 +70,7 @@ const ScheduleFormDialog: React.FC<Props> = ({
       }
       onClose();
     } catch (err) {
-      const message = (err as { data?: { message?: string } })?.data?.message || 'Something went wrong';
+      const message = apiErrorMessage(err, 'Something went wrong');
       enqueueSnackbar(message, { variant: 'error' });
     }
   };

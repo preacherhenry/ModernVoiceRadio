@@ -11,6 +11,7 @@ import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import type { Advertisement } from '@apptypes/models';
 import { useCreateAdvertisementMutation, useUpdateAdvertisementMutation } from '@features/advertisements/advertisementsApi';
+import { apiErrorMessage } from '@utils/apiError';
 
 const PLACEMENTS = [
   { value: 'home_banner', label: 'Home Banner' },
@@ -172,7 +173,7 @@ const AdvertisementFormDialog: React.FC<Props> = ({ open, advertisement, onClose
       }
       onClose();
     } catch (err) {
-      const message = (err as { data?: { message?: string } })?.data?.message || 'Something went wrong';
+      const message = apiErrorMessage(err, 'Something went wrong');
       enqueueSnackbar(message, { variant: 'error' });
     }
   };

@@ -9,6 +9,7 @@ import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import type { Presenter } from '@apptypes/models';
 import { useCreatePresenterMutation, useUpdatePresenterMutation } from '@features/presenters/presentersApi';
+import { apiErrorMessage } from '@utils/apiError';
 
 const schema = yup.object({
   fullName: yup.string().min(2, 'Too short').required('Full name is required'),
@@ -95,7 +96,7 @@ const PresenterFormDialog: React.FC<Props> = ({ open, presenter, onClose }) => {
       }
       onClose();
     } catch (err) {
-      const message = (err as { data?: { message?: string } })?.data?.message || 'Something went wrong';
+      const message = apiErrorMessage(err, 'Something went wrong');
       enqueueSnackbar(message, { variant: 'error' });
     }
   };

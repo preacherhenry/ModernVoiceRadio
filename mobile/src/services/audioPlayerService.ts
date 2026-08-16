@@ -55,11 +55,42 @@ export async function setupAudioPlayer(): Promise<void> {
 let lastLiveStream: AudioStream | null = null;
 let reconnectAttempts = 0;
 
+/**
+ * While true, nothing may start or resume audio — set when the session ends or the user
+ * is on an authentication screen. A flag is needed rather than just stopping once,
+ * because playback can restart on its own: the error handler below retries a dropped
+ * live stream on a delay, so a retry already in flight would otherwise bring the audio
+ * back moments after logout.
+ */
+let playbackBlocked = false;
+
+/** Stops any audio and prevents it restarting until playback is explicitly allowed again. */
+export async function blockPlayback(): Promise<void> {
+  playbackBlocked = true;
+  // Stops the retry loop below from resuming: it re-reads both of these after its delay.
+  lastLiveStream = null;
+  reconnectAttempts = Number.MAX_SAFE_INTEGER;
+  // A pending sleep timer belongs to the session that just ended.
+  cancelSleepTimer();
+  await stopAudioPlayback();
+}
+
+/** Re-enables playback — the user is back in the app proper. Does not start anything. */
+export function allowPlayback(): void {
+  playbackBlocked = false;
+  reconnectAttempts = 0;
+}
+
+export const isPlaybackBlocked = () => playbackBlocked;
+
 async function reconnectLiveIfNeeded() {
+  if (playbackBlocked) return;
   if (!lastLiveStream) return;
   if (reconnectAttempts >= 5) return;
   reconnectAttempts += 1;
   await new Promise((resolve) => { setTimeout(resolve, Math.min(2000 * reconnectAttempts, 10000)); });
+  // Re-check after the delay: the session may have ended while this retry was waiting.
+  if (playbackBlocked || !lastLiveStream) return;
   try {
     await playLiveStream(lastLiveStream);
     reconnectAttempts = 0;
@@ -70,6 +101,7 @@ async function reconnectLiveIfNeeded() {
 
 /** Starts/switches live radio playback for a given stream config (bitrate/protocol selection). */
 export async function playLiveStream(stream: AudioStream, nowPlaying?: NowPlayingInfo | null): Promise<void> {
+  if (playbackBlocked) return;
   await setupAudioPlayer();
   lastLiveStream = stream;
 
@@ -95,6 +127,7 @@ export async function playLiveStream(stream: AudioStream, nowPlaying?: NowPlayin
 
 /** Starts on-demand podcast episode playback, optionally resuming from a saved position. */
 export async function playEpisode(episode: PodcastEpisode, resumeFromSeconds = 0): Promise<void> {
+  if (playbackBlocked) return;
   await setupAudioPlayer();
   lastLiveStream = null;
 
@@ -133,6 +166,7 @@ export const pausePlayback = async () => {
 };
 
 export const resumePlayback = async () => {
+  if (playbackBlocked) return;
   const { currentTrack } = getStoreRef().getState().player;
   if (currentTrack?.source === 'live' && lastLiveStream) {
     joinLiveListenerPresence(lastLiveStream.id);

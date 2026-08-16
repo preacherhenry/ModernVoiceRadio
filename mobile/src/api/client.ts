@@ -7,7 +7,10 @@ import {
 
 export const httpClient = axios.create({
   baseURL: ENV.API_URL,
-  timeout: 15000,
+  // Long enough for an avatar upload over mobile data, plus the cold start the API pays
+  // when its instance has been idle. At 15s those uploads aborted before the picture
+  // finished reaching Cloudinary.
+  timeout: 60000,
 });
 
 httpClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {

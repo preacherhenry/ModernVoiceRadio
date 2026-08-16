@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import userRepository from '../repositories/userRepository.js';
 import listeningHistoryRepository from '../repositories/listeningHistoryRepository.js';
 import ApiError from '../utils/ApiError.js';
+import { toPublicUser } from '../utils/publicUser.js';
 
 export const userService = {
   list: async (listQuery) => userRepository.list(listQuery),
@@ -38,7 +39,10 @@ export const userService = {
       avatarPublicId: file ? file.filename : undefined,
     });
     if (!updated) throw ApiError.notFound('User not found');
-    return updated;
+    // Re-read with the role joined so the response matches what /auth/me and /auth/login
+    // return — clients merge this straight into their stored user.
+    const withRole = await userRepository.findByIdWithRole(userId);
+    return toPublicUser(withRole ?? updated);
   },
 
   updateMyPassword: async (userId, currentPassword, newPassword) => {

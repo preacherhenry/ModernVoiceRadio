@@ -6,18 +6,8 @@ import ApiError from '../utils/ApiError.js';
 import {
   signAccessToken, signRefreshToken, verifyRefreshToken, hashToken, refreshTokenExpiryDate,
 } from '../utils/jwt.js';
+import { toPublicUser } from '../utils/publicUser.js';
 
-const toPublicUser = (user) => ({
-  id: user.id,
-  fullName: user.full_name,
-  email: user.email,
-  phone: user.phone,
-  avatarUrl: user.avatar_url,
-  role: user.role_name,
-  isVerified: user.is_verified,
-  preferredLanguage: user.preferred_language,
-  themePreference: user.theme_preference,
-});
 
 const issueTokenPair = async (user, meta = {}) => {
   const accessToken = signAccessToken({ id: user.id, roleId: user.role_id, roleName: user.role_name });
@@ -96,16 +86,9 @@ export const authService = {
   me: async (userId) => {
     const user = await userRepository.findByIdWithRole(userId);
     if (!user) throw ApiError.notFound('User not found');
+    // Same base shape as everywhere else, plus the two fields only this endpoint exposes.
     return {
-      id: user.id,
-      fullName: user.full_name,
-      email: user.email,
-      phone: user.phone,
-      avatarUrl: user.avatar_url,
-      role: user.role_name,
-      isVerified: user.is_verified,
-      preferredLanguage: user.preferred_language,
-      themePreference: user.theme_preference,
+      ...toPublicUser(user),
       pushEnabled: user.push_enabled,
       createdAt: user.created_at,
     };

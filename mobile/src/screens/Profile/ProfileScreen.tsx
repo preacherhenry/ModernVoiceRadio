@@ -42,8 +42,6 @@ const AUTHENTICATED_ROWS: MenuRow[] = [
   { icon: 'music-note-plus', labelKey: 'profile.menu.songRequest', screen: 'SongRequest' },
   { icon: 'phone-outline', labelKey: 'home.quickLinks.contact', screen: 'Contact' },
   { icon: 'chat-processing-outline', labelKey: 'home.quickLinks.liveChat', screen: 'LiveChat' },
-  { icon: 'shield-check-outline', labelKey: 'profile.menu.privacyPolicy', screen: 'PrivacyPolicy' },
-  { icon: 'file-document-outline', labelKey: 'profile.menu.termsOfService', screen: 'Terms' },
   { icon: 'information-outline', labelKey: 'profile.menu.about', screen: 'About' },
 ];
 
@@ -52,8 +50,6 @@ const GUEST_ROWS: MenuRow[] = [
   { icon: 'account-group-outline', labelKey: 'home.quickLinks.presenters', screen: 'Presenters' },
   { icon: 'image-multiple-outline', labelKey: 'home.quickLinks.gallery', screen: 'Gallery' },
   { icon: 'phone-outline', labelKey: 'home.quickLinks.contact', screen: 'Contact' },
-  { icon: 'shield-check-outline', labelKey: 'profile.menu.privacyPolicy', screen: 'PrivacyPolicy' },
-  { icon: 'file-document-outline', labelKey: 'profile.menu.termsOfService', screen: 'Terms' },
   { icon: 'information-outline', labelKey: 'profile.menu.about', screen: 'About' },
 ];
 

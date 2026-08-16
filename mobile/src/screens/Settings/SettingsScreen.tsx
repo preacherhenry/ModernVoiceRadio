@@ -148,16 +148,6 @@ const SettingsScreen: React.FC = () => {
           <Text style={[styles.rowLabel, { color: colors.textPrimary }]}>{t('profile.menu.privacyPolicy')}</Text>
           <MaterialCommunityIcons name="chevron-right" size={20} color={colors.textMuted} />
         </Pressable>
-        <Pressable
-          onPress={() => navigation.navigate('Terms')}
-          style={[styles.row, { borderBottomColor: colors.border, borderBottomWidth: StyleSheet.hairlineWidth }]}
-        >
-          <View style={[styles.rowIcon, { backgroundColor: colors.surfaceVariant }]}>
-            <MaterialCommunityIcons name="file-document-outline" size={19} color={colors.primary} />
-          </View>
-          <Text style={[styles.rowLabel, { color: colors.textPrimary }]}>{t('profile.menu.termsOfService')}</Text>
-          <MaterialCommunityIcons name="chevron-right" size={20} color={colors.textMuted} />
-        </Pressable>
         <Pressable onPress={() => navigation.navigate('About')} style={styles.row}>
           <View style={[styles.rowIcon, { backgroundColor: colors.surfaceVariant }]}>
             <MaterialCommunityIcons name="information-outline" size={19} color={colors.primary} />
@@ -167,12 +157,27 @@ const SettingsScreen: React.FC = () => {
         </Pressable>
       </View>
 
+      {/* Terms sit at the foot of the screen, the conventional place for them. */}
+      <Text
+        onPress={() => navigation.navigate('Terms')}
+        style={[styles.termsFooterLink, { color: colors.textSecondary }]}
+      >
+        {t('profile.menu.termsOfService')}
+      </Text>
+
       <Text style={[styles.version, { color: colors.textMuted }]}>{t('settings.versionLabel', { version })}</Text>
     </ScreenContainer>
   );
 };
 
 const styles = StyleSheet.create({
+  termsFooterLink: {
+    textAlign: 'center',
+    marginTop: spacing.lg,
+    fontFamily: fontFamily.bodyMedium,
+    fontSize: fontSize.sm,
+    textDecorationLine: 'underline',
+  },
   header: { paddingHorizontal: spacing.lg, marginBottom: spacing.md },
   card: {
     marginHorizontal: spacing.lg,

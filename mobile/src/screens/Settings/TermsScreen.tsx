@@ -10,7 +10,6 @@ import ScreenContainer from '@components/common/ScreenContainer';
 import { useAppTheme } from '@theme/ThemeProvider';
 import { spacing } from '@constants/spacing';
 import { fontFamily, fontSize, typeStyles } from '@constants/typography';
-import { APP_NAME } from '@constants/config';
 import type { ProfileStackParamList } from '@navigation/types';
 
 type Nav = NativeStackNavigationProp<ProfileStackParamList>;
@@ -40,6 +39,13 @@ const Bullet: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
+/**
+ * The station's Terms & Conditions, as supplied by Modern Voice FM.
+ *
+ * The body is deliberately English-only: section headings are translated (legal.terms.*
+ * in the locale files) but the operative wording is not, since a machine-translated
+ * legal term could change what a listener is agreeing to.
+ */
 const TermsScreen: React.FC = () => {
   const { colors } = useAppTheme();
   const { t } = useTranslation();
@@ -56,107 +62,200 @@ const TermsScreen: React.FC = () => {
       </View>
 
       <View style={styles.content}>
-        <Text style={[styles.updated, { color: colors.textMuted }]}>{t('legal.lastUpdated', { date: 'July 2026' })}</Text>
+        <Text style={[styles.updated, { color: colors.textMuted }]}>
+          {t('legal.lastUpdated', { date: '16 August 2026' })}
+        </Text>
 
         <Paragraph>
-          These Terms of Service (&quot;Terms&quot;) govern your access to and use of the {APP_NAME} mobile
-          application (the &quot;App&quot;). By downloading, accessing, or using the App, you agree to be bound by
-          these Terms. If you do not agree, please do not use the App.
+          Welcome to Modern Voice FM. By creating an account or using the Modern Voice FM application and its
+          related services, you agree to these Terms and Conditions.
         </Paragraph>
 
         <Section title={t('legal.terms.section1')}>
           <Paragraph>
-            You must be at least 13 years old to create an account. You are responsible for maintaining the
-            confidentiality of your login credentials and for all activity that occurs under your account. Notify us
-            immediately of any unauthorized use of your account.
+            By registering for or using Modern Voice FM, you confirm that you have read, understood, and agreed to
+            these Terms and Conditions.
+          </Paragraph>
+          <Paragraph>
+            If you do not agree with these terms, you should not create an account or use services that require
+            acceptance of these terms.
           </Paragraph>
         </Section>
 
         <Section title={t('legal.terms.section2')}>
-          <Paragraph>You agree not to:</Paragraph>
-          <Bullet>Use the App for any unlawful purpose or in violation of any applicable regulations.</Bullet>
-          <Bullet>Attempt to gain unauthorized access to our systems, streams, or other users&apos; accounts.</Bullet>
-          <Bullet>Redistribute, rebroadcast, download in bulk, or resell our live streams or podcast content
-            without prior written permission.
-          </Bullet>
-          <Bullet>Submit abusive, defamatory, or otherwise objectionable content via Live Chat, song requests, or
-            the contact form.
-          </Bullet>
-          <Bullet>Reverse engineer, decompile, or otherwise attempt to extract the source code of the App.</Bullet>
+          <Paragraph>
+            Modern Voice FM provides access to live radio broadcasts, news, entertainment, announcements,
+            advertisements, and other related content.
+          </Paragraph>
+          <Paragraph>
+            You agree to use the application only for lawful purposes and in a manner that does not interfere with
+            the operation or security of the service.
+          </Paragraph>
         </Section>
 
         <Section title={t('legal.terms.section3')}>
+          <Paragraph>Some features require you to create a registered account.</Paragraph>
+          <Paragraph>You must be at least 19 years old to create an account.</Paragraph>
+          <Paragraph>You are responsible for:</Paragraph>
+          <Bullet>Providing accurate information during registration.</Bullet>
+          <Bullet>Keeping your login credentials secure.</Bullet>
+          <Bullet>Not sharing your account with other people.</Bullet>
+          <Bullet>
+            Informing Modern Voice FM if you believe your account has been accessed without your permission.
+          </Bullet>
           <Paragraph>
-            All content made available through the App — including live broadcasts, podcast episodes, articles,
-            images, logos, and the {APP_NAME} name and branding — is owned by {APP_NAME} or its licensors and is
-            protected by copyright and other intellectual property laws. You are granted a limited, non-exclusive,
-            non-transferable license to access and use this content for personal, non-commercial listening only,
-            including offline playback of episodes you explicitly download within the App.
+            Modern Voice FM reserves the right to suspend or terminate accounts that are used improperly,
+            fraudulently, or in violation of these terms.
           </Paragraph>
         </Section>
 
         <Section title={t('legal.terms.section4')}>
+          <Paragraph>Modern Voice FM provides a live radio stream through the application and website.</Paragraph>
           <Paragraph>
-            Any messages, song requests, or other content you submit through Live Chat, Song Requests, or the
-            Contact form may be moderated, edited, featured on-air, or removed at our discretion. You retain
-            ownership of content you submit but grant us a worldwide, royalty-free license to use, display, and
-            broadcast it in connection with operating the station.
+            The availability and quality of the stream may be affected by internet connectivity, device
+            performance, server availability, maintenance, or circumstances outside the control of Modern Voice FM.
+          </Paragraph>
+          <Paragraph>
+            Modern Voice FM does not guarantee uninterrupted or error-free streaming at all times.
           </Paragraph>
         </Section>
 
         <Section title={t('legal.terms.section5')}>
           <Paragraph>
-            Be respectful. Harassment, hate speech, spam, and impersonation are not tolerated and may result in a
-            temporary or permanent ban from Live Chat and other community features, without notice.
+            News articles, announcements, images, audio, videos, graphics, and other content published through the
+            Modern Voice FM app may be provided by Modern Voice FM staff, reporters, contributors, or third parties.
           </Paragraph>
+          <Paragraph>Content is provided for general informational and entertainment purposes.</Paragraph>
+          <Paragraph>Modern Voice FM may correct, modify, remove, or update content when necessary.</Paragraph>
         </Section>
 
         <Section title={t('legal.terms.section6')}>
           <Paragraph>
-            We strive to keep the App and our live stream available at all times, but we do not guarantee
-            uninterrupted access. We may modify, suspend, or discontinue any part of the App — including specific
-            features, programs, or podcasts — at any time without liability to you.
+            If the application allows users to submit information, comments, feedback, or other content, you agree
+            that the information you provide must not:
           </Paragraph>
+          <Bullet>Contain unlawful or fraudulent material.</Bullet>
+          <Bullet>Impersonate another person.</Bullet>
+          <Bullet>Contain abusive, threatening, or discriminatory material.</Bullet>
+          <Bullet>Infringe another person&apos;s intellectual property or privacy rights.</Bullet>
+          <Bullet>Contain malicious software or content intended to damage the service.</Bullet>
+          <Paragraph>Modern Voice FM may remove content that violates these requirements.</Paragraph>
         </Section>
 
         <Section title={t('legal.terms.section7')}>
           <Paragraph>
-            The App relies on third-party infrastructure, including Cloudinary for media hosting, Firebase Cloud
-            Messaging for push notifications, and Google Maps for location display. Your use of features backed by
-            these services is also subject to the respective third party&apos;s terms.
+            Modern Voice FM may collect information necessary to provide and improve its services, including
+            account information and information relating to your use of the application.
+          </Paragraph>
+          <Paragraph>
+            Information collected through the service will be handled in accordance with the Modern Voice FM
+            Privacy Policy.
           </Paragraph>
         </Section>
 
         <Section title={t('legal.terms.section8')}>
           <Paragraph>
-            The App is provided &quot;as is&quot; and &quot;as available&quot; without warranties of any kind, either
-            express or implied. To the fullest extent permitted by law, {APP_NAME} shall not be liable for any
-            indirect, incidental, special, or consequential damages arising from your use of, or inability to use,
-            the App.
+            For registered users, Modern Voice FM may record information about radio listening activity, including
+            listening sessions, listening duration, number of sessions, active listening days, and related
+            analytics.
+          </Paragraph>
+          <Paragraph>
+            This information may be used to understand audience engagement, improve the service, and provide
+            administrators with listener statistics.
           </Paragraph>
         </Section>
 
         <Section title={t('legal.terms.section9')}>
           <Paragraph>
-            We may suspend or terminate your access to the App at any time if we believe you have violated these
-            Terms. You may stop using the App and delete your account at any time by contacting us.
+            The Modern Voice FM name, branding, logos, application design, original content, graphics, audio
+            materials, and other intellectual property belonging to Modern Voice FM may not be copied, reproduced,
+            modified, or distributed without permission.
           </Paragraph>
+          <Paragraph>Third-party content remains the property of its respective owners.</Paragraph>
         </Section>
 
         <Section title={t('legal.terms.section10')}>
-          <Paragraph>
-            We may update these Terms from time to time. Continued use of the App after changes take effect
-            constitutes your acceptance of the revised Terms.
-          </Paragraph>
+          <Paragraph>Users must not attempt to:</Paragraph>
+          <Bullet>Gain unauthorized access to the application, website, servers, or databases.</Bullet>
+          <Bullet>Circumvent security or authentication mechanisms.</Bullet>
+          <Bullet>Interfere with the radio stream or services.</Bullet>
+          <Bullet>Use automated methods to abuse the service.</Bullet>
+          <Bullet>Attempt to manipulate listener statistics.</Bullet>
+          <Bullet>Reverse engineer or exploit the service for unauthorized purposes.</Bullet>
+          <Bullet>Use the service for illegal activities.</Bullet>
         </Section>
 
         <Section title={t('legal.terms.section11')}>
           <Paragraph>
-            Questions about these Terms can be sent to
-            {' '}
-            <Text style={{ color: colors.primary, fontFamily: fontFamily.bodySemiBold }}>legal@modernvoiceradio.com</Text>
-            .
+            Modern Voice FM may add, remove, modify, suspend, or discontinue features of the application or website
+            at any time.
           </Paragraph>
+          <Paragraph>
+            We may also perform maintenance or updates that temporarily affect service availability.
+          </Paragraph>
+        </Section>
+
+        <Section title={t('legal.terms.section12')}>
+          <Paragraph>
+            Modern Voice FM may suspend or terminate an account if the user violates these Terms and Conditions,
+            engages in fraudulent activity, abuses the service, or creates a security risk.
+          </Paragraph>
+          <Paragraph>
+            Users may also request deletion of their account where such functionality is provided.
+          </Paragraph>
+        </Section>
+
+        <Section title={t('legal.terms.section13')}>
+          <Paragraph>
+            Modern Voice FM may use third-party services for functions such as authentication, hosting, analytics,
+            maps, notifications, streaming, advertising, or other technical services.
+          </Paragraph>
+          <Paragraph>The availability of these services may affect certain features of Modern Voice FM.</Paragraph>
+        </Section>
+
+        <Section title={t('legal.terms.section14')}>
+          <Paragraph>Modern Voice FM provides its services on an &quot;as available&quot; basis.</Paragraph>
+          <Paragraph>
+            While reasonable efforts are made to keep the application, website, and radio stream operational,
+            Modern Voice FM does not guarantee that the service will always be available, uninterrupted, secure, or
+            free from errors.
+          </Paragraph>
+        </Section>
+
+        <Section title={t('legal.terms.section15')}>
+          <Paragraph>
+            To the extent permitted by applicable law, Modern Voice FM will not be responsible for losses or
+            damages resulting from interruptions, technical failures, internet connectivity problems, unauthorized
+            access, or circumstances beyond its reasonable control.
+          </Paragraph>
+        </Section>
+
+        <Section title={t('legal.terms.section16')}>
+          <Paragraph>Modern Voice FM may update these Terms and Conditions from time to time.</Paragraph>
+          <Paragraph>
+            When significant changes are made, users may be notified through the application, website, or other
+            appropriate communication channels.
+          </Paragraph>
+          <Paragraph>
+            Continued use of the service after the updated terms become effective constitutes acceptance of the
+            revised terms.
+          </Paragraph>
+        </Section>
+
+        <Section title={t('legal.terms.section17')}>
+          <Paragraph>
+            If you have questions regarding these Terms and Conditions, you may contact Modern Voice FM through the
+            official contact channels provided in the application.
+          </Paragraph>
+        </Section>
+
+        <Section title={t('legal.terms.section18')}>
+          <Paragraph>By creating an account, you confirm that:</Paragraph>
+          <Bullet>You have read and understood these Terms and Conditions.</Bullet>
+          <Bullet>You agree to comply with them.</Bullet>
+          <Bullet>
+            You understand that your registered listening activity may be recorded for audience analytics.
+          </Bullet>
         </Section>
       </View>
     </ScreenContainer>

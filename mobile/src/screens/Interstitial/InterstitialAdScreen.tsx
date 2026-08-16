@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '@theme/ThemeProvider';
 import { useGetActiveAdvertisementsQuery, useRegisterImpressionMutation, useRegisterClickMutation } from '@redux/api/advertisementsApi';
 import { spacing, radius } from '@constants/spacing';
+import { optimizedImageUrl } from '@utils/imageUrl';
 import { fontFamily, fontSize } from '@constants/typography';
 import type { RootStackParamList } from '@navigation/types';
 
@@ -35,6 +36,10 @@ const InterstitialAdScreen: React.FC = () => {
   const hasNavigatedAway = useRef(false);
   const [secondsLeft, setSecondsLeft] = useState(COUNTDOWN_SECONDS);
   const [imageAspectRatio, setImageAspectRatio] = useState(4 / 5);
+  // The countdown only starts once the poster is visible (or has failed). Otherwise a
+  // slow image could still be downloading when the 5s window expires, and the advert
+  // would be dismissed having never actually been seen.
+  const [imageReady, setImageReady] = useState(false);
 
   const ad = useMemo(() => {
     const ads = data?.data ?? [];
@@ -64,6 +69,14 @@ const InterstitialAdScreen: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ad]);
 
+  // If the poster neither loads nor errors (a stalled connection), start the countdown
+  // anyway so the advert can never hold the app open indefinitely.
+  useEffect(() => {
+    if (!ad || imageReady) return undefined;
+    const stalled = setTimeout(() => setImageReady(true), 8000);
+    return () => clearTimeout(stalled);
+  }, [ad, imageReady]);
+
   useEffect(() => {
     if (ad) void registerImpression(ad.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -73,17 +86,17 @@ const InterstitialAdScreen: React.FC = () => {
   // lives in the effect below, once secondsLeft reaches 0 — dispatching navigation
   // from inside a setState updater trips React's cross-component render warning.
   useEffect(() => {
-    if (!ad) return undefined;
+    if (!ad || !imageReady) return undefined;
     const timer = setInterval(() => {
       setSecondsLeft((prev) => Math.max(prev - 1, 0));
     }, 1000);
     return () => clearInterval(timer);
-  }, [ad?.id]);
+  }, [ad?.id, imageReady]);
 
   useEffect(() => {
-    if (ad && secondsLeft === 0) dismiss();
+    if (ad && imageReady && secondsLeft === 0) dismiss();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ad, secondsLeft]);
+  }, [ad, imageReady, secondsLeft]);
 
   if (!ad) return null;
 
@@ -127,14 +140,18 @@ const InterstitialAdScreen: React.FC = () => {
 
         <Pressable onPress={onPressAd} style={styles.imageWrap}>
           <Image
-            source={{ uri: ad.image_url }}
+            source={{ uri: optimizedImageUrl(ad.image_url) }}
             style={{ width: '100%', height: imageHeight, borderRadius: radius.md }}
             contentFit="contain"
             transition={200}
             onLoad={(event) => {
               const { width, height } = event.source;
               if (width && height) setImageAspectRatio(width / height);
+              setImageReady(true);
             }}
+            // Never strand the popup on a poster that can't load — start the countdown
+            // anyway so it still dismisses itself.
+            onError={() => setImageReady(true)}
           />
         </Pressable>
 

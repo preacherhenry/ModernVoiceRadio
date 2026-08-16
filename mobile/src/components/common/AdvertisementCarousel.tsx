@@ -5,6 +5,7 @@ import {
 import { Image } from 'expo-image';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import type { Advertisement } from '@apptypes/models';
+import { optimizedImageUrl } from '@utils/imageUrl';
 
 const ROTATE_INTERVAL_MS = 3500;
 const TRANSITION_MS = 450;
@@ -55,7 +56,7 @@ const AdvertisementCarousel: React.FC<Props> = ({
         entering={FadeIn.duration(TRANSITION_MS)}
         exiting={FadeOut.duration(TRANSITION_MS)}
       >
-        <Image source={{ uri: currentAd.image_url }} style={imageStyle} contentFit="cover" />
+        <Image source={{ uri: optimizedImageUrl(currentAd.image_url) }} style={imageStyle} contentFit="cover" />
       </Animated.View>
     </Pressable>
   );

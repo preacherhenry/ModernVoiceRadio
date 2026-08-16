@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '@theme/ThemeProvider';
 import { radius, spacing, elevation } from '@constants/spacing';
 import { fontFamily, fontSize } from '@constants/typography';
+import { optimizedImageUrl } from '@utils/imageUrl';
 import type { Advertisement } from '@apptypes/models';
 import { useRegisterImpressionMutation, useRegisterClickMutation } from '@redux/api/advertisementsApi';
 
@@ -33,7 +34,7 @@ const NewsInlineAdCard: React.FC<Props> = ({ ad }) => {
 
   return (
     <Pressable onPress={onPress} style={[styles.container, { backgroundColor: colors.card }, elevation.card]}>
-      <Image source={{ uri: ad.image_url }} style={styles.cover} transition={200} />
+      <Image source={{ uri: optimizedImageUrl(ad.image_url) }} style={styles.cover} transition={200} />
       <View style={styles.body}>
         <View style={[styles.badge, { backgroundColor: colors.surfaceVariant }]}>
           <Text style={[styles.badgeText, { color: colors.textSecondary }]}>{t('advertisement.shortBadge')}</Text>

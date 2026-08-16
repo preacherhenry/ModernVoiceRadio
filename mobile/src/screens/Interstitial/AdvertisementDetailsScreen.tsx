@@ -16,6 +16,7 @@ import AppButton from '@components/common/AppButton';
 import { useAppTheme } from '@theme/ThemeProvider';
 import { useGetActiveAdvertisementsQuery } from '@redux/api/advertisementsApi';
 import { spacing, radius } from '@constants/spacing';
+import { optimizedImageUrl } from '@utils/imageUrl';
 import { fontFamily, fontSize, typeStyles } from '@constants/typography';
 import type { RootStackParamList } from '@navigation/types';
 
@@ -54,7 +55,9 @@ const AdvertisementDetailsScreen: React.FC = () => {
   // Main poster first, then any supporting pictures — one gallery, so a poster-only
   // advert is simply a gallery of one with no paging controls.
   const galleryImages = useMemo(
-    () => [ad.image_url, ...(ad.media ?? []).map((m) => m.media_url)],
+    // Delivery-optimised: full-size posters are several megabytes each, and a gallery
+    // would otherwise fetch that repeatedly while swiping.
+    () => [ad.image_url, ...(ad.media ?? []).map((m) => m.media_url)].map((u) => optimizedImageUrl(u)),
     [ad],
   );
   const hasMultiple = galleryImages.length > 1;

@@ -55,11 +55,16 @@ const OnboardingScreen: React.FC = () => {
   };
 
   const goNext = () => {
-    if (activeIndex < SLIDES.length - 1) {
-      listRef.current?.scrollToIndex({ index: activeIndex + 1, animated: true });
-    } else {
+    const next = activeIndex + 1;
+    if (next >= SLIDES.length) {
       finishOnboarding();
+      return;
     }
+    // Advance the index here rather than waiting for onMomentumScrollEnd: that event is
+    // not reliably emitted for a programmatic scroll, so activeIndex went stale and the
+    // next tap simply scrolled to the slide already on screen — the button appeared dead.
+    setActiveIndex(next);
+    listRef.current?.scrollToIndex({ index: next, animated: true });
   };
 
   return (
@@ -81,6 +86,9 @@ const OnboardingScreen: React.FC = () => {
         onScroll={scrollHandler}
         scrollEventThrottle={16}
         onMomentumScrollEnd={onMomentumScrollEnd}
+        // Every slide is exactly one screen wide, so giving the list its layout up front
+        // makes scrollToIndex land precisely instead of having to measure first.
+        getItemLayout={(_, index) => ({ length: SCREEN_WIDTH, offset: SCREEN_WIDTH * index, index })}
         renderItem={({ item, index }) => (
           <SlideCard item={item} index={index} scrollX={scrollX} />
         )}

@@ -54,8 +54,11 @@ const LoginScreen: React.FC = () => {
 
   const continueAsGuest = () => rootNav?.reset({ index: 0, routes: [{ name: 'Main' as never }] });
 
+  // screenContent uses flexGrow so the spacer near the bottom can claim the leftover
+  // height, and a smaller bottom padding than the shared inset — that inset is sized for
+  // the tab bar and mini player, neither of which exists above the auth screens.
   return (
-    <ScreenContainer edges={['top', 'bottom']}>
+    <ScreenContainer edges={['top', 'bottom']} contentContainerStyle={styles.screenContent}>
       <View style={styles.header}>
         <View style={[styles.logoCircle, { backgroundColor: colors.primaryContainer }]}>
           <MaterialCommunityIcons name="radio-tower" size={32} color={colors.primary} />
@@ -127,35 +130,30 @@ const LoginScreen: React.FC = () => {
         </Pressable>
       </View>
 
-      {/* Readable here too, but acceptance is only recorded when the account is created —
-          returning listeners are never asked to agree again. */}
-      <View style={styles.legalRow}>
-        <Text
-          onPress={() => navigation.navigate('Terms')}
-          style={[styles.legalLink, { color: colors.textMuted }]}
-        >
-          {t('auth.terms.termsLink')}
-        </Text>
-        <Text style={[styles.legalSeparator, { color: colors.textMuted }]}>·</Text>
-        <Text
-          onPress={() => navigation.navigate('PrivacyPolicy')}
-          style={[styles.legalLink, { color: colors.textMuted }]}
-        >
-          {t('profile.menu.privacyPolicy')}
-        </Text>
-      </View>
+      {/* Pushed to the foot of the screen. Readable here, but acceptance is only recorded
+          when an account is created — returning listeners are never asked to agree again.
+          The Privacy Policy lives in Settings rather than here. */}
+      <View style={styles.legalSpacer} />
+      <Text
+        onPress={() => navigation.navigate('Terms')}
+        style={[styles.legalLink, { color: colors.textMuted }]}
+      >
+        {t('auth.terms.termsLink')}
+      </Text>
     </ScreenContainer>
   );
 };
 
 const styles = StyleSheet.create({
   header: { alignItems: 'center', paddingHorizontal: spacing.xl, paddingTop: spacing.xl, paddingBottom: spacing.lg },
-  legalRow: {
-    flexDirection: 'row', justifyContent: 'center', alignItems: 'center',
-    gap: spacing.xs, marginTop: spacing.sm, paddingHorizontal: spacing.xl,
+  // Takes up the leftover height so the link settles near the bottom of the screen
+  // regardless of device size, without pinning it to the very edge.
+  screenContent: { flexGrow: 1, paddingBottom: spacing.lg },
+  legalSpacer: { flex: 1, minHeight: spacing.xl },
+  legalLink: {
+    fontFamily: fontFamily.body, fontSize: 12, textDecorationLine: 'underline',
+    textAlign: 'center', paddingHorizontal: spacing.xl, marginBottom: spacing.md,
   },
-  legalLink: { fontFamily: fontFamily.body, fontSize: 12, textDecorationLine: 'underline' },
-  legalSeparator: { fontFamily: fontFamily.body, fontSize: 12 },
   logoCircle: { width: 64, height: 64, borderRadius: 32, alignItems: 'center', justifyContent: 'center' },
   form: { paddingHorizontal: spacing.xl },
   forgotLink: { alignSelf: 'flex-end', marginBottom: spacing.md },

@@ -10,7 +10,7 @@ import type { MainTabParamList } from './types';
 import { useAppTheme } from '@theme/ThemeProvider';
 import HomeStackNavigator from './HomeStackNavigator';
 import LiveStackNavigator from './LiveStackNavigator';
-import ScheduleStackNavigator from './ScheduleStackNavigator';
+import NewsStackNavigator from './NewsStackNavigator';
 import PodcastsStackNavigator from './PodcastsStackNavigator';
 import ProfileStackNavigator from './ProfileStackNavigator';
 import MiniPlayer from '@components/player/MiniPlayer';
@@ -20,7 +20,7 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
 const ICONS: Record<keyof MainTabParamList, keyof typeof MaterialCommunityIcons.glyphMap> = {
   HomeTab: 'home-variant',
   LiveTab: 'radio-tower',
-  ScheduleTab: 'calendar-clock',
+  NewsTab: 'newspaper-variant-outline',
   PodcastsTab: 'podcast',
   ProfileTab: 'account-circle',
 };
@@ -36,7 +36,7 @@ const MainTabNavigator: React.FC = () => {
   const LABELS: Record<keyof MainTabParamList, string> = {
     HomeTab: t('tabs.home'),
     LiveTab: t('tabs.live'),
-    ScheduleTab: t('tabs.schedule'),
+    NewsTab: t('tabs.news'),
     PodcastsTab: t('tabs.podcasts'),
     ProfileTab: t('tabs.profile'),
   };
@@ -44,8 +44,8 @@ const MainTabNavigator: React.FC = () => {
   return (
     <View style={styles.flex}>
       <Tab.Navigator
-        // Schedule is declared first (far-left position), which would otherwise make it
-        // the landing tab — the app must always open on Home regardless of tab order.
+        // News is declared first (far-left position), which would otherwise make it the
+        // landing tab — the app must always open on Home regardless of tab order.
         initialRouteName="HomeTab"
         screenOptions={({ route }) => ({
           headerShown: false,
@@ -66,9 +66,9 @@ const MainTabNavigator: React.FC = () => {
           tabBarLabel: LABELS[route.name as keyof MainTabParamList],
         })}
       >
-        {/* Order is deliberate: Schedule anchors the far left and Home sits dead
-            centre (3rd of 5), the easiest slot to reach with a thumb. */}
-        <Tab.Screen name="ScheduleTab" component={ScheduleStackNavigator} />
+        {/* Order is deliberate: Home sits dead centre (3rd of 5), the easiest slot to
+            reach with a thumb. */}
+        <Tab.Screen name="NewsTab" component={NewsStackNavigator} />
         <Tab.Screen name="LiveTab" component={LiveStackNavigator} />
         <Tab.Screen name="HomeTab" component={HomeStackNavigator} />
         <Tab.Screen name="PodcastsTab" component={PodcastsStackNavigator} />

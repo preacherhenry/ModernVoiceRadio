@@ -14,6 +14,9 @@ export type AuthStackParamList = {
 
 export type HomeStackParamList = {
   HomeMain: undefined;
+  // Schedule is no longer a tab, so it lives here — reached from the Home quick links,
+  // alongside the detail screens it pushes to.
+  ScheduleMain: undefined;
   ProgramDetail: { idOrSlug: string };
   PresenterDetail: { idOrSlug: string };
   NewsMain: undefined;
@@ -22,6 +25,11 @@ export type HomeStackParamList = {
 
 export type LiveStackParamList = {
   LiveRadio: undefined;
+};
+
+export type NewsStackParamList = {
+  NewsMain: undefined;
+  NewsDetail: { idOrSlug: string };
 };
 
 export type ScheduleStackParamList = {
@@ -59,9 +67,9 @@ export type ProfileStackParamList = {
 };
 
 export type MainTabParamList = {
-  HomeTab: NavigatorScreenParams<HomeStackParamList>;
+  NewsTab: NavigatorScreenParams<NewsStackParamList>;
   LiveTab: NavigatorScreenParams<LiveStackParamList>;
-  ScheduleTab: NavigatorScreenParams<ScheduleStackParamList>;
+  HomeTab: NavigatorScreenParams<HomeStackParamList>;
   PodcastsTab: NavigatorScreenParams<PodcastsStackParamList>;
   ProfileTab: NavigatorScreenParams<ProfileStackParamList>;
 };

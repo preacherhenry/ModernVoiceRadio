@@ -195,7 +195,7 @@ const HomeScreen: React.FC = () => {
           <Pressable
             style={styles.quickLink}
             onPress={() => {
-              if (item.screen === 'Schedule') (navigation as any).navigate('ScheduleTab');
+              if (item.screen === 'Schedule') navigation.navigate('ScheduleMain');
               else if (item.screen === 'Podcasts') (navigation as any).navigate('PodcastsTab');
               else (navigation as any).navigate('ProfileTab', { screen: item.screen });
             }}

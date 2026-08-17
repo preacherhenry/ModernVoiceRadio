@@ -26,10 +26,11 @@ import { readArticleAloud, stopReadingAloud } from '@services/newsReaderService'
 import { spacing, radius } from '@constants/spacing';
 import { fontFamily, fontSize, typeStyles } from '@constants/typography';
 import { truncate, formatRelativeTime, formatDayMonthYear } from '@utils/formatters';
+import { optimizedImageUrl } from '@utils/imageUrl';
 import type { HomeStackParamList } from '@navigation/types';
 import type { NewsMediaItem } from '@apptypes/models';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 type Nav = NativeStackNavigationProp<HomeStackParamList>;
 type DetailRoute = RouteProp<HomeStackParamList, 'NewsDetail'>;
@@ -67,6 +68,18 @@ const NewsDetailScreen: React.FC = () => {
     }
     return parts.join(' | ');
   }, [article, t]);
+
+  /**
+   * The cover's own shape, measured when it loads. Starts at a neutral landscape ratio
+   * purely so the space is reserved before the image arrives; once measured, the frame
+   * takes the image's real proportions so nothing is cropped away.
+   */
+  const [coverAspectRatio, setCoverAspectRatio] = useState(16 / 10);
+
+  // Height follows the image's own proportions, capped so a very tall portrait doesn't
+  // push the headline and story off the first screen. "contain" keeps the whole picture
+  // visible either way — the cap scales it down rather than trimming it.
+  const coverHeight = Math.min(SCREEN_WIDTH / coverAspectRatio, SCREEN_HEIGHT * 0.7);
 
   const [selectedMedia, setSelectedMedia] = useState<NewsMediaItem | null>(null);
   const [isReadingAloud, setIsReadingAloud] = useState(false);
@@ -163,9 +176,21 @@ const NewsDetailScreen: React.FC = () => {
 
   return (
     <ScreenContainer edges={['top']} contentContainerStyle={styles.scrollContent}>
-      <View style={styles.headerWrap}>
+      <View style={[styles.headerWrap, { height: coverHeight, backgroundColor: colors.surfaceVariant }]}>
         {article.cover_image_url ? (
-          <Image source={{ uri: article.cover_image_url }} style={styles.headerImage} transition={200} />
+          <Image
+            source={{ uri: optimizedImageUrl(article.cover_image_url) }}
+            style={styles.headerImage}
+            // Show the whole picture rather than filling the frame: a fixed 16:10 box
+            // with the default "cover" fit was slicing the top and bottom off portrait
+            // photos, which is most of what gets uploaded with a story.
+            contentFit="contain"
+            transition={200}
+            onLoad={(event) => {
+              const { width, height } = event.source;
+              if (width && height) setCoverAspectRatio(width / height);
+            }}
+          />
         ) : (
           <View style={[styles.headerImage, styles.headerPlaceholder, { backgroundColor: colors.primaryContainer }]}>
             <MaterialCommunityIcons name="newspaper-variant" size={56} color={colors.primary} />
@@ -250,7 +275,7 @@ const NewsDetailScreen: React.FC = () => {
         >
           {selectedMedia && (
             <Pressable style={styles.lightboxDismiss} onPress={() => setSelectedMedia(null)}>
-              <Image source={{ uri: selectedMedia.media_url }} style={styles.lightboxImage} contentFit="contain" />
+              <Image source={{ uri: optimizedImageUrl(selectedMedia.media_url, 1400) }} style={styles.lightboxImage} contentFit="contain" />
             </Pressable>
           )}
         </Modal>
@@ -268,7 +293,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   backRow: { paddingHorizontal: spacing.lg, paddingTop: spacing.sm },
-  headerWrap: { width: '100%', aspectRatio: 16 / 10, position: 'relative', marginBottom: spacing.lg },
+  headerWrap: { width: '100%', position: 'relative', marginBottom: spacing.lg },
   headerImage: { width: '100%', height: '100%' },
   headerPlaceholder: { alignItems: 'center', justifyContent: 'center' },
   backButton: {
@@ -300,7 +325,7 @@ const styles = StyleSheet.create({
 
   lightboxWrap: { flex: 1, backgroundColor: 'rgba(0,0,0,0.92)' },
   lightboxDismiss: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  lightboxImage: { width: SCREEN_WIDTH, height: SCREEN_WIDTH },
+  lightboxImage: { width: SCREEN_WIDTH, height: SCREEN_HEIGHT * 0.75 },
 });
 
 export default NewsDetailScreen;

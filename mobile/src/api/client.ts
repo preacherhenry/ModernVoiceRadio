@@ -54,9 +54,19 @@ async function refreshAccessToken(): Promise<string | null> {
     store.dispatch(setTokens({ accessToken: newAccess, refreshToken: newRefresh }));
     await persistTokens(newAccess, newRefresh);
     return newAccess;
-  } catch {
-    store.dispatch(signedOut());
-    await clearPersistedTokens();
+  } catch (err) {
+    const status = (err as AxiosError)?.response?.status;
+
+    // Only end the session when the server actually rejected the refresh token. A
+    // network error carries no response at all, and treating that as a rejection was
+    // signing people out mid-listen: access tokens last 15 minutes, so a long session
+    // refreshes repeatedly, and one lost moment of signal was enough to destroy the
+    // session — which in turn stopped the radio. Keep the tokens and let the request
+    // fail; the next attempt can refresh normally once the connection is back.
+    if (status === 401 || status === 403) {
+      store.dispatch(signedOut());
+      await clearPersistedTokens();
+    }
     return null;
   }
 }

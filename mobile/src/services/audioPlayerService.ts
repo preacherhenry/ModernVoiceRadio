@@ -42,6 +42,20 @@ export async function setupAudioPlayer(): Promise<void> {
   TrackPlayer.addEventListener(Event.PlaybackState, ({ state }) => {
     const mapped = RNTP_STATE_MAP[state];
     if (mapped) getStoreRef().dispatch(setPlaybackState(mapped));
+
+    // Healthy playback clears the backoff, so the next interruption starts from a short
+    // delay rather than inheriting the previous one's.
+    if (state === State.Playing) reconnectAttempts = 0;
+
+    // A dropped live stream does not always surface as an error — an Icecast restart or a
+    // network handover often just ends the track. Nothing listened for that, so playback
+    // died silently. lastLiveStream is cleared before a deliberate stop, and
+    // isStartingPlayback covers the reset() inside playLiveStream, so neither is mistaken
+    // for a drop here.
+    const endedUnexpectedly = state === State.Ended || state === State.Stopped;
+    if (endedUnexpectedly && lastLiveStream && !playbackBlocked && !isStartingPlayback) {
+      void reconnectLiveIfNeeded();
+    }
   });
 
   TrackPlayer.addEventListener(Event.PlaybackError, (error) => {
@@ -63,6 +77,9 @@ let reconnectAttempts = 0;
  * back moments after logout.
  */
 let playbackBlocked = false;
+let isReconnecting = false;
+/** True while playLiveStream is switching tracks, whose reset() emits a stop we must ignore. */
+let isStartingPlayback = false;
 
 /** Stops any audio and prevents it restarting until playback is explicitly allowed again. */
 export async function blockPlayback(): Promise<void> {
@@ -83,19 +100,42 @@ export function allowPlayback(): void {
 
 export const isPlaybackBlocked = () => playbackBlocked;
 
+/** Longest gap between reconnect attempts — slow enough to be kind to a flaky connection. */
+const MAX_RECONNECT_DELAY_MS = 30000;
+
+/**
+ * Brings live radio back after the stream drops.
+ *
+ * This deliberately never stops trying. It previously gave up after five attempts, which
+ * suits a file that failed to load but not a 24/7 station: once a bad patch of signal
+ * exhausted those attempts, the radio stayed silent for the rest of the session even
+ * after the connection came back, and the listener had to notice and press play again.
+ * The delay grows to a ceiling instead, so a phone that is off-network simply retries
+ * quietly until it isn't.
+ */
 async function reconnectLiveIfNeeded() {
-  if (playbackBlocked) return;
-  if (!lastLiveStream) return;
-  if (reconnectAttempts >= 5) return;
-  reconnectAttempts += 1;
-  await new Promise((resolve) => { setTimeout(resolve, Math.min(2000 * reconnectAttempts, 10000)); });
-  // Re-check after the delay: the session may have ended while this retry was waiting.
   if (playbackBlocked || !lastLiveStream) return;
+  if (isReconnecting) return; // one loop at a time, however many events arrive
+  isReconnecting = true;
+
   try {
-    await playLiveStream(lastLiveStream);
-    reconnectAttempts = 0;
-  } catch {
-    void reconnectLiveIfNeeded();
+    while (!playbackBlocked && lastLiveStream) {
+      reconnectAttempts += 1;
+      const delay = Math.min(2000 * reconnectAttempts, MAX_RECONNECT_DELAY_MS);
+      // eslint-disable-next-line no-await-in-loop -- attempts are deliberately spaced
+      await new Promise((resolve) => { setTimeout(resolve, delay); });
+      // Re-check after the delay: the session may have ended while this was waiting.
+      if (playbackBlocked || !lastLiveStream) return;
+      try {
+        // eslint-disable-next-line no-await-in-loop -- sequential by design
+        await playLiveStream(lastLiveStream);
+        return; // reconnectAttempts is reset once playback actually reports Playing
+      } catch {
+        // keep looping — the next pass waits longer
+      }
+    }
+  } finally {
+    isReconnecting = false;
   }
 }
 
@@ -105,15 +145,22 @@ export async function playLiveStream(stream: AudioStream, nowPlaying?: NowPlayin
   await setupAudioPlayer();
   lastLiveStream = stream;
 
-  await TrackPlayer.reset();
-  await TrackPlayer.add({
-    id: `live-${stream.id}`,
-    url: stream.url,
-    title: nowPlaying?.songTitle || 'Modern Voice Radio — Live',
-    artist: nowPlaying?.artist || 'On Air Now',
-    isLiveStream: true,
-  });
-  await TrackPlayer.play();
+  // reset() below emits a stop, which the state listener would otherwise read as the
+  // stream dropping and answer by reconnecting — straight into a loop.
+  isStartingPlayback = true;
+  try {
+    await TrackPlayer.reset();
+    await TrackPlayer.add({
+      id: `live-${stream.id}`,
+      url: stream.url,
+      title: nowPlaying?.songTitle || 'Modern Voice Radio — Live',
+      artist: nowPlaying?.artist || 'On Air Now',
+      isLiveStream: true,
+    });
+    await TrackPlayer.play();
+  } finally {
+    isStartingPlayback = false;
+  }
 
   getStoreRef().dispatch(loadTrack({
     source: 'live',
@@ -131,17 +178,22 @@ export async function playEpisode(episode: PodcastEpisode, resumeFromSeconds = 0
   await setupAudioPlayer();
   lastLiveStream = null;
 
-  await TrackPlayer.reset();
-  await TrackPlayer.add({
-    id: `episode-${episode.id}`,
-    url: episode.audio_url,
-    title: episode.title,
-    artist: episode.podcast_title || 'Modern Voice Radio',
-    artwork: episode.cover_image_url || undefined,
-    duration: episode.duration_seconds,
-  });
-  if (resumeFromSeconds > 0) await TrackPlayer.seekTo(resumeFromSeconds);
-  await TrackPlayer.play();
+  isStartingPlayback = true;
+  try {
+    await TrackPlayer.reset();
+    await TrackPlayer.add({
+      id: `episode-${episode.id}`,
+      url: episode.audio_url,
+      title: episode.title,
+      artist: episode.podcast_title || 'Modern Voice Radio',
+      artwork: episode.cover_image_url || undefined,
+      duration: episode.duration_seconds,
+    });
+    if (resumeFromSeconds > 0) await TrackPlayer.seekTo(resumeFromSeconds);
+    await TrackPlayer.play();
+  } finally {
+    isStartingPlayback = false;
+  }
 
   getStoreRef().dispatch(loadTrack({
     source: 'episode',

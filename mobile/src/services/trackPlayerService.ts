@@ -19,12 +19,10 @@ export default async function trackPlayerService() {
     const position = await TrackPlayer.getProgress().then((p) => p.position);
     TrackPlayer.seekTo(Math.max(0, position - interval));
   });
-  TrackPlayer.addEventListener(Event.RemoteDuck, async (event) => {
-    // Another app (nav prompt, phone call) is ducking/interrupting audio.
-    if (event.paused) {
-      await TrackPlayer.pause();
-    } else if (!event.permanent) {
-      await TrackPlayer.play();
-    }
-  });
+  // Audio interruptions (a call, a navigation prompt, another app taking focus) are
+  // handled natively: setupPlayer runs with autoHandleInterruptions, which sets the
+  // player's own handleAudioFocus. The duck event is still delivered to JS regardless,
+  // so pausing and resuming here as well meant two handlers acting on one interruption —
+  // and when they disagreed the stream could stay paused, with a 24/7 station having no
+  // way back until the listener noticed and pressed play. Leave it to the native layer.
 }
